@@ -5,5 +5,10 @@ export function mutator(method: string, url: string, data?: any) {
     method,
     url,
     data,
-  }).then((res) => res.data);
+  })
+    .then((res) => res.data)
+    .catch((error) => {
+      console.log("Mutator caught error: ", error.response?.message);
+      throw error;
+    });
 }

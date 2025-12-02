@@ -17,10 +17,8 @@ export const SignUp = () => {
       };
       const res = await createUser.mutate(newUser);
       console.log(res);
-      debugger;
       navigate("/signup");
     } catch (err: any) {
-      debugger;
       if (err.response?.data?.message === "Email already used") {
         openNotification("error", "Signup Failed", "Email already in use");
       } else {

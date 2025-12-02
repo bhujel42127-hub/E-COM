@@ -87,8 +87,8 @@ export const AdminLayout = () => {
                 style={{
                   height: "100%",
                   padding: "24px",
-                  margin: "20px",
-                  borderRadius: "24px",
+                  margin: "10px",
+                  borderRadius: "14px",
                   background: "#e3e3e8ff ",
                   boxShadow: "0 1px 2px 0 rgba(0, 0, 0, 0.05)",
                 }}
