@@ -1,0 +1,117 @@
+import type { FormProps } from "antd";
+import { Button, Form, Input } from "antd";
+import type { FieldType } from "../Props";
+import { Link, useNavigate } from "react-router-dom";
+import { openNotification } from "../lib/openNotification";
+import { useLogin } from "../hooks/usePosts";
+import { setAccessToken, setRefreshToken } from "../utlis/handleToken";
+
+export const Login = () => {
+  const navigate = useNavigate();
+  const login = useLogin();
+
+  const onFinish = async (values: any) => {
+    console.log("Login form data:", values);
+    try {
+      const res = await login.mutateAsync(values);
+      console.log("User id:", res);
+      setAccessToken(res.accessToken);
+      setRefreshToken(res.refreshToken);
+      navigate("/admin"); 
+    } catch (err) {
+      openNotification("error", "Login Failed", "Invalid credentials");
+      console.log("Login error: ", err);
+    }
+
+    //   const res = await api.get<User[]>("/users");
+    //   // console.log("Users", res.data);
+
+    //   const userExists = res.data.filter(
+    //     (e) => e.email === values.email && e.password === values.password
+    //   );
+    //   // console.log("User value: ", userExists);
+
+    //   if (userExists.length > 0) {
+    //     localStorage.setItem(
+    //       "user",
+    //       JSON.stringify(userExists)
+    //     );
+
+    //     navigate("/dashboard");
+    //     return;
+    //     // console.log("User logged in!", res.data);
+    //   }
+  };
+
+  const onFinishFailed: FormProps<FieldType>["onFinishFailed"] = (
+    errorInfo
+  ) => {
+    console.log("Failed:", errorInfo);
+  };
+
+  return (
+    <div className="flex flex-row min-h-screen">
+      <div className="flex-1 flex items-center justify-center bg-gray-50">
+        <div className="flex items-center justify-center">
+          <h1 className="text-5xl font-bold">My Brand</h1>
+        </div>
+      </div>
+
+      <div className="flex-1 flex items-center ">
+        <div className="w-full max-w-md px-8">
+          <Form
+            name="basic"
+            layout="vertical"
+            initialValues={{ remember: true }}
+            onFinish={onFinish}
+            onFinishFailed={onFinishFailed}
+            autoComplete="off"
+          >
+            <Form.Item<FieldType>
+              label="Email"
+              name="email"
+              rules={[{ required: true, message: "Please input your email!" }]}
+            >
+              <Input size="large" />
+            </Form.Item>
+
+            <Form.Item<FieldType>
+              label="Password"
+              name="password"
+              rules={[
+                { required: true, message: "Please input your password!" },
+              ]}
+            >
+              <Input.Password size="large" />
+            </Form.Item>
+
+            <Form.Item>
+              <Button
+                type="primary"
+                htmlType="submit"
+                size="large"
+                style={{ background: "#001529" }}
+                block
+              >
+                Submit
+              </Button>
+            </Form.Item>
+
+            <div className="text-center">
+              <Link to="/signup" className="text-blue-500 hover:text-blue-700">
+                Don't have an account? SignUp
+              </Link>
+              <br />
+              <Link
+                to="/verify-email"
+                className="text-blue-500 hover:text-blue-700"
+              >
+                Forgot password?
+              </Link>
+            </div>
+          </Form>
+        </div>
+      </div>
+    </div>
+  );
+};

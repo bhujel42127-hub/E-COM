@@ -2,6 +2,7 @@ import { Button, Layout, Menu } from "antd";
 import { Outlet, useNavigate } from "react-router-dom";
 import { HomeOutlined } from "@ant-design/icons";
 import Sider from "antd/es/layout/Sider";
+import { axiosInstance } from "../api/axiosInstance";
 // import { api } from "./utlis/api";
 
 const { Header, Content } = Layout;
@@ -26,6 +27,23 @@ export const AdminLayout = () => {
       onClick: () => navigate("/admin/products"),
     },
   ];
+
+  const handleLogout = async () => {
+    console.log("Logout button clicked!!");
+    try {
+      const refreshToken = localStorage.getItem("refreshToken");
+      console.log("handle logout try catch");
+      await axiosInstance.post("/auth/logout", {
+        token: refreshToken,
+      });
+      console.log("After logout post");
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("refreshToken");
+      navigate("/login");
+    } catch (error) {
+      console.log("Logout error: ", error);
+    }
+  };
 
   return (
     <div>
@@ -73,7 +91,9 @@ export const AdminLayout = () => {
             >
               <div className="demo-logo" />
 
-              <Button danger>Logout</Button>
+              <Button onClick={() => handleLogout()} danger>
+                Logout
+              </Button>
             </Header>
           </div>
           <Layout>

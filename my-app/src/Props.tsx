@@ -4,6 +4,10 @@ export type FieldType = {
   password: string;
   confirmPassword: string;
 };
+export type LoginFieldType = {
+  email: string;
+  password: string;
+};
 export type User = {
   _id?: string;
   email: string;

@@ -12,3 +12,22 @@ export function useCreateUser() {
     },
   });
 }
+
+export function useLogin() {
+  return useMutation({
+    mutationFn: (data) => mutator("POST", "/auth/login", data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["posts"] });
+    },
+  });
+}
+
+export function useRefresh() {
+  return useMutation({
+    mutationFn: (data) => mutator("POST", "/auth/refresh", data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["posts"] });
+    },
+  });
+}
+
