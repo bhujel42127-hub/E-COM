@@ -6,7 +6,7 @@ import { openNotification } from "../lib/openNotification";
 import { useLogin } from "../hooks/usePosts";
 import { setAccessToken, setRefreshToken } from "../utlis/handleToken";
 
-export const Login = () => {
+const Login = () => {
   const navigate = useNavigate();
   const login = useLogin();
 
@@ -17,7 +17,7 @@ export const Login = () => {
       console.log("User id:", res);
       setAccessToken(res.accessToken);
       setRefreshToken(res.refreshToken);
-      navigate("/admin"); 
+      navigate("/admin");
     } catch (err) {
       openNotification("error", "Login Failed", "Invalid credentials");
       console.log("Login error: ", err);
@@ -115,3 +115,4 @@ export const Login = () => {
     </div>
   );
 };
+export default Login;

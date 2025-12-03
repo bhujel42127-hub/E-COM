@@ -1,19 +1,22 @@
 import { createBrowserRouter } from "react-router-dom";
-import { SignUp } from "../pages/SignUp";
 import { AdminLayout } from "../components/AdminLayout";
 import { ViewAdmins } from "../pages/ViewAdmins";
 import { ViewProducts } from "../pages/Products";
 import { AdminDashboard } from "../pages/AdminDashboard";
 import { PublicLayout } from "../components/PublicLayout";
-import { Login } from "../pages/Login";
 import { UserDashboard } from "../pages/UserDashboard";
 import { UserDashboardLayout } from "../components/UserDashboardLayout";
-import { RequireAdmin } from "./imports";
+import { Login, RequireAdmin, Root, SignUp } from "./imports";
+import { PublicRoute } from "../components/PublicRoute";
 
 export const router = createBrowserRouter([
   {
     path: "/",
-    element: <PublicLayout />,
+    element: (
+      <PublicRoute>
+        <Root />
+      </PublicRoute>
+    ),
     children: [
       {
         path: "/signup",

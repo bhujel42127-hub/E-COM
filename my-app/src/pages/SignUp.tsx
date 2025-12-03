@@ -5,7 +5,7 @@ import { openNotification } from "../lib/openNotification";
 import { useNavigate } from "react-router-dom";
 import { useCreateUser } from "../hooks/usePosts";
 
-export const SignUp = () => {
+const SignUp = () => {
   const navigate = useNavigate();
   const createUser = useCreateUser();
   const onFinish: FormProps<FieldType>["onFinish"] = async (values) => {
@@ -127,3 +127,4 @@ export const SignUp = () => {
     </div>
   );
 };
+export default SignUp;
