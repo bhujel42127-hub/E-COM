@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import authRoutes from "./routes/auth.routes";
+import adminRoutes from "./routes/admin.routes";
 import "dotenv/config";
 
 // console.log(process.env.PORT);
@@ -13,12 +14,12 @@ app.use(
   })
 );
 app.use(express.json());
-debugger;
 
 app.use((req, res, next) => {
   console.log("Incoming:", req.method, req.url);
   next();
 });
 app.use("/auth", authRoutes);
+app.use("/admin", adminRoutes);
 
 export default app;

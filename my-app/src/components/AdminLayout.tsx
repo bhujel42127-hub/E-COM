@@ -1,30 +1,37 @@
-import { Button, Layout, Menu } from "antd";
+import { useState } from "react";
+import { Button, Layout, Menu, Drawer } from "antd";
 import { Outlet, useNavigate } from "react-router-dom";
 import { HomeOutlined } from "@ant-design/icons";
-import Sider from "antd/es/layout/Sider";
 import { axiosInstance } from "../api/axiosInstance";
-// import { api } from "./utlis/api";
 
-const { Header, Content } = Layout;
+const { Header, Content, Sider } = Layout;
 
 export const AdminLayout = () => {
   const navigate = useNavigate();
+  const [collapsed, setCollapsed] = useState(false);
 
   const items = [
     {
       key: "1",
-      label: <HomeOutlined />,
-      onClick: () => navigate("/admin"),
+      icon: <HomeOutlined />,
+      label: "Dashboard",
+      onClick: () => {
+        navigate("/admin");
+      },
     },
     {
       key: "2",
       label: "View Admins",
-      onClick: () => navigate("/admin/admins"),
+      onClick: () => {
+        navigate("/admin/admins");
+      },
     },
     {
       key: "3",
       label: "Products",
-      onClick: () => navigate("/admin/products"),
+      onClick: () => {
+        navigate("/admin/products");
+      },
     },
   ];
 
@@ -46,79 +53,94 @@ export const AdminLayout = () => {
   };
 
   return (
-    <div>
-      <Layout
-        style={{ minHeight: "100vh", display: "flex", flexDirection: "row" }}
+    <Layout style={{ minHeight: "100vh" }}>
+      <Sider
+        breakpoint="lg"
+        collapsedWidth="0"
+        onBreakpoint={(broken) => {
+          console.log("Breakpoint triggered:", broken);
+        }}
+        onCollapse={(collapsed, type) => {
+          console.log("Collapsed:", collapsed, type);
+          setCollapsed(collapsed);
+        }}
+        style={{
+          overflow: "auto",
+          height: "100vh",
+          position: "fixed",
+          left: 0,
+          top: 0,
+          bottom: 0,
+          background: "#001529",
+        }}
+        className="desktop-sider"
       >
-        <Sider
-          width={150}
+        <div
           style={{
-            background: "#001529",
-          }}
-        >
-          <Menu
-            theme="dark"
-            mode="vertical"
-            items={items}
-            style={{
-              flex: 1,
-              minWidth: 0,
-              background: "transparent",
-            }}
-          />
-        </Sider>
-
-        <Layout
-          style={{
-            minHeight: "100vh",
+            height: "32px",
+            margin: "16px",
+            background: "rgba(255, 255, 255, 0.2)",
+            borderRadius: "6px",
             display: "flex",
-            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            color: "#fff",
+            fontWeight: "bold",
           }}
         >
-          <div>
-            <Header
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                background: "#ffffff",
-                padding: "0 24px",
-                boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
-                position: "sticky",
-                top: 0,
-                zIndex: 100,
-              }}
-            >
-              <div className="demo-logo" />
+          LOGO
+        </div>
+        <Menu
+          theme="dark"
+          mode="vertical"
+          defaultSelectedKeys={["1"]}
+          items={items}
+          style={{ borderRight: 0 }}
+        />
+      </Sider>
 
-              <Button onClick={() => handleLogout()} danger>
-                Logout
-              </Button>
-            </Header>
-          </div>
-          <Layout>
-            <Content
-              style={{
-                padding: "24px",
-                background: "#f0f2f5 ",
-              }}
-            >
-              <div
-                style={{
-                  height: "100%",
-                  padding: "24px",
-                  margin: "10px",
-                  borderRadius: "14px",
-                  background: "#e3e3e8ff ",
-                  boxShadow: "0 1px 2px 0 rgba(0, 0, 0, 0.05)",
-                }}
-              >
-                <Outlet />
-              </div>
-            </Content>
-          </Layout>
-        </Layout>
+      <Layout
+        style={{
+          marginLeft: collapsed ? 0 : 200,
+          transition: "margin-left 0.2s",
+        }}
+        className="main-layout"
+      >
+        <Header
+          style={{
+            padding: "0  16px",
+            background: "#fff",
+            margin: "10px 16px 0 16px",
+            display: "flex",
+            alignItems: "center",
+            borderRadius: "8px",
+            justifyContent: "space-between",
+            boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
+            position: "sticky",
+            top: 0,
+            zIndex: 100,
+          }}
+        >
+          <div style={{ flex: 1 }} />
+
+          <Button onClick={handleLogout} danger>
+            Logout
+          </Button>
+        </Header>
+
+        <Content
+          style={{
+            margin: "24px 16px",
+            padding: 24,
+            minHeight: 280,
+            background: "#ffffff",
+            borderRadius: "8px",
+            overflow: "auto",
+          }}
+        >
+          <Outlet />
+        </Content>
       </Layout>
-    </div>
+    </Layout>
   );
 };

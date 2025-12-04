@@ -11,52 +11,40 @@ import { PublicRoute } from "../components/PublicRoute";
 
 export const router = createBrowserRouter([
   {
-    path: "/",
-    element: (
-      <PublicRoute>
-        <Root />
-      </PublicRoute>
-    ),
+    path: "",
+    element: <Root />,
     children: [
+      {
+        path: "/login",
+        element: <Login />,
+      },
       {
         path: "/signup",
         element: <SignUp />,
       },
       {
-        path: "/login",
-        element: <Login />,
-      },
-    ],
-  },
-  {
-    path: "/admin",
-    element: (
-      <RequireAdmin>
-        <AdminLayout />
-      </RequireAdmin>
-    ),
-    children: [
-      {
-        path: "",
-        element: <AdminDashboard />,
+        path: "/admin",
+        element: <AdminLayout />,
+        children: [
+          {
+            path: "admins",
+            element: <ViewAdmins />,
+          },
+          {
+            path: "products",
+            element: <ViewProducts />,
+          },
+        ],
       },
       {
-        path: "admins",
-        element: <ViewAdmins />,
-      },
-      {
-        path: "products",
-        element: <ViewProducts />,
-      },
-    ],
-  },
-  {
-    path: "/home",
-    element: <UserDashboardLayout />,
-    children: [
-      {
-        path: "landing",
-        element: <UserDashboard />,
+        path: "/home",
+        element: <UserDashboardLayout />,
+        children: [
+          {
+            path: "landing",
+            element: <UserDashboard />,
+          },
+        ],
       },
     ],
   },

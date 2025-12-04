@@ -44,7 +44,7 @@ export class AuthService {
       password: hashed,
       role: "USER",
     });
-
+    
     return {
       user: {
         id: user._id,

@@ -15,9 +15,9 @@ const SignUp = () => {
         email: values.email,
         password: values.password,
       };
-      const res = await createUser.mutate(newUser);
+      const res = await createUser.mutateAsync(newUser);
       console.log(res);
-      navigate("/signup");
+      navigate("/login");
     } catch (err: any) {
       if (err.response?.data?.message === "Email already used") {
         openNotification("error", "Signup Failed", "Email already in use");

@@ -17,3 +17,24 @@ export type User = {
   createdAt?: Date;
   updatedAt?: Date;
 };
+
+export type PublicRouteProp = {
+  children: React.ReactNode;
+};
+
+export type Value = {
+  isModalOpen: boolean;
+  isLoading: boolean;
+  isEdit: boolean;
+  total: number;
+};
+
+export type Admin = {
+  _id: string;
+  email: string;
+  password: string;
+  newPassword: string;
+  name: string;
+  createdAt?: Date;
+  updatedAt?: Date;
+};

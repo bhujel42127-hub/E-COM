@@ -3,7 +3,7 @@ import { authService } from "../services/auth.service.ts";
 
 export async function signup(req: Request, res: Response) {
   try {
-    const { name, email, password, bio } = req.body;
+    const { name, email, password} = req.body;
     const { user } = await authService.signup(name, email, password);
 
     res.json({ message: "Signup success", user });
