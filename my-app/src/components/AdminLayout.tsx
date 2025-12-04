@@ -57,11 +57,7 @@ export const AdminLayout = () => {
       <Sider
         breakpoint="lg"
         collapsedWidth="0"
-        onBreakpoint={(broken) => {
-          console.log("Breakpoint triggered:", broken);
-        }}
-        onCollapse={(collapsed, type) => {
-          console.log("Collapsed:", collapsed, type);
+        onCollapse={(collapsed) => {
           setCollapsed(collapsed);
         }}
         style={{
@@ -73,12 +69,11 @@ export const AdminLayout = () => {
           bottom: 0,
           background: "#001529",
         }}
-        className="desktop-sider"
       >
         <div
           style={{
-            height: "32px",
-            margin: "16px",
+            height: "72px",
+            margin: "16px 36px 16px 36px",
             background: "rgba(255, 255, 255, 0.2)",
             borderRadius: "6px",
             display: "flex",
@@ -87,9 +82,7 @@ export const AdminLayout = () => {
             color: "#fff",
             fontWeight: "bold",
           }}
-        >
-          LOGO
-        </div>
+        ></div>
         <Menu
           theme="dark"
           mode="vertical"
