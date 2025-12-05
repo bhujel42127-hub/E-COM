@@ -37,12 +37,12 @@ export const router = createBrowserRouter([
         ],
       },
       {
-        path: "/home",
-        element: <UserDashboardLayout />,
+        path: "",
+        element: <UserDashboard />,
         children: [
           {
-            path: "landing",
-            element: <UserDashboard />,
+            path: "/home",
+            element: <UserDashboardLayout />,
           },
         ],
       },

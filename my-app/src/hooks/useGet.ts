@@ -11,6 +11,6 @@ export function useUser() {
 export function useAdmin() {
   return useQuery({
     queryKey: ["admin"],
-    queryFn: () => fetcher("/admin/getAdmins"),
+    queryFn: () => fetcher("/admins"),
   });
 }

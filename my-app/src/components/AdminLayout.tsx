@@ -99,13 +99,12 @@ export const AdminLayout = () => {
         }}
         className="main-layout"
       >
-        <Header
+        <Header 
           style={{
             padding: "0  16px",
             background: "#fff",
             margin: "10px 16px 0 16px",
-            display: "flex",
-            alignItems: "center",
+       alignItems: "center",
             borderRadius: "8px",
             justifyContent: "space-between",
             boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",

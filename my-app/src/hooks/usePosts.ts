@@ -14,7 +14,7 @@ export function useCreateUser() {
 }
 export function useCreateAdmin() {
   return useMutation({
-    mutationFn: (data: Admin) => mutator("POST", "/admin/createAdmin", data),
+    mutationFn: (data: Admin) => mutator("POST", "/admins", data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["admin"] });
       console.log("AFTER CREATE ADMIN MUTATION FUNCTION SUCCESS!!");
@@ -32,8 +32,7 @@ export function useLogin() {
 }
 export function useUpdateAdmin() {
   return useMutation({
-    mutationFn: (data: Admin) =>
-      mutator("PUT", `admin/updateAdmin/${data._id}`, data),
+    mutationFn: (data: Admin) => mutator("PUT", `admins/${data._id}`, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["admin"] });
       console.log("AFTER UPDATE ADMIN MUTATION FUNCTION SUCCESS!!");
@@ -42,8 +41,16 @@ export function useUpdateAdmin() {
 }
 export function useDeleteAdmin() {
   return useMutation({
-    mutationFn: (data: string) =>
-      mutator("DELETE", `admin/deleteAdmin/${data}`),
+    mutationFn: (data: string) => mutator("DELETE", `admins/${data}`),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["admin"] });
+      console.log("AFTER DELETE ADMIN MUTATION FUNCTION SUCCESS!!");
+    },
+  });
+}
+export function use() {
+  return useMutation({
+    mutationFn: (data: string) => mutator("DELETE", `admins/${data}`),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["admin"] });
       console.log("AFTER DELETE ADMIN MUTATION FUNCTION SUCCESS!!");

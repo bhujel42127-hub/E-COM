@@ -82,19 +82,15 @@ export const ViewAdmins = () => {
   };
 
   const fetchAdmin = async () => {
-    const res = await fetcher("/admin/getAdmins");
+    const res = await fetcher("/admins");
 
     setAdmin(res.admins);
     console.log("Admins: ", res.admins);
   };
 
-  useEffect(() => {
-    // console.log("is loading:", isLoading);
-    // console.log("Admin data: ", data?.admins);
-    // console.log("Getting admin data error: ", error);
-    // console.log("Getting admin data success: ", isSuccess);
-    fetchAdmin();
-  }, []);
+  // useEffect(() => {
+  //   fetchAdmin();
+  // }, []);
 
   const handleCancel = () => {
     form.resetFields();
@@ -119,7 +115,7 @@ export const ViewAdmins = () => {
       console.log("Adding admin...");
       await createAdmin.mutateAsync(values);
       // await mutator("POST", `admin/createAdmin/`, values);
-      await fetchAdmin();
+      // await fetchAdmin();
       form.resetFields();
       resetValue();
       openNotification("success", "Admin Added", `Admin added`);
