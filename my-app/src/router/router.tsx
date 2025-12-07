@@ -2,12 +2,9 @@ import { createBrowserRouter } from "react-router-dom";
 import { AdminLayout } from "../components/AdminLayout";
 import { ViewAdmins } from "../pages/ViewAdmins";
 import { ViewProducts } from "../pages/Products";
-import { AdminDashboard } from "../pages/AdminDashboard";
-import { PublicLayout } from "../components/PublicLayout";
 import { UserDashboard } from "../pages/UserDashboard";
 import { UserDashboardLayout } from "../components/UserDashboardLayout";
-import { Login, RequireAdmin, Root, SignUp } from "./imports";
-import { PublicRoute } from "../components/PublicRoute";
+import { Login, Root, SignUp } from "./imports";
 
 export const router = createBrowserRouter([
   {

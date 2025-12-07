@@ -1,5 +1,5 @@
 import { Button, Form, Input, Modal, Space, type FormProps } from "antd";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Table } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { openNotification } from "../lib/openNotification";

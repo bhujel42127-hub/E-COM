@@ -60,6 +60,7 @@ export class AuthService {
   }
 
   async login(email: string, password: string) {
+    console.log("In login auth service")
     const user = await User.findOne({ email });
     if (!user) throw new Error("User not found");
 

@@ -11,12 +11,6 @@ export default {
         secondaryDark: "#A40F2D",
         secondaryLight: "#EC2D53",
       },
-      container: {
-        padding: {
-          DEFAULT: '.625rem',
-          '2xl': '5rem',
-        },
-      },
       backgroundImage: {
         'btnGradient': 'linear-gradient(180deg, #9AC23B 0%, #C6AD2E 100%)',
         'btnGradientHover': 'linear-gradient(180deg, #C6AD2E 0%, #9AC23B 100%)',

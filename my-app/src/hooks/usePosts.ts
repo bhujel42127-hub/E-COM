@@ -48,12 +48,12 @@ export function useDeleteAdmin() {
     },
   });
 }
-export function use() {
+export function useGetAdmins() {
   return useMutation({
-    mutationFn: (data: string) => mutator("DELETE", `admins/${data}`),
+    mutationFn: () => mutator("GET", `admins/`),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["admin"] });
-      console.log("AFTER DELETE ADMIN MUTATION FUNCTION SUCCESS!!");
+      console.log("AFTER FETCHING ADMIN MUTATION FUNCTION SUCCESS!!");
     },
   });
 }
