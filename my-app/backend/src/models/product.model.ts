@@ -7,6 +7,7 @@ const productSchema = new mongoose.Schema(
     size: String,
     seller: String,
     brand: String,
+    color: String,
   },
   { timestamps: true }
 );

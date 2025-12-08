@@ -35,6 +35,13 @@ export type Admin = {
   password: string;
   newPassword: string;
   name: string;
-  createdAt?: Date;
-  updatedAt?: Date;
+};
+export type Product = {
+  _id: String;
+  name: String;
+  price: Number;
+  size: String;
+  seller: String;
+  brand: String;
+  color: String;
 };

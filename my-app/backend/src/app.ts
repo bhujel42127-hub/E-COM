@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import authRoutes from "./routes/auth.routes";
 import adminRoutes from "./routes/admin.routes";
+import productRoutes from "./routes/product.routes";
 import "dotenv/config";
 
 // console.log(process.env.PORT);
@@ -20,6 +21,7 @@ app.use((req, res, next) => {
   next();
 });
 app.use("/auth", authRoutes);
-app.use("/admin", adminRoutes);
+app.use("/admins", adminRoutes);
+app.use("/products", productRoutes);
 
 export default app;

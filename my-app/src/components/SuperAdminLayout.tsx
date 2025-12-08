@@ -21,6 +21,13 @@ export const SuperAdminLayout = () => {
     },
     {
       key: "2",
+      label: "View Admins",
+      onClick: () => {
+        navigate("/admin/admins");
+      },
+    },
+    {
+      key: "3",
       label: "Products",
       onClick: () => {
         navigate("/admin/products");
@@ -92,12 +99,12 @@ export const SuperAdminLayout = () => {
         }}
         className="main-layout"
       >
-        <Header
+        <Header 
           style={{
             padding: "0  16px",
             background: "#fff",
             margin: "10px 16px 0 16px",
-            alignItems: "center",
+       alignItems: "center",
             borderRadius: "8px",
             justifyContent: "space-between",
             boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",

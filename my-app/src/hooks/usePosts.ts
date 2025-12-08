@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import { mutator } from "../services/mutator";
-import type { Admin, User } from "../Props";
+import type { Product, User } from "../Props";
 import { queryClient } from "../lib/queryClient";
 
 export function useCreateUser() {
@@ -12,48 +12,12 @@ export function useCreateUser() {
     },
   });
 }
-export function useCreateAdmin() {
-  return useMutation({
-    mutationFn: (data: Admin) => mutator("POST", "/admins", data),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["admin"] });
-      console.log("AFTER CREATE ADMIN MUTATION FUNCTION SUCCESS!!");
-    },
-  });
-}
 
 export function useLogin() {
   return useMutation({
     mutationFn: (data) => mutator("POST", "/auth/login", data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["user"] });
-    },
-  });
-}
-export function useUpdateAdmin() {
-  return useMutation({
-    mutationFn: (data: Admin) => mutator("PUT", `admins/${data._id}`, data),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["admin"] });
-      console.log("AFTER UPDATE ADMIN MUTATION FUNCTION SUCCESS!!");
-    },
-  });
-}
-export function useDeleteAdmin() {
-  return useMutation({
-    mutationFn: (data: string) => mutator("DELETE", `admins/${data}`),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["admin"] });
-      console.log("AFTER DELETE ADMIN MUTATION FUNCTION SUCCESS!!");
-    },
-  });
-}
-export function useGetAdmins() {
-  return useMutation({
-    mutationFn: () => mutator("GET", `admins/`),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["admin"] });
-      console.log("AFTER FETCHING ADMIN MUTATION FUNCTION SUCCESS!!");
     },
   });
 }

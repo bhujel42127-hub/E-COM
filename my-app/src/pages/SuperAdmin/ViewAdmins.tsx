@@ -2,15 +2,14 @@ import { Button, Form, Input, Modal, Space, type FormProps } from "antd";
 import { useState } from "react";
 import { Table } from "antd";
 import type { ColumnsType } from "antd/es/table";
-import { openNotification } from "../lib/openNotification";
-import type { Admin, Value } from "../Props";
-import { useAdmin } from "../hooks/useGet";
-import { fetcher } from "../services/fetcher";
+import { openNotification } from "../../lib/openNotification";
+import type { Admin, Value } from "../../Props";
+import { useGetAdmin } from "../../hooks/useGet";
 import {
   useCreateAdmin,
   useDeleteAdmin,
   useUpdateAdmin,
-} from "../hooks/usePosts";
+} from "../../hooks/adminHooks";
 
 export const ViewAdmins = () => {
   const [value, setValue] = useState<Value>({
@@ -19,10 +18,9 @@ export const ViewAdmins = () => {
     isEdit: false,
     total: 0,
   });
-  const [admin, setAdmin] = useState<Admin[]>([]);
   const [page, setPage] = useState(1);
   const [form] = Form.useForm();
-  const { isLoading } = useAdmin();
+  const { data, isLoading } = useGetAdmin();
   const updateAdmin = useUpdateAdmin();
   const deleteAdmin = useDeleteAdmin();
   const createAdmin = useCreateAdmin();
@@ -81,12 +79,13 @@ export const ViewAdmins = () => {
     }));
   };
 
-  const fetchAdmin = async () => {
-    const res = await fetcher("/admins");
+  // const fetchAdmin = async () => {
+  //   const res = await fetcher("/admins");
+  //   console.log("fetching admin!", res);
 
-    setAdmin(res.admins);
-    console.log("Admins: ", res.admins);
-  };
+  //   setAdmin(res.admins);
+  //   // console.log("Admins: ", res.admins);
+  // };
 
   // useEffect(() => {
   //   fetchAdmin();
@@ -103,19 +102,15 @@ export const ViewAdmins = () => {
       try {
         console.log("Admin edit try catch");
         await updateAdmin.mutateAsync(values);
-        await fetchAdmin();
         resetValue();
         console.log("After Admin edit try catch");
-
-        openNotification("success", "Product Edit", `Product edited`);
+        openNotification("success", "Admin Edited", "");
       } catch (error) {
         console.log("Error while editing admin: ", error);
       }
     } else {
       console.log("Adding admin...");
       await createAdmin.mutateAsync(values);
-      // await mutator("POST", `admin/createAdmin/`, values);
-      // await fetchAdmin();
       form.resetFields();
       resetValue();
       openNotification("success", "Admin Added", `Admin added`);
@@ -128,20 +123,17 @@ export const ViewAdmins = () => {
     console.log("handle delete reached");
     try {
       await deleteAdmin.mutateAsync(id);
-      await fetchAdmin();
       resetValue();
-      // await mutator("DELETE", `admin/deleteAdmin/${id}`);
     } catch (error) {
       console.log("Admin deletion error: ", error);
     }
     openNotification("success", "Admin Deleted", `Admin deleted`);
-    console.log("reached");
   };
 
   const AdminTable = () => (
     <Table<Admin>
       rowKey={"_id"}
-      dataSource={admin}
+      dataSource={data?.admins}
       columns={columns}
       loading={isLoading}
       scroll={{ x: 800 }}
