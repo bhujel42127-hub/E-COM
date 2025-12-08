@@ -6,6 +6,7 @@ import {
   refresh,
   signup,
 } from "../controllers/auth.controller";
+import { requireUser } from "../middlewares/auth.middleware";
 
 const router = Router();
 
@@ -13,6 +14,6 @@ router.post("/login", login);
 router.post("/signup", signup);
 router.get("/getUser", getUser);
 router.post("/refresh", refresh);
-router.post("/logout", logout);
+router.post("/logout", requireUser, logout);
 
 export default router;

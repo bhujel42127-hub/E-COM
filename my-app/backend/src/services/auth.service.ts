@@ -3,7 +3,6 @@ import bcrypt from "bcryptjs";
 import jwt, { type JwtPayload } from "jsonwebtoken";
 import { v4 as uuidv4 } from "uuid";
 import { RefreshToken } from "../models/refreshToken.model.ts";
-import { decode } from "punycode";
 
 export class AuthService {
   private generateAccessToken(userId: String, email: String, role: String) {
@@ -16,12 +15,25 @@ export class AuthService {
         role,
       },
       JWT_SECRET,
-      { expiresIn: "20s" }
+      { expiresIn: "10s" }
     );
   }
+  // private generateNewAccessToken(userId: String, email: String, role: String) {
+  //   const JWT_SECRET = process.env.JWT_SECRET as string;
+
+  //   return jwt.sign(
+  //     {
+  //       userId,
+  //       email,
+  //       role,
+  //     },
+  //     JWT_SECRET,
+  //     { expiresIn: "20s" }
+  //   );
+  // }
   private async generateRefreshToken(userId: String) {
     const token = uuidv4();
-    const expiresAt = new Date(Date.now() + 20 * 60 * 1000);
+    const expiresAt = new Date(Date.now() + 20 * 1000);
 
     await RefreshToken.create({
       token,
@@ -44,7 +56,7 @@ export class AuthService {
       password: hashed,
       role: "USER",
     });
-    
+
     return {
       user: {
         id: user._id,
@@ -60,7 +72,7 @@ export class AuthService {
   }
 
   async login(email: string, password: string) {
-    console.log("In login auth service")
+    console.log("In login auth service");
     const user = await User.findOne({ email });
     if (!user) throw new Error("User not found");
 
@@ -97,12 +109,14 @@ export class AuthService {
     }
   }
   async refresh(token: string) {
+    console.log("In refresh service");
     const storedToken = await RefreshToken.findOne({
       token: token,
       expiresAt: { $gt: new Date() }, // expired navako refresh token
     });
 
     if (!storedToken) {
+      await RefreshToken.deleteOne({ token: token });
       throw new Error("Invalid or expired refresh token");
     }
 
@@ -114,8 +128,9 @@ export class AuthService {
       user.email,
       user.role
     );
+    console.log("New access token:", accessToken);
 
-    return { accessToken };
+    return { accessToken, storedToken };
   }
 
   async logout(token: string) {

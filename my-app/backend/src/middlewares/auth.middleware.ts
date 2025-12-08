@@ -8,22 +8,14 @@ interface JwtPayload {
 }
 
 export function requireUser(req: Request, res: Response, next: NextFunction) {
-  const JWT_SECRET = process.env.JWT_SECRET as string;
-  const token = req.headers.accessToken;
-
-  // console.log("JWT:", JWT_SECRET);
-
-  // console.log("Token: ", token  );
-
-  if (!token) {
-    return res.status(401).json({ message: "Authentication required" });
-  }
-  // console.log("Before token decoding ");
-
   try {
-    // console.log("reached");
-    const decoded = jwt.verify(token, JWT_SECRET) as JwtPayload;
-    // console.log("Token decoded ");
+    const JWT_SECRET = process.env.JWT_SECRET as string;
+    const authHeader = req.headers.authorization;
+
+    const token = authHeader?.split(" ")[1];
+
+    console.log("Token: ", token);
+    const decoded = jwt.verify(token as string, JWT_SECRET) as JwtPayload;
 
     (req as any).userId = decoded.userId;
     (req as any).email = decoded.email;
@@ -34,6 +26,6 @@ export function requireUser(req: Request, res: Response, next: NextFunction) {
   }
 }
 
-export function requireAdmin(req: Request, res: Response, next: NextFunction){
-  const token = 
-}
+// export function requireAdmin(req: Request, res: Response, next: NextFunction){
+//   const token =
+// }

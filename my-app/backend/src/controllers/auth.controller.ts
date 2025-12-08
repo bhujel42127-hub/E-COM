@@ -3,7 +3,7 @@ import { authService } from "../services/auth.service.ts";
 
 export async function signup(req: Request, res: Response) {
   try {
-    const { name, email, password} = req.body;
+    const { name, email, password } = req.body;
     const { user } = await authService.signup(name, email, password);
 
     res.json({ message: "Signup success", user });
@@ -28,9 +28,10 @@ export async function login(req: Request, res: Response) {
 }
 
 export async function refresh(req: Request, res: Response) {
-  console.log("In refresh: ", req);
   try {
+    console.log("Request body: ", req.body);
     const { token } = req.body;
+    console.log("Refresh token: ", token);
 
     if (!token) {
       return res.status(401).json({ message: "Refresh token required" });
@@ -38,9 +39,7 @@ export async function refresh(req: Request, res: Response) {
 
     const { accessToken } = await authService.refresh(token);
 
-    localStorage.setItem("accessToken", accessToken);
-
-    res.json({ message: "Token refreshed" });
+    res.json({ message: "Token refreshed", accessToken, token });
   } catch (err: any) {
     res.status(401).json({ message: err.message });
   }
@@ -91,4 +90,3 @@ export async function logout(req: Request, res: Response) {
     res.status(400).json({ message: err.message });
   }
 }
-
