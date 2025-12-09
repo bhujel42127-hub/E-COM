@@ -1,6 +1,6 @@
 import { Layout, Menu, Row, Col, Input, Badge, Card } from "antd";
 import { Header } from "antd/es/layout/layout";
-import { AutoPlaySlider } from "./AutoPlaySlider/AutoPlaySlider";
+import { AutoPlaySlider } from "./Swiper/AutoPlaySlider";
 import {
   SearchOutlined,
   HeartOutlined,
@@ -9,28 +9,29 @@ import {
   CloseOutlined,
 } from "@ant-design/icons";
 import { ProductCard } from "./ProductCard";
+import { Link } from "react-router-dom";
 
 export const UserDashboardLayout = () => {
   const headerItems = [
     {
       key: "1",
-      label: "Men",
+      label: <Link to="/men">Men</Link>
     },
     {
       key: "2",
-      label: "Women",
+      label: <Link to="/women">Women</Link>,
     },
     {
       key: "3",
-      label: "Kids",
+      label: <Link to="/kids">Kids</Link>,
     },
     {
       key: "4",
-      label: "Shop",
+      label: <Link to="/shop">Shop</Link>,
     },
     {
       key: "5",
-      label: "Contact us",
+      label: <Link to="/contactUs">Contact Us</Link>,
     },
   ];
 
@@ -71,7 +72,6 @@ export const UserDashboardLayout = () => {
             <Menu
               mode="horizontal"
               items={headerItems}
-              defaultSelectedKeys={["1"]}
               style={{ border: "none", lineHeight: "70px" }}
             />
           </div>

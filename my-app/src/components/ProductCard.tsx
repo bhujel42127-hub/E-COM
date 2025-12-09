@@ -90,7 +90,7 @@ export const ProductCard = () => {
               <img
                 alt={product.title}
                 src={product.image}
-                style={{ height: "300px", objectFit: "cover" }}
+                style={{ minHeight: "100px", objectFit: "cover" }}
               />
             }
           >
