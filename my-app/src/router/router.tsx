@@ -4,8 +4,6 @@ import { ViewAdmins } from "../pages/SuperAdmin/ViewAdmins";
 import { UserDashboard } from "../pages/UserDashboard";
 import { UserDashboardLayout } from "../components/UserPageLayout/UserDashboardLayout";
 import { Login, Root, SignUp } from "./imports";
-import { AdminViewProduct } from "../pages/SuperAdmin/SuperAdminViewProduct";
-import { ProductDetails } from "../components/UserPageLayout/ProductDetails";
 
 export const router = createBrowserRouter([
   {
@@ -43,8 +41,27 @@ export const router = createBrowserRouter([
             element: <UserDashboardLayout />,
           },
           {
-            path: "/productDetails",
-            element: <ProductDetails />,
+            path: "/men",
+            element: <Men />,
+          },
+          {
+            path: "/women",
+            element: <Women />,
+          },
+
+          {
+            path: "/kids",
+            element: <Kids />,
+          },
+
+          {
+            path: "/shop",
+            element: <Shop />,
+          },
+
+          {
+            path: "/contactUs",
+            element: <ContactUs />,
           },
         ],
       },
