@@ -29,17 +29,15 @@ export async function login(req: Request, res: Response) {
 
 export async function refresh(req: Request, res: Response) {
   try {
-    console.log("Request body: ", req.body);
-    const { token } = req.body;
-    console.log("Refresh token: ", token);
+    const { refreshToken } = req.body;
 
-    if (!token) {
+    if (!refreshToken) {
       return res.status(401).json({ message: "Refresh token required" });
     }
 
-    const { accessToken } = await authService.refresh(token);
+    const { accessToken } = await authService.refresh(refreshToken);
 
-    res.json({ message: "Token refreshed", accessToken, token });
+    res.json({ message: "Token refreshed", accessToken, refreshToken });
   } catch (err: any) {
     res.status(401).json({ message: err.message });
   }

@@ -15,7 +15,7 @@ export class AuthService {
         role,
       },
       JWT_SECRET,
-      { expiresIn: "10s" }
+      { expiresIn: "15m" }
     );
   }
   // private generateNewAccessToken(userId: String, email: String, role: String) {
@@ -33,7 +33,7 @@ export class AuthService {
   // }
   private async generateRefreshToken(userId: String) {
     const token = uuidv4();
-    const expiresAt = new Date(Date.now() + 20 * 1000);
+    const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
 
     await RefreshToken.create({
       token,
@@ -109,7 +109,6 @@ export class AuthService {
     }
   }
   async refresh(token: string) {
-    console.log("In refresh service");
     const storedToken = await RefreshToken.findOne({
       token: token,
       expiresAt: { $gt: new Date() }, // expired navako refresh token

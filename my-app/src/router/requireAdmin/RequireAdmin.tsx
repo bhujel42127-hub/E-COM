@@ -6,7 +6,6 @@ import { useUser } from "../../hooks/useGet";
 
 const RequireAdmin = () => {
   const user = useUser();
-  w;
   console.log("User data: ", user);
   if (user.status === "pending") <SuspenseLoading />;
   else if (user.data?.role === ADMIN) return <AdminLayout />;

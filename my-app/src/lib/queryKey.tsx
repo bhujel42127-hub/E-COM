@@ -1,6 +1,7 @@
 export const queryKey = {
-  user: {
+  auth: {
     admin: "admin",
+    user: "user",
   },
   admin: {
     product: "product",

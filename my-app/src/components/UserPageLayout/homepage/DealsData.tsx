@@ -1,6 +1,6 @@
 import { Card, Col } from "antd";
 
-export const Deals = () => {
+export const DealsData = () => {
   const data = [
     {
       id: 1,

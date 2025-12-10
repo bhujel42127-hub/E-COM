@@ -2,9 +2,10 @@ import { createBrowserRouter } from "react-router-dom";
 import { SuperAdminLayout } from "../components/SuperAdminLayout";
 import { ViewAdmins } from "../pages/SuperAdmin/ViewAdmins";
 import { UserDashboard } from "../pages/UserDashboard";
-import { UserDashboardLayout } from "../components/UserDashboardLayout";
+import { UserDashboardLayout } from "../components/UserPageLayout/UserDashboardLayout";
 import { Login, Root, SignUp } from "./imports";
 import { AdminViewProduct } from "../pages/SuperAdmin/SuperAdminViewProduct";
+import { ProductDetails } from "../components/UserPageLayout/ProductDetails";
 
 export const router = createBrowserRouter([
   {
@@ -40,6 +41,10 @@ export const router = createBrowserRouter([
           {
             path: "/home",
             element: <UserDashboardLayout />,
+          },
+          {
+            path: "/productDetails",
+            element: <ProductDetails />,
           },
         ],
       },

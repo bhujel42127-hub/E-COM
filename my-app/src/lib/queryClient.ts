@@ -4,7 +4,7 @@ import { handleError } from "../utlis/handleError";
 export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      refetchOnWindowFocus: false,
+      refetchOnWindowFocus: true,
       staleTime: 1000 * 60 * 5,
       retry: (failureCount, error: any) => {
         if (error?.response?.status === 400) {

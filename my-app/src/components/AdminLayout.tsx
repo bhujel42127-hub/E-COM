@@ -3,6 +3,7 @@ import { Button, Layout, Menu, Drawer } from "antd";
 import { Outlet, useNavigate } from "react-router-dom";
 import { HomeOutlined } from "@ant-design/icons";
 import { axiosInstance } from "../api/axiosInstance";
+import { queryClient } from "../lib/queryClient";
 
 const { Header, Content, Sider } = Layout;
 
@@ -37,6 +38,7 @@ export const SuperAdminLayout = () => {
         token: refreshToken,
       });
       console.log("After logout post");
+      queryClient.clear();
       localStorage.removeItem("accessToken");
       localStorage.removeItem("refreshToken");
       navigate("/login");

@@ -36,8 +36,7 @@ export async function getProducts(req: Request, res: Response) {
     Number(limit),
     skip
   );
-  console.log("Auth service all products:", products.searchedItem);
-  res.json({
+     res.json({
     searchedProducts: products.searchedItem,
     products: products.allProducts,
     page,

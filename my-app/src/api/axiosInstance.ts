@@ -1,6 +1,7 @@
 import axios from "axios";
 import { getAccessToken, getRefreshToken } from "../utlis/handleToken";
 import performTokenRefresh from "./performTokenRefresh";
+import { queryClient } from "../lib/queryClient";
 
 export const axiosInstance = axios.create({
   baseURL: "http://localhost:3000",
@@ -45,7 +46,6 @@ axiosInstance.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
     const refreshToken = getRefreshToken();
-    debugger;
     // Check if it's a 401 error and we haven't retried yet
     if (
       error.response?.status === 401 &&
@@ -70,32 +70,26 @@ axiosInstance.interceptors.response.use(
       isRefreshing = true;
 
       try {
-        // Perform token refresh
         const refreshed = await performTokenRefresh(refreshToken);
+
+        // if (!refreshed) throw new Error("Token refresh failed!!");
 
         if (refreshed) {
           const newAccessToken = getAccessToken();
-          console.log("Access token refreshed11:", newAccessToken);
-          // Update the original request with new token
+
           originalRequest.headers["Authorization"] = `Bearer ${newAccessToken}`;
-          console.log("Original request:", originalRequest["Authorization"]);
 
           // Process queued requests with new token
           processQueue(null, newAccessToken);
 
-          // Return the retried original request
           return axiosInstance(originalRequest);
         } else {
-          // Refresh failed
           throw new Error("Token refresh failed");
         }
       } catch (refreshError) {
         console.error("Token refresh error:", refreshError);
-
-        // Process queue with error
         processQueue(refreshError, null);
-
-        // Clear tokens and redirect
+        queryClient.clear();
         localStorage.removeItem("refreshToken");
         localStorage.removeItem("accessToken");
         window.location.href = "/login";
