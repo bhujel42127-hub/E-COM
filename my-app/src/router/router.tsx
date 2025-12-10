@@ -6,6 +6,7 @@ import { UserDashboardLayout } from "../components/UserPageLayout/UserDashboardL
 import { Login, Root, SignUp } from "./imports";
 import { AdminViewProduct } from "../pages/SuperAdmin/SuperAdminViewProduct";
 import { ProductDetails } from "../components/UserPageLayout/ProductDetails";
+import { AddProduct } from "../pages/SuperAdmin/AddProducts";
 
 export const router = createBrowserRouter([
   {
@@ -31,6 +32,10 @@ export const router = createBrowserRouter([
           {
             path: "products",
             element: <AdminViewProduct />,
+          },
+          {
+            path: "products/add",
+            element: <AddProduct />,
           },
         ],
       },

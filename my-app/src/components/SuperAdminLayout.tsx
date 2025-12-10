@@ -99,12 +99,12 @@ export const SuperAdminLayout = () => {
         }}
         className="main-layout"
       >
-        <Header 
+        <Header
           style={{
             padding: "0  16px",
             background: "#fff",
             margin: "10px 16px 0 16px",
-       alignItems: "center",
+            alignItems: "center",
             borderRadius: "8px",
             justifyContent: "space-between",
             boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
@@ -120,16 +120,7 @@ export const SuperAdminLayout = () => {
           </Button>
         </Header>
 
-        <Content
-          style={{
-            margin: "24px 16px",
-            padding: 24,
-            minHeight: 280,
-            background: "#ffffff",
-            borderRadius: "8px",
-            overflow: "auto",
-          }}
-        >
+        <Content>
           <Outlet />
         </Content>
       </Layout>
