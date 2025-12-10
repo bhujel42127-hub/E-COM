@@ -4,6 +4,12 @@ import { ViewAdmins } from "../pages/SuperAdmin/ViewAdmins";
 import { UserDashboard } from "../pages/UserDashboard";
 import { UserDashboardLayout } from "../components/UserPageLayout/UserDashboardLayout";
 import { Login, Root, SignUp } from "./imports";
+import { AdminViewProduct } from "../pages/SuperAdmin/SuperAdminViewProduct";
+import { Men } from "../pages/Men";
+import { Women } from "../pages/Women";
+import { Kids } from "../pages/Kids";
+import { Shop } from "../pages/Shop";
+import { ContactUs } from "../pages/ContactUs";
 
 export const router = createBrowserRouter([
   {
