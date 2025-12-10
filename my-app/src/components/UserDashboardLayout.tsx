@@ -1,6 +1,5 @@
 import { Layout, Menu, Row, Col, Input, Badge, Card } from "antd";
 import { Header } from "antd/es/layout/layout";
-import { AutoPlaySlider } from "./Swiper/AutoPlaySlider";
 import {
   SearchOutlined,
   HeartOutlined,
@@ -10,12 +9,13 @@ import {
 } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import { ProductCard } from "./UserPageLayout/homepage/ProductCard";
+import { AutoPlaySlider } from "./Swiper/AutoPlaySlider";
 
 export const UserDashboardLayout = () => {
   const headerItems = [
     {
       key: "1",
-      label: <Link to="/men">Men</Link>
+      label: <Link to="/men">Men</Link>,
     },
     {
       key: "2",
@@ -151,7 +151,12 @@ export const UserDashboardLayout = () => {
       <div className="w-full" style={{ padding: "50px 0" }}>
         <div
           className="container"
-          style={{ margin: "0 auto", padding: "0 50px", overflowX: "auto", scrollbarWidth:"none" }}
+          style={{
+            margin: "0 auto",
+            padding: "0 50px",
+            overflowX: "auto",
+            scrollbarWidth: "none",
+          }}
         >
           <h2
             style={{
@@ -166,207 +171,256 @@ export const UserDashboardLayout = () => {
         </div>
       </div>
       {/* Deals of the Day Section */}
-<div className="w-full" style={{ padding: "50px 0", backgroundColor: "#f5f5f5" }}>
-  <div className="container" style={{ margin: "0 auto", padding: "0 50px" }}>
-    <h2 style={{ fontSize: "32px", fontWeight: "bold", marginBottom: "30px" }}>
-      Deals of the Day
-    </h2>
-    <div
-      style={{
-        overflowX: "auto",
-        scrollbarWidth: "none",
-      }}
-    >
-      <Row gutter={[20, 20]} wrap={false} style={{ paddingBottom: "10px" }}>
-        {[
-          {
-            id: 1,
-            image: "https://images.unsplash.com/photo-1551028719-00167b16eac5?w=400&h=400&fit=crop",
-            logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Levi%27s_logo.svg/200px-Levi%27s_logo.svg.png",
-            title: "Best of Styles",
-            subtitle: "Under Rs.799",
-          },
-          {
-            id: 2,
-            image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&h=400&fit=crop",
-            logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Levi%27s_logo.svg/200px-Levi%27s_logo.svg.png",
-            title: "Best of Styles",
-            subtitle: "Under Rs.799",
-          },
-          {
-            id: 3,
-            image: "https://images.unsplash.com/photo-1583391733956-6c78276477e2?w=400&h=400&fit=crop",
-            logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Levi%27s_logo.svg/200px-Levi%27s_logo.svg.png",
-            title: "Best of Styles",
-            subtitle: "Under Rs.799",
-          },
-          {
-            id: 4,
-            image: "https://images.unsplash.com/photo-1551028719-00167b16eac5?w=400&h=400&fit=crop",
-            logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Levi%27s_logo.svg/200px-Levi%27s_logo.svg.png",
-            title: "Best of Styles",
-            subtitle: "Under Rs.799",
-          },
-        ].map((deal) => (
-          <Col key={deal.id} flex="0 0 300px">
-            <Card
-              hoverable
-              cover={
-                <img
-                  alt={deal.title}
-                  src={deal.image}
-                  style={{ height: "250px", objectFit: "cover" }}
-                />
-              }
-            >
-              <img
-                src={deal.logo}
-                alt="Brand"
-                style={{ height: "40px", marginBottom: "15px" }}
-              />
-              <h3 style={{ fontWeight: "bold", fontSize: "20px", marginBottom: "8px" }}>
-                {deal.title}
-              </h3>
-              <p style={{ color: "#666", fontSize: "16px" }}>{deal.subtitle}</p>
-            </Card>
-          </Col>
-        ))}
-      </Row>
-    </div>
-  </div>
-</div>
-
-{/* Trending Offers Section */}
-<div className="w-full" style={{ padding: "50px 0" }}>
-  <div className="container" style={{ margin: "0 auto", padding: "0 50px" }}>
-    <h2 style={{ fontSize: "32px", fontWeight: "bold", marginBottom: "30px" }}>
-      Trending Offers
-    </h2>
-    <Row gutter={[30, 30]}>
-      {[
-        {
-          id: 1,
-          image: "https://images.unsplash.com/photo-1490367532201-b9bc1dc483f6?w=600&h=400&fit=crop",
-          type: "image-left",
-        },
-        {
-          id: 2,
-          image: "https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=600&h=400&fit=crop",
-          type: "image-right",
-        },
-      ].map((offer, index) => (
-        <Col key={offer.id} xs={24} md={12}>
-          <Card
-            style={{ overflow: "hidden", borderRadius: "8px" }}
+      <div
+        className="w-full"
+        style={{ padding: "50px 0", backgroundColor: "#f5f5f5" }}
+      >
+        <div
+          className="container"
+          style={{ margin: "0 auto", padding: "0 50px" }}
+        >
+          <h2
+            style={{
+              fontSize: "32px",
+              fontWeight: "bold",
+              marginBottom: "30px",
+            }}
           >
-            <Row style={{ minHeight: "400px" }}>
-              {index === 0 ? (
-                <>
-                  <Col span={12}>
-                    <div
-                      style={{
-                        height: "100%",
-                        backgroundImage: `url(${offer.image})`,
-                        backgroundSize: "cover",
-                        backgroundPosition: "center",
-                      }}
-                    />
-                  </Col>
-                  <Col span={12}>
-                    <div
-                      style={{
-                        height: "100%",
-                        display: "flex",
-                        flexDirection: "column",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        padding: "40px",
-                        backgroundColor: "#fff",
-                      }}
-                    >
+            Deals of the Day
+          </h2>
+          <div
+            style={{
+              overflowX: "auto",
+              scrollbarWidth: "none",
+            }}
+          >
+            <Row
+              gutter={[20, 20]}
+              wrap={false}
+              style={{ paddingBottom: "10px" }}
+            >
+              {[
+                {
+                  id: 1,
+                  image:
+                    "https://images.unsplash.com/photo-1551028719-00167b16eac5?w=400&h=400&fit=crop",
+                  logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Levi%27s_logo.svg/200px-Levi%27s_logo.svg.png",
+                  title: "Best of Styles",
+                  subtitle: "Under Rs.799",
+                },
+                {
+                  id: 2,
+                  image:
+                    "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&h=400&fit=crop",
+                  logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Levi%27s_logo.svg/200px-Levi%27s_logo.svg.png",
+                  title: "Best of Styles",
+                  subtitle: "Under Rs.799",
+                },
+                {
+                  id: 3,
+                  image:
+                    "https://images.unsplash.com/photo-1583391733956-6c78276477e2?w=400&h=400&fit=crop",
+                  logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Levi%27s_logo.svg/200px-Levi%27s_logo.svg.png",
+                  title: "Best of Styles",
+                  subtitle: "Under Rs.799",
+                },
+                {
+                  id: 4,
+                  image:
+                    "https://images.unsplash.com/photo-1551028719-00167b16eac5?w=400&h=400&fit=crop",
+                  logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Levi%27s_logo.svg/200px-Levi%27s_logo.svg.png",
+                  title: "Best of Styles",
+                  subtitle: "Under Rs.799",
+                },
+              ].map((deal) => (
+                <Col key={deal.id} flex="0 0 300px">
+                  <Card
+                    hoverable
+                    cover={
                       <img
-                        src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Levi%27s_logo.svg/200px-Levi%27s_logo.svg.png"
-                        alt="Brand"
-                        style={{ height: "50px", marginBottom: "20px" }}
+                        alt={deal.title}
+                        src={deal.image}
+                        style={{ height: "250px", objectFit: "cover" }}
                       />
-                      <h3 style={{ fontSize: "32px", fontWeight: "bold", marginBottom: "20px" }}>
-                        Min 60% off
-                      </h3>
-                      <button
-                        style={{
-                          padding: "10px 30px",
-                          border: "2px solid #000",
-                          backgroundColor: "transparent",
-                          cursor: "pointer",
-                          fontSize: "16px",
-                          borderRadius: "4px",
-                        }}
-                      >
-                        Explore
-                      </button>
-                    </div>
-                  </Col>
-                </>
-              ) : (
-                <>
-                  <Col span={12}>
-                    <div
+                    }
+                  >
+                    <img
+                      src={deal.logo}
+                      alt="Brand"
+                      style={{ height: "40px", marginBottom: "15px" }}
+                    />
+                    <h3
                       style={{
-                        height: "100%",
-                        display: "flex",
-                        flexDirection: "column",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        padding: "40px",
-                        backgroundColor: "#fff",
+                        fontWeight: "bold",
+                        fontSize: "20px",
+                        marginBottom: "8px",
                       }}
                     >
-                      <h3
-                        style={{
-                          fontSize: "48px",
-                          fontWeight: "bold",
-                          marginBottom: "20px",
-                          letterSpacing: "2px",
-                        }}
-                      >
-                        FOREVER 21
-                      </h3>
-                      <h4 style={{ fontSize: "32px", fontWeight: "bold", marginBottom: "20px" }}>
-                        Min 50% off
-                      </h4>
-                      <button
-                        style={{
-                          padding: "10px 30px",
-                          border: "2px solid #000",
-                          backgroundColor: "transparent",
-                          cursor: "pointer",
-                          fontSize: "16px",
-                          borderRadius: "4px",
-                        }}
-                      >
-                        Explore
-                      </button>
-                    </div>
-                  </Col>
-                  <Col span={12}>
-                    <div
-                      style={{
-                        height: "100%",
-                        backgroundImage: `url(${offer.image})`,
-                        backgroundSize: "cover",
-                        backgroundPosition: "center",
-                      }}
-                    />
-                  </Col>
-                </>
-              )}
+                      {deal.title}
+                    </h3>
+                    <p style={{ color: "#666", fontSize: "16px" }}>
+                      {deal.subtitle}
+                    </p>
+                  </Card>
+                </Col>
+              ))}
             </Row>
-          </Card>
-        </Col>
-      ))}
-    </Row>
-  </div>
-</div>
+          </div>
+        </div>
+      </div>
+
+      {/* Trending Offers Section */}
+      <div className="w-full" style={{ padding: "50px 0" }}>
+        <div
+          className="container"
+          style={{ margin: "0 auto", padding: "0 50px" }}
+        >
+          <h2
+            style={{
+              fontSize: "32px",
+              fontWeight: "bold",
+              marginBottom: "30px",
+            }}
+          >
+            Trending Offers
+          </h2>
+          <Row gutter={[30, 30]}>
+            {[
+              {
+                id: 1,
+                image:
+                  "https://images.unsplash.com/photo-1490367532201-b9bc1dc483f6?w=600&h=400&fit=crop",
+                type: "image-left",
+              },
+              {
+                id: 2,
+                image:
+                  "https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=600&h=400&fit=crop",
+                type: "image-right",
+              },
+            ].map((offer, index) => (
+              <Col key={offer.id} xs={24} md={12}>
+                <Card style={{ overflow: "hidden", borderRadius: "8px" }}>
+                  <Row style={{ minHeight: "400px" }}>
+                    {index === 0 ? (
+                      <>
+                        <Col span={12}>
+                          <div
+                            style={{
+                              height: "100%",
+                              backgroundImage: `url(${offer.image})`,
+                              backgroundSize: "cover",
+                              backgroundPosition: "center",
+                            }}
+                          />
+                        </Col>
+                        <Col span={12}>
+                          <div
+                            style={{
+                              height: "100%",
+                              display: "flex",
+                              flexDirection: "column",
+                              justifyContent: "center",
+                              alignItems: "center",
+                              padding: "40px",
+                              backgroundColor: "#fff",
+                            }}
+                          >
+                            <img
+                              src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Levi%27s_logo.svg/200px-Levi%27s_logo.svg.png"
+                              alt="Brand"
+                              style={{ height: "50px", marginBottom: "20px" }}
+                            />
+                            <h3
+                              style={{
+                                fontSize: "32px",
+                                fontWeight: "bold",
+                                marginBottom: "20px",
+                              }}
+                            >
+                              Min 60% off
+                            </h3>
+                            <button
+                              style={{
+                                padding: "10px 30px",
+                                border: "2px solid #000",
+                                backgroundColor: "transparent",
+                                cursor: "pointer",
+                                fontSize: "16px",
+                                borderRadius: "4px",
+                              }}
+                            >
+                              Explore
+                            </button>
+                          </div>
+                        </Col>
+                      </>
+                    ) : (
+                      <>
+                        <Col span={12}>
+                          <div
+                            style={{
+                              height: "100%",
+                              display: "flex",
+                              flexDirection: "column",
+                              justifyContent: "center",
+                              alignItems: "center",
+                              padding: "40px",
+                              backgroundColor: "#fff",
+                            }}
+                          >
+                            <h3
+                              style={{
+                                fontSize: "48px",
+                                fontWeight: "bold",
+                                marginBottom: "20px",
+                                letterSpacing: "2px",
+                              }}
+                            >
+                              FOREVER 21
+                            </h3>
+                            <h4
+                              style={{
+                                fontSize: "32px",
+                                fontWeight: "bold",
+                                marginBottom: "20px",
+                              }}
+                            >
+                              Min 50% off
+                            </h4>
+                            <button
+                              style={{
+                                padding: "10px 30px",
+                                border: "2px solid #000",
+                                backgroundColor: "transparent",
+                                cursor: "pointer",
+                                fontSize: "16px",
+                                borderRadius: "4px",
+                              }}
+                            >
+                              Explore
+                            </button>
+                          </div>
+                        </Col>
+                        <Col span={12}>
+                          <div
+                            style={{
+                              height: "100%",
+                              backgroundImage: `url(${offer.image})`,
+                              backgroundSize: "cover",
+                              backgroundPosition: "center",
+                            }}
+                          />
+                        </Col>
+                      </>
+                    )}
+                  </Row>
+                </Card>
+              </Col>
+            ))}
+          </Row>
+        </div>
+      </div>
       {/* Footer */}
       <footer
         style={{
@@ -387,7 +441,7 @@ export const UserDashboardLayout = () => {
           </div>
 
           {/* Footer Links */}
-          <Row gutter={[0,0]}>
+          <Row gutter={[0, 0]}>
             {[
               {
                 title: "Women",
@@ -422,7 +476,14 @@ export const UserDashboardLayout = () => {
                 ],
               },
             ].map((column, index) => (
-              <Col key={index} xs={12} sm={8} md={4} lg={4} style={{paddingRight:0, paddingLeft:0}}>
+              <Col
+                key={index}
+                xs={12}
+                sm={8}
+                md={4}
+                lg={4}
+                style={{ paddingRight: 0, paddingLeft: 0 }}
+              >
                 <h3
                   style={{
                     fontSize: "18px",
@@ -452,7 +513,13 @@ export const UserDashboardLayout = () => {
             ))}
 
             {/* Stay In Touch */}
-            <Col xs={24} sm={16} md={8} lg={4} style={{paddingRight:0, paddingLeft:0}}>
+            <Col
+              xs={24}
+              sm={16}
+              md={8}
+              lg={4}
+              style={{ paddingRight: 0, paddingLeft: 0 }}
+            >
               <h3
                 style={{
                   fontSize: "18px",
@@ -499,7 +566,7 @@ export const UserDashboardLayout = () => {
               gap: "20px",
             }}
           >
-            <div style={{ display: "flex", gap: "30px"}}>
+            <div style={{ display: "flex", gap: "30px" }}>
               {["Terms & Conditions", "Privacy Policy"].map((text, i) => (
                 <a
                   key={i}

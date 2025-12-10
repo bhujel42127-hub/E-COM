@@ -7,7 +7,7 @@ import {
 import { Badge, Col, Input, Layout, Menu, Row } from "antd";
 import { Header } from "antd/es/layout/layout";
 import { Link } from "react-router-dom";
-import { ProductCard } from "../components/ProductCard";
+import { ProductCard } from "../components/UserPageLayout/homepage/ProductCard";
 
 export const Men = () => {
   const headerItems = [

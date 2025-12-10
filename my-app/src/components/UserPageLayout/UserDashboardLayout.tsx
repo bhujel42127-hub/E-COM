@@ -1,6 +1,5 @@
 import { Layout, Menu, Input, Badge } from "antd";
 import { Header } from "antd/es/layout/layout";
-import { AutoPlaySlider } from "../AutoPlaySlider/AutoPlaySlider";
 import {
   SearchOutlined,
   HeartOutlined,
@@ -12,6 +11,7 @@ import { ProductCard } from "./homepage/ProductCard";
 import { Deals } from "./homepage/Deals";
 import { FooterContent } from "./homepage/FooterContent";
 import { Trending } from "./homepage/Trending";
+import { AutoPlaySlider } from "../Swiper/AutoPlaySlider";
 
 export const UserDashboardLayout = () => {
   const headerItems = [
