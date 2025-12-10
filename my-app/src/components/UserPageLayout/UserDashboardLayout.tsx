@@ -154,15 +154,6 @@ export const UserDashboardLayout = () => {
       {/*  */}
       {/*  */}
       <div className="w-full" style={{ padding: "50px 0" }}>
-        <div
-          className="container"
-          style={{
-            margin: "0 auto",
-            padding: "0 50px",
-            overflowX: "auto",
-            scrollbarWidth: "none",
-          }}
-        >
           <h2
             style={{
               fontSize: "32px",
@@ -172,6 +163,15 @@ export const UserDashboardLayout = () => {
           >
             Trending Now
           </h2>
+        <div
+          className="container"
+          style={{
+            margin: "0 auto",
+            padding: "0 50px",
+            overflowX: "auto",
+            scrollbarWidth: "none",
+          }}
+        >
           <ProductCard />
         </div>
       </div>
