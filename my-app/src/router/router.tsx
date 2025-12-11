@@ -11,6 +11,7 @@ import { Kids } from "../pages/Kids";
 import { Shop } from "../pages/Shop";
 import { ContactUs } from "../pages/ContactUs";
 import { ProductDetails } from "../components/UserPageLayout/ProductDetails";
+import AddProduct from "../pages/SuperAdmin/AddProducts";
 
 export const router = createBrowserRouter([
   {
@@ -36,10 +37,6 @@ export const router = createBrowserRouter([
           {
             path: "products",
             element: <AdminViewProduct />,
-          },
-          {
-            path: "products/add",
-            element: <AddProduct />,
           },
           {
             path: "products/add",

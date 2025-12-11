@@ -1,27 +1,17 @@
 import {
   Button,
   Form,
-  Input,
-  Modal,
-  Row,
-  Select,
+  message,
   Space,
-  type FormProps,
 } from "antd";
 import { useState } from "react";
 import { Table } from "antd";
 import type { ColumnsType } from "antd/es/table";
-import { openNotification } from "../../lib/openNotification";
 import type { Product, Value } from "../../Props";
 import { useGetProduct } from "../../hooks/useGet";
 
-import {
-  useCreateProduct,
-  useDeleteProduct,
-  useUpdateProduct,
-} from "../../hooks/productHooks";
+import { useDeleteProduct } from "../../hooks/productHooks";
 import { useNavigate } from "react-router-dom";
-import { replace, useNavigate } from "react-router-dom";
 
 export const AdminViewProduct = () => {
   const [value, setValue] = useState<Value>({
@@ -30,10 +20,10 @@ export const AdminViewProduct = () => {
     isEdit: false,
     total: 0,
   });
-  const [form] = Form.useForm();
 
   const [page, setPage] = useState(1);
   const navigate = useNavigate();
+  const deleteProduct = useDeleteProduct();
   const { data, isLoading } = useGetProduct();
 
   const columns: ColumnsType<Product> = [
@@ -85,7 +75,7 @@ export const AdminViewProduct = () => {
       render: (_: unknown, record: Product) => (
         <Space size="middle">
           <Button>Edit</Button>
-          <Button danger>Delete</Button>
+          <Button onClick={() => handleDelete} danger>Delete</Button>
         </Space>
       ),
     },
@@ -135,24 +125,19 @@ export const AdminViewProduct = () => {
 
   //   console.log("Product added: ", values);
   // };
-  const handleCancel = () => {
-    form.resetFields();
-    resetValue();
-  };
-
   
 
-  // const handleDelete = async (id: string) => {
-  //   console.log("handle delete reached");
-  //   try {
-  //     await deleteProduct.mutateAsync(id);
-  //     console.log("after deleteProduct delete");
-  //     resetValue();
-  //   } catch (error) {
-  //     console.log("Product deletion error: ", error);
-  //   }
-  //   openNotification("success", "Product Deleted", `Product deleted`);
-  // };
+  const handleDelete = async (id: string) => {
+    console.log("handle delete reached");
+    try {
+      await deleteProduct.mutateAsync(id);
+      console.log("after deleteProduct delete");
+      resetValue();
+    } catch (error) {
+      console.log("Product deletion error: ", error);
+    }
+    message.success("Product deleted!");
+  };
 
   const ProductTable = () => (
     <Table<Product>
@@ -184,7 +169,7 @@ export const AdminViewProduct = () => {
       }}
     >
       {/* <SearchBar /> */}
-      <ProductTable />
+      <ProductTable/>
       <Button style={{marginTop:"10px"}} type="primary" onClick={() => navigate("/admin/products/add") }>
         Add Product
       </Button>

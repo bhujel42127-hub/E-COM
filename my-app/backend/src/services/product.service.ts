@@ -25,6 +25,7 @@ class ProductService {
     seller: string,
     brand: string,
     color: string,
+    description: string,
     slug: string
   ) {
     const slugExists = await Product.findOne({ slug: slug });
@@ -36,6 +37,7 @@ class ProductService {
       seller,
       brand,
       color,
+      description,
       slug,
     });
     return { product };

@@ -11,7 +11,7 @@ import { productService } from "../services/product.service";
 // }
 export async function createProducts(req: Request, res: Response) {
   try {
-    const { name, price, size, seller, brand, color, slug } = req.body;
+    const { name, price, size, seller, brand, color, description, slug } = req.body;
     const { product } = await productService.createProducts(
       name,
       price,
@@ -19,6 +19,7 @@ export async function createProducts(req: Request, res: Response) {
       seller,
       brand,
       color,
+      description,
       slug
     );
     res.json({ product });

@@ -37,13 +37,13 @@ export type Admin = {
   name: string;
 };
 export type Product = {
-  _id: String;
-  name: String;
-  price: Number;
-  size: String;
-  seller: String;
-  brand: String;
-  color: String;
-  description: String;
-  slug: String;
+  _id: string;
+  name: string;
+  price: number;
+  size: string;
+  seller: string;
+  brand: string;
+  color: string;
+  description: string;
+  slug: string;
 };
