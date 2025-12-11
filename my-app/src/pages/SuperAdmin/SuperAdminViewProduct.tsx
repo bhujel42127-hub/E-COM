@@ -21,6 +21,7 @@ import {
   useUpdateProduct,
 } from "../../hooks/productHooks";
 import { useNavigate } from "react-router-dom";
+import { replace, useNavigate } from "react-router-dom";
 
 export const AdminViewProduct = () => {
   const [value, setValue] = useState<Value>({
@@ -32,7 +33,7 @@ export const AdminViewProduct = () => {
   const [form] = Form.useForm();
 
   const [page, setPage] = useState(1);
-  const [form] = Form.useForm();
+  const navigate = useNavigate();
   const { data, isLoading } = useGetProduct();
 
   const columns: ColumnsType<Product> = [
@@ -134,6 +135,12 @@ export const AdminViewProduct = () => {
 
   //   console.log("Product added: ", values);
   // };
+  const handleCancel = () => {
+    form.resetFields();
+    resetValue();
+  };
+
+  
 
   // const handleDelete = async (id: string) => {
   //   console.log("handle delete reached");
