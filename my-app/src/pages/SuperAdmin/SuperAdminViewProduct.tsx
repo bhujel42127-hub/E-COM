@@ -3,6 +3,7 @@ import {
   Form,
   Input,
   Modal,
+  Row,
   Select,
   Space,
   type FormProps,
@@ -19,7 +20,7 @@ import {
   useDeleteProduct,
   useUpdateProduct,
 } from "../../hooks/productHooks";
-import { replace, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export const AdminViewProduct = () => {
   const [value, setValue] = useState<Value>({
@@ -28,12 +29,12 @@ export const AdminViewProduct = () => {
     isEdit: false,
     total: 0,
   });
+  const [form] = Form.useForm();
+
   const [page, setPage] = useState(1);
-  const navigate = useNavigate();
+  const [form] = Form.useForm();
   const { data, isLoading } = useGetProduct();
-  const createProduct = useCreateProduct();
-  const updateProduct = useUpdateProduct();
-  const deleteProduct = useDeleteProduct();
+
   const columns: ColumnsType<Product> = [
     {
       title: "Product Name",
@@ -82,27 +83,8 @@ export const AdminViewProduct = () => {
       width: 150,
       render: (_: unknown, record: Product) => (
         <Space size="middle">
-          <Button
-            onClick={() => {
-              console.log("Record: ", record);
-              form.setFieldsValue(record);
-              setValue({
-                ...value,
-                isEdit: true,
-                isModalOpen: true,
-              });
-            }}
-          >
-            Edit
-          </Button>
-          <Button
-            danger
-            onClick={() => {
-              handleDelete(record._id as string);
-            }}
-          >
-            Delete
-          </Button>
+          <Button>Edit</Button>
+          <Button danger>Delete</Button>
         </Space>
       ),
     },
@@ -129,24 +111,41 @@ export const AdminViewProduct = () => {
   //   fetchProduct();
   // }, []);
 
-  const handleCancel = () => {
-    form.resetFields();
-    resetValue();
-  };
+  // const onFinish: FormProps<Product>["onFinish"] = async (values) => {
+  //   if (value.isEdit) {
+  //     console.log("Product edit reached");
+  //     try {
+  //       console.log("Product edit try catch");
+  //       await updateProduct.mutateAsync(values);
+  //       form.resetFields();
+  //       resetValue();
+  //       console.log("After Product edit try catch");
+  //       openNotification("success", "Product Edit", `Product edited`);
+  //     } catch (error) {
+  //       console.log("Error while editing Product: ", error);
+  //     }
+  //   } else {
+  //     console.log("Adding Product...");
+  //     await createProduct.mutateAsync(values);
+  //     form.resetFields();
+  //     resetValue();
+  //     openNotification("success", "Product Added", `Product added`);
+  //   }
 
-  
+  //   console.log("Product added: ", values);
+  // };
 
-  const handleDelete = async (id: string) => {
-    console.log("handle delete reached");
-    try {
-      await deleteProduct.mutateAsync(id);
-      console.log("after deleteProduct delete");
-      resetValue();
-    } catch (error) {
-      console.log("Product deletion error: ", error);
-    }
-    openNotification("success", "Product Deleted", `Product deleted`);
-  };
+  // const handleDelete = async (id: string) => {
+  //   console.log("handle delete reached");
+  //   try {
+  //     await deleteProduct.mutateAsync(id);
+  //     console.log("after deleteProduct delete");
+  //     resetValue();
+  //   } catch (error) {
+  //     console.log("Product deletion error: ", error);
+  //   }
+  //   openNotification("success", "Product Deleted", `Product deleted`);
+  // };
 
   const ProductTable = () => (
     <Table<Product>

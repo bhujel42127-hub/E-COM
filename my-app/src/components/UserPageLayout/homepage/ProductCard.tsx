@@ -1,96 +1,33 @@
 import { Card, Col, Row } from "antd";
+import { useGetProduct } from "../../../hooks/useGet";
+import type { Product } from "../../../Props";
+import { useNavigate } from "react-router-dom";
 
 export const ProductCard = () => {
-  const trendingProducts = [
-    {
-      id: 1,
-      title: "Womens Denim Jacket",
-      brand: "Brand Name",
-      rating: 4.4,
-      currentPrice: "Rs. 700",
-      originalPrice: "Rs. 1000",
-      discount: "30% off",
-      image:
-        "https://images.unsplash.com/photo-1551028719-00167b16eac5?w=400&h=500&fit=crop",
-    },
-    {
-      id: 2,
-      title: "Womens Denim Jacket",
-      brand: "Brand Name",
-      rating: 4.4,
-      currentPrice: "Rs. 700",
-      originalPrice: "Rs. 1000",
-      discount: "30% off",
-      image:
-        "https://images.unsplash.com/photo-1521223890158-f9f7c3d5d504?w=400&h=500&fit=crop",
-    },
-    {
-      id: 3,
-      title: "Womens Denim Jacket",
-      brand: "Brand Name",
-      rating: 4.4,
-      currentPrice: "Rs. 700",
-      originalPrice: "Rs. 1000",
-      discount: "30% off",
-      image:
-        "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=400&h=500&fit=crop",
-    },
-    {
-      id: 4,
-      title: "Womens Denim Jacket",
-      brand: "Brand Name",
-      rating: 4.4,
-      currentPrice: "Rs. 700",
-      originalPrice: "Rs. 1000",
-      discount: "30% off",
-      image:
-        "https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?w=400&h=500&fit=crop",
-    },
-    {
-      id: 5,
-      title: "Womens Denim Jacket",
-      brand: "Brand Name",
-      rating: 4.4,
-      currentPrice: "Rs. 700",
-      originalPrice: "Rs. 1000",
-      discount: "30% off",
-      image:
-        "https://images.unsplash.com/photo-1539533018447-63fcce2678e3?w=400&h=500&fit=crop",
-    },
-    {
-      id: 6,
-      title: "Womens Denim Jacket",
-      brand: "Brand Name",
-      rating: 4.4,
-      currentPrice: "Rs. 700",
-      originalPrice: "Rs. 1000",
-      discount: "30% off",
-      image:
-        "https://images.unsplash.com/photo-1539533018447-63fcce2678e3?w=400&h=500&fit=crop",
-    },
-    {
-      id: 7,
-      title: "Womens Denim Jacket",
-      brand: "Brand Name",
-      rating: 4.4,
-      currentPrice: "Rs. 700",
-      originalPrice: "Rs. 1000",
-      discount: "30% off",
-      image:
-        "https://images.unsplash.com/photo-1539533018447-63fcce2678e3?w=400&h=500&fit=crop",
-    },
-  ];
+  const { data, isLoading } = useGetProduct();
+  // console.log("products: ", data);
+  const navigate = useNavigate();
   return (
     <Row gutter={[20, 20]} wrap={false}>
-      {trendingProducts.map((product) => (
-        <Col key={product.id} xs={24} sm={12} md={8} lg={6} xl={4.8} flex="0 0 280px">
+      {data?.products?.map((product: Product) => (
+        <Col
+          key={product._id as string}
+          xs={24}
+          sm={12}
+          md={8}
+          lg={6}
+          xl={4.8}
+          flex="0 0 280px"
+        >
           <Card
             hoverable
+            loading={isLoading}
+            onClick={() => navigate(`/productDetails/`)}
             cover={
               <img
-                alt={product.title}
-                src={product.image}
-                style={{ height: "300px", objectFit: "cover" }}
+                alt={product.name as string}
+                // src={product.image}
+                style={{ minHeight: "100px", objectFit: "cover" }}
               />
             }
           >
@@ -101,7 +38,7 @@ export const ProductCard = () => {
                 fontSize: "16px",
               }}
             >
-              {product.title}
+              {product.name}
             </h3>
             <div
               style={{
@@ -115,7 +52,8 @@ export const ProductCard = () => {
                 {product.brand}
               </span>
               <span style={{ color: "#faad14", fontSize: "14px" }}>
-                {product.rating} ⭐
+                Product rating here..
+                {/* {product.rating} ⭐ */}
               </span>
             </div>
             <div
@@ -127,7 +65,7 @@ export const ProductCard = () => {
               }}
             >
               <span style={{ fontWeight: "bold", fontSize: "18px" }}>
-                {product.currentPrice}
+                {product.price as number}
               </span>
               <span
                 style={{
@@ -136,10 +74,11 @@ export const ProductCard = () => {
                   fontSize: "14px",
                 }}
               >
-                {product.originalPrice}
+                {product.price as number}
               </span>
               <span style={{ color: "#52c41a", fontSize: "14px" }}>
-                ({product.discount})
+                discount here..
+                {/* ({product.discount}) */}
               </span>
             </div>
           </Card>

@@ -120,9 +120,7 @@ export const SuperAdminLayout = () => {
           </Button>
         </Header>
 
-        <Content>
-          <Outlet />
-        </Content>
+        <Outlet />
       </Layout>
     </Layout>
   );

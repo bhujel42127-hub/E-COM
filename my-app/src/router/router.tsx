@@ -5,8 +5,12 @@ import { UserDashboard } from "../pages/UserDashboard";
 import { UserDashboardLayout } from "../components/UserPageLayout/UserDashboardLayout";
 import { Login, Root, SignUp } from "./imports";
 import { AdminViewProduct } from "../pages/SuperAdmin/SuperAdminViewProduct";
+import { Men } from "../pages/Men";
+import { Women } from "../pages/Women";
+import { Kids } from "../pages/Kids";
+import { Shop } from "../pages/Shop";
+import { ContactUs } from "../pages/ContactUs";
 import { ProductDetails } from "../components/UserPageLayout/ProductDetails";
-import { AddProduct } from "../pages/SuperAdmin/AddProducts";
 
 export const router = createBrowserRouter([
   {
@@ -37,6 +41,10 @@ export const router = createBrowserRouter([
             path: "products/add",
             element: <AddProduct />,
           },
+          {
+            path: "products/add",
+            element: <AddProduct />,
+          },
         ],
       },
       {
@@ -50,6 +58,29 @@ export const router = createBrowserRouter([
           {
             path: "/productDetails",
             element: <ProductDetails />,
+          },
+          {
+            path: "/men",
+            element: <Men />,
+          },
+          {
+            path: "/women",
+            element: <Women />,
+          },
+
+          {
+            path: "/kids",
+            element: <Kids />,
+          },
+
+          {
+            path: "/shop",
+            element: <Shop />,
+          },
+
+          {
+            path: "/contactUs",
+            element: <ContactUs />,
           },
         ],
       },

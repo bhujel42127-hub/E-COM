@@ -8,6 +8,7 @@ const productSchema = new mongoose.Schema(
     seller: String,
     brand: String,
     color: String,
+    slug: String,
   },
   { timestamps: true }
 );

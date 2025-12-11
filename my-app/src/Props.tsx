@@ -44,4 +44,6 @@ export type Product = {
   seller: String;
   brand: String;
   color: String;
+  description: String;
+  slug: String;
 };

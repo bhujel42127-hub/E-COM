@@ -24,13 +24,19 @@ class ProductService {
     size: string,
     seller: string,
     brand: string,
-    color: string
+    color: string,
+    slug: string
   ) {
+    const slugExists = await Product.findOne({ slug: slug });
+    if (slugExists) throw new Error("Slug already exists");
     const product = await Product.create({
       name,
       price,
       size,
       seller,
+      brand,
+      color,
+      slug,
     });
     return { product };
   }
