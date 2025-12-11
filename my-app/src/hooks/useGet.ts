@@ -30,6 +30,7 @@ export function useGetProduct(id: string) {
   return useQuery({
     queryKey: [queryKey?.admin.product],
     queryFn: () => fetcher(`products/${id}`),
+    enabled: !!id,
     staleTime: 0,
     refetchOnMount: "always",
   });

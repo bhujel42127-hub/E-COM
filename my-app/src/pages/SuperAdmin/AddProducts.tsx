@@ -16,10 +16,11 @@ export default function AddProduct() {
   const productData = data?.product;
 
   useEffect(() => {
-    if (productData) {
+    if(!id) return;
+    if (productData && id) {
       form.setFieldsValue(productData);
     }
-  }, [productData, form]);
+  }, [productData, form, id]);
 
   const handleSubmit = async (values: Product) => {
     if (isEdit && id) {
