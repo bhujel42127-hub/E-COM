@@ -17,10 +17,19 @@ export function useGetAdmin() {
     refetchOnMount: "always",
   });
 }
-export function useGetProduct() {
+
+export function useGetAllProduct() {
   return useQuery({
     queryKey: [queryKey?.admin.product],
     queryFn: () => fetcher("/products"),
+    staleTime: 0,
+    refetchOnMount: "always",
+  });
+}
+export function useGetProduct(id: string) {
+  return useQuery({
+    queryKey: [queryKey?.admin.product],
+    queryFn: () => fetcher(`products/${id}`),
     staleTime: 0,
     refetchOnMount: "always",
   });

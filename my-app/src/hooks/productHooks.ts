@@ -15,7 +15,8 @@ export function useCreateProduct() {
 }
 export function useUpdateProduct() {
   return useMutation({
-    mutationFn: (data: Product) => mutator("PUT", `products/${data._id}`, data),
+    mutationFn: ({ data, id }: { data: Product; id: string }) =>
+      mutator("PUT", `products/${id}`, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [queryKey?.admin.product] });
       console.log("AFTER UPDATE PRODUCT MUTATION FUNCTION SUCCESS!!");

@@ -1,15 +1,36 @@
 import { Form, Input, Button, Select, Row, Col, message } from "antd";
 import type { Product } from "../../Props";
-import { useCreateProduct } from "../../hooks/productHooks";
+import { useCreateProduct, useUpdateProduct } from "../../hooks/productHooks";
+import { useNavigate, useParams } from "react-router-dom";
+import { useEffect } from "react";
+import { useGetProduct } from "../../hooks/useGet";
 
 export default function AddProduct() {
   const [form] = Form.useForm();
   const createProduct = useCreateProduct();
+  const updateProduct = useUpdateProduct();
+  const navigate = useNavigate();
+  const { id } = useParams();
+  const isEdit = Boolean(id);
+  const { data } = useGetProduct(id as string);
+  const productData = data?.product;
 
-  const handleSubmit = async(values: Product) => {
-    console.log("Form Values:", values);
+  useEffect(() => {
+    if (productData) {
+      form.setFieldsValue(productData);
+    }
+  }, [productData, form]);
+
+  const handleSubmit = async (values: Product) => {
+    if (isEdit && id) {
+      console.log("in edit mode");
+      await updateProduct.mutateAsync({ data: values, id });
+      message.success("Product edited successfully!");
+      navigate("/admin/products");
+    }
     await createProduct.mutateAsync(values);
     message.success("Product submitted successfully!");
+    navigate("/admin/products");
   };
 
   return (
@@ -99,7 +120,11 @@ export default function AddProduct() {
 
               <Row gutter={16}>
                 <Col span={12}>
-                  <Form.Item label="Size" name="size" rules={[{ required: true, message: "Please select size" }]}>
+                  <Form.Item
+                    label="Size"
+                    name="size"
+                    rules={[{ required: true, message: "Please select size" }]}
+                  >
                     <Select
                       size="large"
                       placeholder="Select size"
@@ -115,7 +140,13 @@ export default function AddProduct() {
                 </Col>
 
                 <Col span={12}>
-                  <Form.Item label="Color" name="color" rules={[{ required: true, message: "Please select a color" }]}>
+                  <Form.Item
+                    label="Color"
+                    name="color"
+                    rules={[
+                      { required: true, message: "Please select a color" },
+                    ]}
+                  >
                     <Select
                       size="large"
                       placeholder="Select color"
@@ -132,19 +163,31 @@ export default function AddProduct() {
                   <Form.Item
                     label="Seller"
                     name="seller"
-                    rules={[{ required: true, message: "Please enter seller name" }]}
+                    rules={[
+                      { required: true, message: "Please enter seller name" },
+                    ]}
                   >
                     <Input size="large" placeholder="Select seller" />
                   </Form.Item>
                 </Col>
 
                 <Col span={12}>
-                  <Form.Item label="Brand" name="brand" rules={[{ required: true, message: "Please enter brand name" }]}>
+                  <Form.Item
+                    label="Brand"
+                    name="brand"
+                    rules={[
+                      { required: true, message: "Please enter brand name" },
+                    ]}
+                  >
                     <Input size="large" placeholder="Enter brand name" />
                   </Form.Item>
                 </Col>
                 <Col span={12}>
-                  <Form.Item label="Slug" name="slug" rules={[{ required: true, message: "Please enter slug" }]}>
+                  <Form.Item
+                    label="Slug"
+                    name="slug"
+                    rules={[{ required: true, message: "Please enter slug" }]}
+                  >
                     <Input size="large" placeholder="Enter slug" />
                   </Form.Item>
                 </Col>

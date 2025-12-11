@@ -38,8 +38,16 @@ export const router = createBrowserRouter([
             path: "products",
             element: <AdminViewProduct />,
           },
+          // {
+          //   path: "products/add/:id?",
+          //   element: <AddProduct />,
+          // },
           {
             path: "products/add",
+            element: <AddProduct />,
+          },
+          {
+            path: "products/add/:id",
             element: <AddProduct />,
           },
         ],

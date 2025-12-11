@@ -1,11 +1,11 @@
 import { Card, Col, Row } from "antd";
-import { useGetProduct } from "../../../hooks/useGet";
+import { useGetAllProduct } from "../../../hooks/useGet";
 import type { Product } from "../../../Props";
 import { useNavigate } from "react-router-dom";
 
 export const ProductCard = () => {
-  const { data, isLoading } = useGetProduct();
-  // console.log("products: ", data);
+  const { data, isLoading } = useGetAllProduct();
+  console.log("products: ", data);
   const navigate = useNavigate();
   return (
     <Row gutter={[20, 20]} wrap={false}>

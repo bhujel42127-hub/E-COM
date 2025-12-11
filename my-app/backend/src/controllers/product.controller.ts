@@ -11,7 +11,8 @@ import { productService } from "../services/product.service";
 // }
 export async function createProducts(req: Request, res: Response) {
   try {
-    const { name, price, size, seller, brand, color, description, slug } = req.body;
+    const { name, price, size, seller, brand, color, description, slug } =
+      req.body;
     const { product } = await productService.createProducts(
       name,
       price,
@@ -32,23 +33,34 @@ export async function createProducts(req: Request, res: Response) {
 }
 export async function getProducts(req: Request, res: Response) {
   console.log("calling get all products");
-  const userId = (req as any).userId;
-  const { search = "", limit = 10, page } = req.query;
-  const skip = (Number(page) - 1) * Number(limit);
-  const products = await productService.getProducts(
-    userId,
-    search.toString(),
-    Number(limit),
-    skip
-  );
-  res.json({
-    // searchedProducts: products.searchedItem,
-    products: products.allProducts,
-    page,
-    limit,
-    skip,
-    total: products.total,
-  });
+
+  const { id } = req.params;
+  if (id) {
+    const product = await productService.getProducts(id);
+    console.log("All products: ", product);
+    res.json(product);
+  } else {
+    const userId = (req as any).userId;
+    const { search = "", limit = 10, page } = req.query;
+    const skip = (Number(page) - 1) * Number(limit);
+    // console.log("Limit:", Number(limit))
+    const products = await productService.getProducts(
+      userId,
+      search.toString(),
+      Number(limit),
+      skip
+    );
+    console.log("Fetched products:", products.allProducts);
+
+    res.json({
+      // searchedProducts: products.searchedItem,
+      products: products.allProducts,
+      page,
+      limit,
+      skip,
+      total: products.total,
+    });
+  }
 }
 export async function updateProduct(req: Request, res: Response) {
   const { id } = req.params;

@@ -3,20 +3,22 @@ import { Product } from "../models/product.model";
 class ProductService {
   async getProducts(
     userId: string,
-    search: string,
-    limit: number,
-    skip: number
+    search?: string,
+    limit?: number,
+    skip?: number
   ) {
+    if (userId) {
+      const product = await Product.findById(userId);
+      return { product };
+    }
     const searchedItem = await Product.find({
       name: { $regex: String(search), $options: "i" },
     }).limit(Number(limit));
-
     const [allProducts, total] = await Promise.all([
       Product.find().skip(skip).limit(limit),
       Product.countDocuments(),
     ]);
-
-    return { userId, allProducts, searchedItem, total };
+    return { allProducts, searchedItem, total };
   }
   async createProducts(
     name: string,

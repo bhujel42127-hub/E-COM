@@ -1,6 +1,5 @@
 import {
   Button,
-  Form,
   message,
   Space,
 } from "antd";
@@ -8,7 +7,7 @@ import { useState } from "react";
 import { Table } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import type { Product, Value } from "../../Props";
-import { useGetProduct } from "../../hooks/useGet";
+import { useGetAllProduct } from "../../hooks/useGet";
 
 import { useDeleteProduct } from "../../hooks/productHooks";
 import { useNavigate } from "react-router-dom";
@@ -24,7 +23,9 @@ export const AdminViewProduct = () => {
   const [page, setPage] = useState(1);
   const navigate = useNavigate();
   const deleteProduct = useDeleteProduct();
-  const { data, isLoading } = useGetProduct();
+  const { data, isLoading } = useGetAllProduct();
+
+  console.log("Fetched product: ", data)
 
   const columns: ColumnsType<Product> = [
     {
@@ -74,8 +75,8 @@ export const AdminViewProduct = () => {
       width: 150,
       render: (_: unknown, record: Product) => (
         <Space size="middle">
-          <Button>Edit</Button>
-          <Button onClick={() => handleDelete} danger>Delete</Button>
+          <Button onClick={() => handleEdit(record)}>Edit</Button>
+          <Button onClick={() => handleDelete(record._id)} danger>Delete</Button>
         </Space>
       ),
     },
@@ -127,6 +128,10 @@ export const AdminViewProduct = () => {
   // };
   
 
+  const handleEdit = async (data: Product) => {
+    console.log("data to be edited: ", data)
+    navigate(`add/${data._id}`)
+  };
   const handleDelete = async (id: string) => {
     console.log("handle delete reached");
     try {
