@@ -12,28 +12,29 @@ import { Deals } from "./homepage/Deals";
 import { FooterContent } from "./homepage/FooterContent";
 import { Trending } from "./homepage/Trending";
 import { AutoPlaySlider } from "../Swiper/AutoPlaySlider";
+import { Link } from "react-router-dom";
 
 export const UserDashboardLayout = () => {
   const headerItems = [
     {
       key: "1",
-      label: "Men",
+      label: <Link to="/men">Men</Link>,
     },
     {
       key: "2",
-      label: "Women",
+      label: <Link to="/women">Women</Link>,
     },
     {
       key: "3",
-      label: "Kids",
+      label: <Link to="/kids">Kids</Link>,
     },
     {
       key: "4",
-      label: "Shop",
+      label: <Link to="/shop">Shop</Link>,
     },
     {
       key: "5",
-      label: "Contact us",
+      label: <Link to="/contactUs">Contact Us</Link>,
     },
   ];
 

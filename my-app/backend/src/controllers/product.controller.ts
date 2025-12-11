@@ -11,24 +11,28 @@ import { productService } from "../services/product.service";
 // }
 export async function createProducts(req: Request, res: Response) {
   try {
-    const { name, price, size, seller, brand, color } = req.body;
+    const { name, price, size, seller, brand, color, slug } = req.body;
     const { product } = await productService.createProducts(
       name,
       price,
       size,
       seller,
       brand,
-      color
+      color,
+      slug
     );
     res.json({ product });
   } catch (error) {
+    res.status(409).json({
+      message: "Slug already exists!!",
+    });
     console.log("Error creating products: ", error);
   }
 }
 export async function getProducts(req: Request, res: Response) {
   console.log("calling get all products");
   const userId = (req as any).userId;
-  const { search = "", limit = 5, page } = req.query;
+  const { search = "", limit = 10, page } = req.query;
   const skip = (Number(page) - 1) * Number(limit);
   const products = await productService.getProducts(
     userId,
@@ -36,8 +40,8 @@ export async function getProducts(req: Request, res: Response) {
     Number(limit),
     skip
   );
-     res.json({
-    searchedProducts: products.searchedItem,
+  res.json({
+    // searchedProducts: products.searchedItem,
     products: products.allProducts,
     page,
     limit,

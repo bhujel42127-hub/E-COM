@@ -8,28 +8,29 @@ import { Badge, Input, Layout, Menu } from "antd";
 import { Header } from "antd/es/layout/layout";
 import { FooterContent } from "./homepage/FooterContent";
 import { ProductContent } from "./productDetailsPage/ProductContent";
+import { Link } from "react-router-dom";
 
 export const ProductDetails = () => {
   const headerItems = [
     {
       key: "1",
-      label: "Men",
+      label: <Link to="/men">Men</Link>,
     },
     {
       key: "2",
-      label: "Women",
+      label: <Link to="/women">Women</Link>,
     },
     {
       key: "3",
-      label: "Kids",
+      label: <Link to="/kids">Kids</Link>,
     },
     {
       key: "4",
-      label: "Shop",
+      label: <Link to="/shop">Shop</Link>,
     },
     {
       key: "5",
-      label: "Contact us",
+      label: <Link to="/contactUs">Contact Us</Link>,
     },
   ];
 
@@ -80,7 +81,6 @@ export const ProductDetails = () => {
             <Menu
               mode="horizontal"
               items={headerItems}
-              defaultSelectedKeys={["1"]}
               style={{ border: "none", lineHeight: "70px" }}
             />
           </div>
@@ -134,6 +134,7 @@ export const ProductDetails = () => {
       {/*  */}
       <footer
         style={{
+          marginTop: "45px",
           backgroundColor: "#0a0e27",
           color: "#ffffff",
           padding: "60px 0 30px",

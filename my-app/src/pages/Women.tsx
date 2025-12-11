@@ -141,9 +141,11 @@ export const Women = () => {
         >
           <h3
             style={{
+              color: "#000000",
+              display: "inline-block",
               fontSize: "24px",
               fontWeight: "bold",
-              margin: "30px 30px",
+              marginTop: "30px",
             }}
           >
             Shoes
@@ -163,9 +165,11 @@ export const Women = () => {
         >
           <h3
             style={{
+              color: "#000000",
+              display: "inline-block",
               fontSize: "24px",
               fontWeight: "bold",
-              margin: "30px 30px",
+              marginTop: "30px",
             }}
           >
             T-shirt
@@ -185,9 +189,11 @@ export const Women = () => {
         >
           <h3
             style={{
+              color: "#000000",
+              display: "inline-block",
               fontSize: "24px",
               fontWeight: "bold",
-              margin: "30px 30px",
+              marginTop: "30px",
             }}
           >
             Kattu
@@ -198,6 +204,7 @@ export const Women = () => {
       {/* Footer */}
       <footer
         style={{
+          marginTop: "45px",
           backgroundColor: "#0a0e27",
           color: "#ffffff",
           padding: "60px 0 30px",

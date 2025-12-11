@@ -149,7 +149,17 @@ export const ViewAdmins = () => {
   );
 
   return (
-    <div className="flex flex-col gap-4">
+    <div
+      className="flex flex-col gap-4"
+      style={{
+        margin: "24px 16px",
+        padding: 24,
+        minHeight: 280,
+        background: "#ffffff",
+        borderRadius: "8px",
+        overflow: "auto",
+      }}
+    >
       <AdminTable />
       <Button
         type="primary"
