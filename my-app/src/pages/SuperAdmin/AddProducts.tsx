@@ -4,6 +4,7 @@ import { useCreateProduct, useUpdateProduct } from "../../hooks/productHooks";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect } from "react";
 import { useGetProduct } from "../../hooks/useGet";
+import { UploadImage } from "../../components/upload";
 
 export default function AddProduct() {
   const [form] = Form.useForm();
@@ -16,7 +17,7 @@ export default function AddProduct() {
   const productData = data?.product;
 
   useEffect(() => {
-    if(!id) return;
+    if (!id) return;
     if (productData && id) {
       form.setFieldsValue(productData);
     }
@@ -69,6 +70,37 @@ export default function AddProduct() {
               </Col>
             </Row>
           </div>
+          <Row>
+            <Col style={{ display: "flex", width: "400px" }}>
+              <div
+                style={{
+                  marginTop: "20px",
+                  flex: 1,
+                  padding: 24,
+                  background: "#ffffff",
+                  borderRadius: "12px",
+                  boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
+                }}
+              >
+                <Row gutter={[0, 16]}>
+                  <Col span={24}>
+                    <div
+                      style={{
+                        // height: 150,
+                        alignItems: "center",
+                        justifyContent: "center",
+                        color: "white",
+                        fontSize: "16px",
+                        fontWeight: 500,
+                      }}
+                    >
+                      <UploadImage />
+                    </div>
+                  </Col>
+                </Row>
+              </div>
+            </Col>
+          </Row>
         </Col>
 
         {/* RIGHT COLUMN */}

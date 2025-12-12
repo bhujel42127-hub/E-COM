@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button, Layout, Menu, Drawer } from "antd";
+import { Button, Layout, Menu } from "antd";
 import { Outlet, useNavigate } from "react-router-dom";
 import { HomeOutlined } from "@ant-design/icons";
 import { axiosInstance } from "../api/axiosInstance";

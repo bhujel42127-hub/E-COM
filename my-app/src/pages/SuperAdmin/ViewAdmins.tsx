@@ -190,9 +190,9 @@ export const ViewAdmins = () => {
           style={{ maxWidth: 600 }}
           onFinish={onFinish}
         >
-          <Form.Item<Admin> label="Admin ID" name="_id" hidden>
+          {/* <Form.Item<Admin> label="Admin ID" name="_id" hidden>
             <Input />
-          </Form.Item>
+          </Form.Item> */}
           <Form.Item<Admin>
             label="Name"
             name="name"
