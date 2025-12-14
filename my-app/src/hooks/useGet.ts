@@ -35,3 +35,12 @@ export function useGetProduct(id: string) {
     refetchOnMount: "always",
   });
 }
+export function useGetProductBySlug(slug: string) {
+  return useQuery({
+    queryKey: [queryKey?.admin.product],
+    queryFn: () => fetcher(`products/slug/${slug}`),
+    enabled: !!slug,
+    staleTime: 0,
+    refetchOnMount: "always",
+  });
+}

@@ -10,7 +10,7 @@ const productSchema = new mongoose.Schema(
     color: String,
     imageUrl: String,
     description: String,
-    slug: String,
+    slug: {type: String, unique: true},
   },
   { timestamps: true }
 );

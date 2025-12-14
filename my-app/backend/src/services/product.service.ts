@@ -2,7 +2,7 @@ import { Product } from "../models/product.model";
 
 class ProductService {
   async getProducts(
-    userId: string,
+    userId?: string,
     search?: string,
     limit?: number,
     skip?: number
@@ -20,6 +20,11 @@ class ProductService {
     ]);
     return { allProducts, searchedItem, total };
   }
+  async getProductsBySlug(slug: string) {
+    const product = await Product.findOne({ slug: slug });
+    return product;
+  }
+
   async createProducts(
     name: string,
     price: number,

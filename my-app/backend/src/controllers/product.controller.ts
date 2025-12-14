@@ -32,12 +32,12 @@ export async function createProducts(req: Request, res: Response) {
   }
 }
 export async function getProducts(req: Request, res: Response) {
-  console.log("calling get all products");
+  // console.log("calling get all products");
 
   const { id } = req.params;
   if (id) {
     const product = await productService.getProducts(id);
-    console.log("All products: ", product);
+    // console.log("All products: ", product);
     res.json(product);
   } else {
     const userId = (req as any).userId;
@@ -50,7 +50,7 @@ export async function getProducts(req: Request, res: Response) {
       Number(limit),
       skip
     );
-    console.log("Fetched products:", products.allProducts);
+    // console.log("Fetched products:", products.allProducts);
 
     res.json({
       // searchedProducts: products.searchedItem,
@@ -60,6 +60,18 @@ export async function getProducts(req: Request, res: Response) {
       skip,
       total: products.total,
     });
+  }
+}
+export async function getProductsBySlug(req: Request, res: Response) {
+  console.log("calling get all products");
+
+  const { slug } = req.params;
+
+  try {
+    const product = await productService.getProductsBySlug(slug as string);
+    res.json(product);
+  } catch (error) {
+    console.log("Error fetching products: ", error);
   }
 }
 export async function updateProduct(req: Request, res: Response) {

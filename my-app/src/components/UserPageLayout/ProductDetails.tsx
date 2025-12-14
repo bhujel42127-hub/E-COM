@@ -7,7 +7,7 @@ import {
 import { Badge, Input, Layout, Menu } from "antd";
 import { Header } from "antd/es/layout/layout";
 import { FooterContent } from "./homepage/FooterContent";
-import { ProductContent } from "./productDetailsPage/ProductContent";
+import { ProductContent } from "./productDetailsPage/ProductDetailsContent";
 import { Link } from "react-router-dom";
 
 export const ProductDetails = () => {

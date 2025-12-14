@@ -22,7 +22,7 @@ export const ProductCard = () => {
           <Card
             hoverable
             loading={isLoading}
-            onClick={() => navigate(`/productDetails/`)}
+            onClick={() => navigate(`/productDetails/${product.slug}`)}
             cover={
               <img
                 alt={product.name as string}
