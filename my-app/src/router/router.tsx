@@ -10,8 +10,9 @@ import { Women } from "../pages/Women";
 import { Kids } from "../pages/Kids";
 import { Shop } from "../pages/Shop";
 import { ContactUs } from "../pages/ContactUs";
-import { ProductDetails } from "../components/UserPageLayout/ProductDetails";
+import { ProductDetails } from "../components/UserPageLayout/productDetailsPage/ProductDetailsLayout";
 import AddProduct from "../pages/SuperAdmin/AddProducts";
+import { Cart } from "../components/UserPageLayout/addToCart/Cart";
 
 export const router = createBrowserRouter([
   {
@@ -81,6 +82,10 @@ export const router = createBrowserRouter([
           {
             path: "/shop",
             element: <Shop />,
+          },
+          {
+            path: "/myCart",
+            element: <Cart />
           },
 
           {

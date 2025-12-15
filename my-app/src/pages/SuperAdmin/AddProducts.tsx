@@ -159,6 +159,7 @@ export default function AddProduct() {
                     rules={[{ required: true, message: "Please select size" }]}
                   >
                     <Select
+                      mode="multiple"
                       size="large"
                       placeholder="Select size"
                       options={[
@@ -181,6 +182,7 @@ export default function AddProduct() {
                     ]}
                   >
                     <Select
+                      mode="multiple"
                       size="large"
                       placeholder="Select color"
                       options={[

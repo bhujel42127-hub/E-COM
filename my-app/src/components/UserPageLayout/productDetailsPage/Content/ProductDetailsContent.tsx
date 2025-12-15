@@ -1,30 +1,34 @@
 import { Col, Row, Button, Rate } from "antd";
 import { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { HeartOutlined, HeartFilled } from "@ant-design/icons";
-import { useGetProductBySlug } from "../../../hooks/useGet";
+import { useGetProductBySlug } from "../../../../hooks/useGet";
+import { LeftColumn } from "./LeftColumn";
 
 export const ProductContent = () => {
+  const navigate = useNavigate();
   const { slug } = useParams();
   const { data } = useGetProductBySlug(slug as string);
-  const [selectedImage, setSelectedImage] = useState(0);
   const [selectedSize, setSelectedSize] = useState("");
   const [selectedColor, setSelectedColor] = useState(0);
   const [isWishlisted, setIsWishlisted] = useState(false);
 
-  console.log("Product slug:", slug);
-  console.log("Product slug data:", data);
+  // console.log("Product slug:", slug);
+  // console.log("Product slug data:", data);
 
-  // Mock data - replace with actual data from API
+  // const handleAddToCart = () => {
+  //   navigate()
+  // }
+
   const product = {
     name: data?.name || "Paloma",
-    brandName: "Brand Name",
-    seller: "Sellers Name",
+    brandName: data?.brand,
+    seller: data?.seller,
     rating: 4.4,
     reviewCount: 36,
-    price: 700,
+    price: data?.price,
     originalPrice: 1000,
-    discount: 30,
+    // discount: 30,
     images: [
       "https://images.unsplash.com/photo-1551028719-00167b16eac5?w=500",
       "https://images.unsplash.com/photo-1551028719-00167b16eac5?w=500",
@@ -33,11 +37,7 @@ export const ProductContent = () => {
       "https://images.unsplash.com/photo-1551028719-00167b16eac5?w=500",
     ],
     sizes: ["XS", "S", "M", "L", "XL"],
-    colors: [
-      "red",
-      "blue",
-      "green",
-    ],
+    colors: ["red", "blue", "green"],
     offers: [
       { label: "Special offer", text: "get 25% off", link: "T&C" },
       {
@@ -57,74 +57,18 @@ export const ProductContent = () => {
   return (
     <div style={{ padding: "20px 40px", maxWidth: "1400px", margin: "0 auto" }}>
       <Row gutter={[40, 20]}>
-        {/* Left Side - Images */}
-        <Col xs={24} lg={12}>
-          <Row gutter={16} style={{ flexWrap: "nowrap" }}>
-            {/* Thumbnail Column */}
-            <Col flex="70px">
-              <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-                {product.images.map((image, index) => (
-                  <div
-                    key={index}
-                    onClick={() => setSelectedImage(index)}
-                    style={{
-                      height: "70px",
-                      width: "70px",
-                      borderRadius: "8px",
-                      overflow: "hidden",
-                      cursor: "pointer",
-                      border:
-                        selectedImage === index
-                          ? "2px solid #1a56db"
-                          : "1px solid #e5e7eb",
-                      transition: "all 0.2s",
-                    }}
-                  >
-                    <img
-                      alt={`${product.name} ${index + 1}`}
-                      src={image}
-                      style={{
-                        width: "100%",
-                        height: "100%",
-                        objectFit: "cover",
-                      }}
-                    />
-                  </div>
-                ))}
-              </div>
-            </Col>
+        {/* Left Side */}
+        {/*  */}
+        {/*  */}
 
-            {/* Main Image */}
-            <Col flex="auto">
-              <div
-                style={{
-                  backgroundColor: "#f9fafb",
-                  minHeight: "500px",
-                  borderRadius: "8px",
-                  overflow: "hidden",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                <img
-                  alt={product.name}
-                  src={product.images[selectedImage]}
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                    objectFit: "cover",
-                  }}
-                />
-              </div>
-            </Col>
-          </Row>
-        </Col>
-
-        {/* Right Side - Product Details */}
+        <>
+          <LeftColumn />
+        </>
+        {/* Right Column */}
+        {/*  */}
+        {/*  */}
         <Col xs={24} lg={12}>
           <div>
-            {/* Product Title */}
             <h1
               style={{
                 fontSize: "32px",
@@ -134,10 +78,9 @@ export const ProductContent = () => {
                 color: "#111827",
               }}
             >
-              {product.name}
+              {data?.name}
             </h1>
 
-            {/* Brand Name */}
             <div
               style={{
                 fontSize: "15px",
@@ -149,14 +92,16 @@ export const ProductContent = () => {
               {product.brandName}
             </div>
 
-            {/* Seller */}
             <div
-              style={{ color: "#6b7280", marginBottom: "14px", fontSize: "14px" }}
+              style={{
+                color: "#6b7280",
+                marginBottom: "14px",
+                fontSize: "14px",
+              }}
             >
               Sold By : {product.seller}
             </div>
 
-            {/* Rating */}
             <div
               style={{
                 display: "flex",
@@ -181,14 +126,23 @@ export const ProductContent = () => {
                 {product.rating}
               </span>
               <span
-                style={{ marginLeft: "12px", color: "#6b7280", fontSize: "14px" }}
+                style={{
+                  marginLeft: "12px",
+                  color: "#6b7280",
+                  fontSize: "14px",
+                }}
               >
                 {product.reviewCount} Reviews
               </span>
             </div>
 
-            {/* Price */}
-            <div style={{ marginBottom: "24px", display: "flex", alignItems: "baseline" }}>
+            <div
+              style={{
+                marginBottom: "24px",
+                display: "flex",
+                alignItems: "baseline",
+              }}
+            >
               <span
                 style={{ fontSize: "28px", fontWeight: 700, color: "#111827" }}
               >
@@ -275,6 +229,8 @@ export const ProductContent = () => {
             </div>
 
             {/* Color Selection */}
+            {/*  */}
+            {/*  */}
             <div style={{ marginBottom: "24px" }}>
               <h4
                 style={{
@@ -319,6 +275,8 @@ export const ProductContent = () => {
             </div>
 
             {/* Best Offers */}
+            {/*  */}
+            {/*  */}
             <div style={{ marginBottom: "28px" }}>
               <h4
                 style={{
@@ -339,7 +297,10 @@ export const ProductContent = () => {
                 }}
               >
                 {product.offers.map((offer, index) => (
-                  <div key={index} style={{ lineHeight: "1.5", color: "#374151" }}>
+                  <div
+                    key={index}
+                    style={{ lineHeight: "1.5", color: "#374151" }}
+                  >
                     <span style={{ fontWeight: 600 }}>{offer.label}</span>{" "}
                     <span>{offer.text}</span>{" "}
                     <a
@@ -358,6 +319,8 @@ export const ProductContent = () => {
             </div>
 
             {/* Action Buttons */}
+            {/*  */}
+            {/*  */}
             <div style={{ display: "flex", gap: "12px", marginTop: "32px" }}>
               <Button
                 type="primary"
@@ -371,8 +334,9 @@ export const ProductContent = () => {
                   borderColor: "#1e3a8a",
                   borderRadius: "10px",
                 }}
+                onClick={() => navigate("/myCart")}
               >
-                Add to cart
+                Add to Cart
               </Button>
               <Button
                 size="large"

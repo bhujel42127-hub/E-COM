@@ -91,42 +91,6 @@ export const AdminViewProduct = () => {
     }));
   };
 
-  // const fetchProduct = async () => {
-  //   const res = await fetcher("/products");
-  //   console.log("fetching Product!", res);
-
-  //   setProduct(res.products);
-  //   // console.log("Products: ", res.Products);
-  // };
-
-  // useEffect(() => {
-  //   fetchProduct();
-  // }, []);
-
-  // const onFinish: FormProps<Product>["onFinish"] = async (values) => {
-  //   if (value.isEdit) {
-  //     console.log("Product edit reached");
-  //     try {
-  //       console.log("Product edit try catch");
-  //       await updateProduct.mutateAsync(values);
-  //       form.resetFields();
-  //       resetValue();
-  //       console.log("After Product edit try catch");
-  //       openNotification("success", "Product Edit", `Product edited`);
-  //     } catch (error) {
-  //       console.log("Error while editing Product: ", error);
-  //     }
-  //   } else {
-  //     console.log("Adding Product...");
-  //     await createProduct.mutateAsync(values);
-  //     form.resetFields();
-  //     resetValue();
-  //     openNotification("success", "Product Added", `Product added`);
-  //   }
-
-  //   console.log("Product added: ", values);
-  // };
-  
 
   const handleEdit = async (data: Product) => {
     console.log("data to be edited: ", data)
