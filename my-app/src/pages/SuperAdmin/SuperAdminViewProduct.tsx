@@ -1,8 +1,4 @@
-import {
-  Button,
-  message,
-  Space,
-} from "antd";
+import { Button, message, Space, Tag } from "antd";
 import { useState } from "react";
 import { Table } from "antd";
 import type { ColumnsType } from "antd/es/table";
@@ -25,7 +21,7 @@ export const AdminViewProduct = () => {
   const deleteProduct = useDeleteProduct();
   const { data, isLoading } = useGetAllProduct();
 
-  console.log("Fetched product: ", data)
+  console.log("Fetched product: ", data);
 
   const columns: ColumnsType<Product> = [
     {
@@ -47,6 +43,14 @@ export const AdminViewProduct = () => {
       key: "size",
       width: 200,
       ellipsis: true,
+      // render: (size: string[]) => size?.join(", "),
+      render: (sizes: string[]) => (
+        <>
+          {sizes?.map((size) => (
+            <Tag key={size}>{size}</Tag>
+          ))}
+        </>
+      ),
     },
     {
       title: "Color",
@@ -54,6 +58,14 @@ export const AdminViewProduct = () => {
       key: "color",
       width: 200,
       ellipsis: true,
+      // render: (size: string[]) => size?.join(", "),
+      render: (color: string[]) => (
+        <>
+          {color?.map((color) => (
+            <Tag key={color}>{color}</Tag>
+          ))}
+        </>
+      ),
     },
     {
       title: "Seller",
@@ -76,7 +88,9 @@ export const AdminViewProduct = () => {
       render: (_: unknown, record: Product) => (
         <Space size="middle">
           <Button onClick={() => handleEdit(record)}>Edit</Button>
-          <Button onClick={() => handleDelete(record._id)} danger>Delete</Button>
+          <Button onClick={() => handleDelete(record._id)} danger>
+            Delete
+          </Button>
         </Space>
       ),
     },
@@ -91,10 +105,9 @@ export const AdminViewProduct = () => {
     }));
   };
 
-
   const handleEdit = async (data: Product) => {
-    console.log("data to be edited: ", data)
-    navigate(`add/${data._id}`)
+    console.log("data to be edited: ", data);
+    navigate(`add/${data._id}`);
   };
   const handleDelete = async (id: string) => {
     console.log("handle delete reached");
@@ -138,8 +151,12 @@ export const AdminViewProduct = () => {
       }}
     >
       {/* <SearchBar /> */}
-      <ProductTable/>
-      <Button style={{marginTop:"10px"}} type="primary" onClick={() => navigate("/admin/products/add") }>
+      <ProductTable />
+      <Button
+        style={{ marginTop: "10px" }}
+        type="primary"
+        onClick={() => navigate("/admin/products/add")}
+      >
         Add Product
       </Button>
     </div>

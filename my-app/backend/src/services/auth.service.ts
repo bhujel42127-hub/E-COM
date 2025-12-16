@@ -99,7 +99,6 @@ export class AuthService {
     };
   }
   async getUser(token: string) {
-    console.log("auth service get user");
     const JWT_SECRET = process.env.JWT_SECRET as string;
     try {
       const decoded = jwt.verify(token, JWT_SECRET) as JwtPayload;

@@ -12,7 +12,7 @@ const router = Router();
 
 router.post("/login", login);
 router.post("/signup", signup);
-router.get("/getUser", getUser);
+router.get("/:token", requireUser, getUser);
 router.post("/refresh", refresh);
 router.post("/logout", requireUser, logout);
 

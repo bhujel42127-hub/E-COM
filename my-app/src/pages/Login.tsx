@@ -4,7 +4,7 @@ import type { FieldType } from "../Props";
 import { Link, useNavigate } from "react-router-dom";
 import { openNotification } from "../lib/openNotification";
 import { useLogin } from "../hooks/usePosts";
-import { setAccessToken, setRefreshToken } from "../utlis/handleToken";
+import { setAccessToken, setRefreshToken} from "../utlis/handleToken";
 
 const Login = () => {
   const navigate = useNavigate();

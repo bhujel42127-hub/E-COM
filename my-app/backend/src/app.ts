@@ -3,7 +3,7 @@ import cors from "cors";
 import authRoutes from "./routes/auth.routes";
 import adminRoutes from "./routes/admin.routes";
 import productRoutes from "./routes/product.routes";
-// import uploadRoutes from "./routes/upload.routes"
+import uploadRoutes from "./routes/upload.routes"
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -26,6 +26,6 @@ app.use((req, res, next) => {
 app.use("/auth", authRoutes);
 app.use("/admins", adminRoutes);
 app.use("/products", productRoutes);
-// app.use("/api", uploadRoutes);
+app.use("/api", uploadRoutes);
 
 export default app;

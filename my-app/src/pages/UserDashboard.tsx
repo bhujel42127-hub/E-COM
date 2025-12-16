@@ -1,16 +1,22 @@
 import { Outlet } from "react-router-dom";
 
-
-import { HeartOutlined, SearchOutlined, ShoppingCartOutlined, UserOutlined } from "@ant-design/icons";
+import {
+  HeartOutlined,
+  SearchOutlined,
+  ShoppingCartOutlined,
+  UserOutlined,
+} from "@ant-design/icons";
 import { Badge, Col, Input, Layout, Menu, Row } from "antd";
 import { Header } from "antd/es/layout/layout";
 import { Link } from "react-router-dom";
+import { useGetUser } from "../hooks/useGet";
+import { getAccessToken } from "../utlis/handleToken";
 
-export const UserDashboard = () =>{
+export const UserDashboard = () => {
   const headerItems = [
     {
       key: "1",
-      label: <Link to="/men">Men</Link>
+      label: <Link to="/men">Men</Link>,
     },
     {
       key: "2",
@@ -29,10 +35,18 @@ export const UserDashboard = () =>{
       label: <Link to="/contactUs">Contact Us</Link>,
     },
   ];
+  const token = getAccessToken();
+  const {data, isLoading} = useGetUser(token);
+  const userName = data?.email.split("@")[0] || "Guest";
 
   return (
     <Layout
-      style={{ display:"flex", minHeight: "100vh", fontFamily: "Libre Baskerville", minWidth: "100vw" }}
+      style={{
+        display: "flex",
+        minHeight: "100vh",
+        fontFamily: "Libre Baskerville",
+        minWidth: "100vw",
+      }}
     >
       {/* Header */}
       <Header
@@ -110,13 +124,13 @@ export const UserDashboard = () =>{
               >
                 <UserOutlined />
               </div>
-              <span>Anne Doe</span>
+              <span>{userName}</span>
             </div>
           </div>
         </div>
       </Header>
-      <div style={{flex: 1}}>
-          <Outlet />
+      <div style={{ flex: 1 }}>
+        <Outlet />
       </div>
       {/* Footer */}
       <footer
@@ -127,9 +141,7 @@ export const UserDashboard = () =>{
           padding: "60px 0 30px",
         }}
       >
-        <div
-          style={{ margin: "0 auto", padding: "0 50px" }}
-        >
+        <div style={{ margin: "0 auto", padding: "0 50px" }}>
           {/* Logo */}
           <div style={{ marginBottom: "50px" }}>
             <h2 style={{ fontSize: "36px", fontWeight: "bold", margin: 0 }}>
@@ -138,7 +150,7 @@ export const UserDashboard = () =>{
           </div>
 
           {/* Footer Links */}
-          <Row gutter={[0,0]}>
+          <Row gutter={[0, 0]}>
             {[
               {
                 title: "Women",
@@ -173,7 +185,14 @@ export const UserDashboard = () =>{
                 ],
               },
             ].map((column, index) => (
-              <Col key={index} xs={12} sm={8} md={4} lg={4} style={{paddingRight:0, paddingLeft:0}}>
+              <Col
+                key={index}
+                xs={12}
+                sm={8}
+                md={4}
+                lg={4}
+                style={{ paddingRight: 0, paddingLeft: 0 }}
+              >
                 <h3
                   style={{
                     fontSize: "18px",
@@ -203,7 +222,13 @@ export const UserDashboard = () =>{
             ))}
 
             {/* Stay In Touch */}
-            <Col xs={24} sm={16} md={8} lg={4} style={{paddingRight:0, paddingLeft:0}}>
+            <Col
+              xs={24}
+              sm={16}
+              md={8}
+              lg={4}
+              style={{ paddingRight: 0, paddingLeft: 0 }}
+            >
               <h3
                 style={{
                   fontSize: "18px",
@@ -250,7 +275,7 @@ export const UserDashboard = () =>{
               gap: "20px",
             }}
           >
-            <div style={{ display: "flex", gap: "30px"}}>
+            <div style={{ display: "flex", gap: "30px" }}>
               {["Terms & Conditions", "Privacy Policy"].map((text, i) => (
                 <a
                   key={i}
@@ -270,4 +295,3 @@ export const UserDashboard = () =>{
     </Layout>
   );
 };
-

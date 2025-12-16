@@ -10,11 +10,12 @@ const props: UploadProps = {
   action: 'http://localhost:3000/api/upload',
   onChange(info) {
     const { status } = info.file;
-    if (status !== 'uploading') {
-      console.log(info.file, info.fileList);
+    if (status === 'uploading') {
+      console.log("Uploading image...",info.file, info.fileList);
     }
     if (status === 'done') {
       message.success(`${info.file.name} file uploaded successfully.`);
+      console.log("Image uploaded!",info.file)
     } else if (status === 'error') {
       message.error(`${info.file.name} file upload failed.`);
     }

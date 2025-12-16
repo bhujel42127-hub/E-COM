@@ -62,17 +62,14 @@ export async function resetPassword(req: Request, res: Response) {
   }
 }
 export async function getUser(req: Request, res: Response) {
-  console.log("controller get user");
-
+  
   try {
-    console.log("inside controller  get user try catch ");
-
-    console.log("controller get user req:", req.body);
-    const { token } = req.body;
-    console.log("Access token: ", token);
-    const user = await authService.getUser(token);
-    return { user };
-  } catch (err: any) {}
+    const {token} = req.params;
+    const user = await authService.getUser(token as string);
+    res.json(user);
+  } catch (err: any) {
+    console.log("Error while fetching user: ", err)
+  }
 }
 
 export async function logout(req: Request, res: Response) {

@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 
 export const ProductCard = () => {
   const { data, isLoading } = useGetAllProduct();
-  console.log("products: ", data);
   const navigate = useNavigate();
   return (
     <Row gutter={[20, 20]} wrap={false}>

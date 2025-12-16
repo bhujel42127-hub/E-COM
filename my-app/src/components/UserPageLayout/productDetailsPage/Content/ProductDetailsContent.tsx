@@ -36,7 +36,7 @@ export const ProductContent = () => {
       "https://images.unsplash.com/photo-1551028719-00167b16eac5?w=500",
       "https://images.unsplash.com/photo-1551028719-00167b16eac5?w=500",
     ],
-    sizes: ["XS", "S", "M", "L", "XL"],
+    sizes: Array.isArray(data?.size) ? data.size : [],
     colors: ["red", "blue", "green"],
     offers: [
       { label: "Special offer", text: "get 25% off", link: "T&C" },
