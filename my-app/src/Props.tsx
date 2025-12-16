@@ -46,4 +46,5 @@ export type Product = {
   color: string;
   description: string;
   slug: string;
+  imageUrl: string;
 };

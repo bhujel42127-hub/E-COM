@@ -33,7 +33,8 @@ class ProductService {
     brand: string,
     color: string,
     description: string,
-    slug: string
+    slug: string,
+    image: string
   ) {
     const slugExists = await Product.findOne({ slug: slug });
     if (slugExists) throw new Error("Slug already exists");
@@ -46,6 +47,7 @@ class ProductService {
       color,
       description,
       slug,
+      imageUrl: image,
     });
     return { product };
   }

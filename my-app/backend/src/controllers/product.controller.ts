@@ -11,7 +11,7 @@ import { productService } from "../services/product.service";
 // }
 export async function createProducts(req: Request, res: Response) {
   try {
-    const { name, price, size, seller, brand, color, description, slug } =
+    const { name, price, size, seller, brand, color, description, slug, image } =
       req.body;
     const { product } = await productService.createProducts(
       name,
@@ -21,9 +21,10 @@ export async function createProducts(req: Request, res: Response) {
       brand,
       color,
       description,
-      slug
+      slug,
+      image
     );
-    res.json({ product });
+    res.status(201).json({ success: true, product });
   } catch (error) {
     res.status(409).json({
       message: "Slug already exists!!",

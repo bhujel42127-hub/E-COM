@@ -17,13 +17,7 @@ export const LeftColumn = () => {
     price: data?.price,
     originalPrice: 1000,
     // discount: 30,
-    images: [
-      "https://images.unsplash.com/photo-1551028719-00167b16eac5?w=500",
-      "https://images.unsplash.com/photo-1551028719-00167b16eac5?w=500",
-      "https://images.unsplash.com/photo-1551028719-00167b16eac5?w=500",
-      "https://images.unsplash.com/photo-1551028719-00167b16eac5?w=500",
-      "https://images.unsplash.com/photo-1551028719-00167b16eac5?w=500",
-    ],
+    images: [data?.imageUrl || ""],
     sizes: ["XS", "S", "M", "L", "XL"],
     colors: ["red", "blue", "green"],
     offers: [

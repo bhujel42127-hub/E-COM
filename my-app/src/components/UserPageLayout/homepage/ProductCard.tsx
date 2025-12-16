@@ -25,7 +25,7 @@ export const ProductCard = () => {
             cover={
               <img
                 alt={product.name as string}
-                // src={product.image}
+                src={product.imageUrl}
                 style={{ minHeight: "100px", objectFit: "cover" }}
               />
             }
