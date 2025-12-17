@@ -6,8 +6,6 @@ import {
   Row,
   Col,
   message,
-  ColorPicker,
-  Modal,
 } from "antd";
 import type { Product } from "../../Props";
 import { useCreateProduct, useUpdateProduct } from "../../hooks/productHooks";
@@ -19,7 +17,6 @@ import { UploadImage } from "../../components/upload";
 export default function AddProduct() {
   const [form] = Form.useForm();
   const [imageUrl, setImageUrl] = useState<string>("");
-  const [modal, openModal] = useState(false);
   const createProduct = useCreateProduct();
   const updateProduct = useUpdateProduct();
 
@@ -54,13 +51,13 @@ export default function AddProduct() {
     console.log("Product data:", productData);
     await createProduct.mutateAsync(productData);
     message.success("Product submitted successfully!");
-    navigate("/admin/products/add");
+    navigate("/admin/products");
   };
 
-  const handleCancel = () => {
-    form.resetFields();
-    openModal(false);
-  };
+  // const handleCancel = () => {
+  //   form.resetFields();
+  //   openModal(false);
+  // };
 
   return (
     <div style={{ padding: "24px", background: "#f5f5f5", minHeight: "100vh" }}>
@@ -213,7 +210,7 @@ export default function AddProduct() {
                 </Col>
 
                 <Col span={12}>
-                  <Form.Item
+                  {/* <Form.Item
                     label="Color"
                     name="color"
                     rules={[
@@ -222,7 +219,8 @@ export default function AddProduct() {
                   >
                     <Button
                       onClick={() => {
-                        form.resetFields(), openModal(true);
+                        form.resetFields(),
+                        openModal(true);
                       }}
                     >
                       Add Color
@@ -233,8 +231,8 @@ export default function AddProduct() {
                       <ColorPicker size="large"></ColorPicker>
                       </Form.Item>
                     </Modal>
-                  </Form.Item>
-                  {/* <Form.Item
+                  </Form.Item> */}
+                  <Form.Item
                     label="Color"
                     name="color"
                     rules={[
@@ -244,14 +242,15 @@ export default function AddProduct() {
                     <Select
                       mode="multiple"
                       size="large"
+                      labelInValue
                       placeholder="Select color"
                       options={[
-                        { label: "Blue", value: "blue" },
-                        { label: "Red", value: "red"},
-                        { label: "Green", value: "green"},
+                        { label: "Blue", value: "#0000FF" },
+                        { label: "Red", value: "#FF0000" },
+                        { label: "Green", value: "#00FF00" },
                       ]}
                     />
-                  </Form.Item> */}
+                  </Form.Item>
                 </Col>
 
                 <Col span={12}>

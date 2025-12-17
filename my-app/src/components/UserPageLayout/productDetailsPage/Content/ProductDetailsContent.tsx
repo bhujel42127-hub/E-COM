@@ -1,4 +1,4 @@
-import { Col, Row, Button, Rate } from "antd";
+import { Col, Row, Button, Rate, Tag } from "antd";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { HeartOutlined, HeartFilled } from "@ant-design/icons";
@@ -13,7 +13,7 @@ export const ProductContent = () => {
   const [isWishlisted, setIsWishlisted] = useState(false);
 
   // console.log("Product slug:", slug);
-  // console.log("Product slug data:", data);
+  console.log("Product slug data:", data);
 
   // const handleAddToCart = () => {
   //   navigate()
@@ -29,7 +29,7 @@ export const ProductContent = () => {
     originalPrice: 1000,
     // discount: 30,
     sizes: Array.isArray(data?.size) ? data.size : [],
-    colors: ["red", "blue", "green"],
+    colors: Array.isArray(data?.color) ? data.color : [],
     offers: [
       { label: "Special offer", text: "get 25% off", link: "T&C" },
       {
@@ -232,17 +232,27 @@ export const ProductContent = () => {
                 Select Color
               </h4>
               <div style={{ display: "flex", gap: "10px" }}>
-                {
-                  <div
-                    style={{
-                      width: "48px",
-                      height: "48px",
-                      borderRadius: "6px",
-                      overflow: "hidden",
-                      cursor: "pointer",
-                    }}
-                  ></div>
-                }
+                    {product?.colors.map((c) => (
+                      <Tag
+                        key={c.hex}
+                        style={{
+                          padding: 0,
+                          display: "inline-flex",
+                          alignItems: "center",
+                          backgroundColor: "#ffffff",
+                          gap: "4px",
+                        }}
+                      >
+                        <span
+                          style={{
+                            width: 42,
+                            height: 42,
+                            backgroundColor: c.hex || "",
+                            borderRadius: "8px",
+                          }}
+                        />
+                      </Tag>
+                    ))}
               </div>
             </div>
 

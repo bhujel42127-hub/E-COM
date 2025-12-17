@@ -37,7 +37,7 @@ export const UserDashboard = () => {
   ];
   const token = getAccessToken();
   const { data } = useGetUser(token);
-  const userName = data?.email.split("@")[0] || "Guest";
+  const userName = "Guest";
 
   return (
     <Layout

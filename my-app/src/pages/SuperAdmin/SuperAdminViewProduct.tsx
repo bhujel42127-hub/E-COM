@@ -21,7 +21,7 @@ export const AdminViewProduct = () => {
   const deleteProduct = useDeleteProduct();
   const { data, isLoading } = useGetAllProduct();
 
-  // console.log("Fetched product: ", data);
+  console.log("Fetched product: ", data);
 
   const columns: ColumnsType<Product> = [
     {
@@ -52,17 +52,29 @@ export const AdminViewProduct = () => {
         </>
       ),
     },
+    //
     {
       title: "Color",
       dataIndex: "color",
       key: "color",
       width: 200,
-      ellipsis: true,
-      // render: (size: string[]) => size?.join(", "),
-      render: (color: string[]) => (
+      render: (color: { _id?: string; name: string; hex: string }[]) => (
         <>
-          {color?.map((color) => (
-            <Tag key={color}>{color}</Tag>
+          {color?.map((c) => (
+            <Tag
+              key={c.hex}
+              style={{ padding: 0, display: "inline-flex", alignItems: "center", backgroundColor:"#ffffff", gap: "4px" }}
+            >
+              <span
+                style={{
+                  width: 22,
+                  height: 22,
+                  // backgroundColor: c.hex,
+                  borderRadius: "2px",
+                }}
+              />
+              {c.name}
+            </Tag>
           ))}
         </>
       ),

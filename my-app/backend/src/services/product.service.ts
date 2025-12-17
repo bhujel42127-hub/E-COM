@@ -25,20 +25,10 @@ class ProductService {
     return product;
   }
 
-  async createProducts(
-    name: string,
-    price: number,
-    size: string,
-    seller: string,
-    brand: string,
-    color: string,
-    description: string,
-    slug: string,
-    image: string
-  ) {
-    const slugExists = await Product.findOne({ slug: slug });
+  async createProducts(data: any) {
+    const slugExists = await Product.findOne({ slug: data.slug });
     if (slugExists) throw new Error("Slug already exists");
-    const product = await Product.create({
+    const {
       name,
       price,
       size,
@@ -47,8 +37,21 @@ class ProductService {
       color,
       description,
       slug,
+      image,
+    } = data;
+    console.log("color data in service:", color);
+    const product = await Product.create({
+      name,
+      price,
+      size,
+      seller,
+      brand,
+      color: color.map((c: any) => ({ name: c.label, hex: c.value })),
+      description,
+      slug,
       imageUrl: image,
     });
+    console.log("Created product: ", product);
     return { product };
   }
   async updateProduct(id: string, data: any) {
