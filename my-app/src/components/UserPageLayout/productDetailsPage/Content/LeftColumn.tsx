@@ -17,13 +17,7 @@ export const LeftColumn = () => {
     price: data?.price,
     originalPrice: 1000,
     // discount: 30,
-    images: [
-      "https://images.unsplash.com/photo-1551028719-00167b16eac5?w=500",
-      "https://images.unsplash.com/photo-1551028719-00167b16eac5?w=500",
-      "https://images.unsplash.com/photo-1551028719-00167b16eac5?w=500",
-      "https://images.unsplash.com/photo-1551028719-00167b16eac5?w=500",
-      "https://images.unsplash.com/photo-1551028719-00167b16eac5?w=500",
-    ],
+    images: [data?.imageUrl || ""],
     sizes: ["XS", "S", "M", "L", "XL"],
     colors: ["red", "blue", "green"],
     offers: [
@@ -44,12 +38,12 @@ export const LeftColumn = () => {
 
   return (
     <>
-      <Col xs={24} lg={12}>
+      <Col xs={24} lg={12} >
         <Row gutter={16} style={{ flexWrap: "nowrap" }}>
           {/* Thumbnail Column */}
           {/*  */}
           {/*  */}
-          <Col flex="70px">
+          <Col flex="auto">
             <div
               style={{
                 display: "flex",
@@ -62,8 +56,8 @@ export const LeftColumn = () => {
                   key={index}
                   onClick={() => setSelectedImage(index)}
                   style={{
-                    height: "70px",
-                    width: "70px",
+                    maxHeight: "70px",
+                    maxWidth: "100px",
                     borderRadius: "8px",
                     overflow: "hidden",
                     cursor: "pointer",
@@ -86,11 +80,11 @@ export const LeftColumn = () => {
           {/* Main Product Image */}
           {/*  */}
           {/*  */}
-          <Col flex="auto">
+          <Col>
             <div
               style={{
                 backgroundColor: "#f9fafb",
-                minHeight: "500px",
+                maxHeight: "550px",
                 borderRadius: "8px",
                 overflow: "hidden",
                 display: "flex",

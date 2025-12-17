@@ -36,7 +36,7 @@ export const UserDashboard = () => {
     },
   ];
   const token = getAccessToken();
-  const {data, isLoading} = useGetUser(token);
+  const { data } = useGetUser(token);
   const userName = data?.email.split("@")[0] || "Guest";
 
   return (
@@ -45,7 +45,8 @@ export const UserDashboard = () => {
         display: "flex",
         minHeight: "100vh",
         fontFamily: "Libre Baskerville",
-        minWidth: "100vw",
+        // minWidth: "100vw",
+        width: "100%",
       }}
     >
       {/* Header */}
@@ -57,6 +58,7 @@ export const UserDashboard = () => {
           padding: 0,
           height: "70px",
           lineHeight: "70px",
+          marginBottom: "10px",
         }}
       >
         <div

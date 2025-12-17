@@ -21,7 +21,7 @@ export const AdminViewProduct = () => {
   const deleteProduct = useDeleteProduct();
   const { data, isLoading } = useGetAllProduct();
 
-  console.log("Fetched product: ", data);
+  // console.log("Fetched product: ", data);
 
   const columns: ColumnsType<Product> = [
     {

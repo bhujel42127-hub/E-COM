@@ -4,10 +4,23 @@ import { ProductCard } from "../components/UserPageLayout/homepage/ProductCard";
 export const Men = () => {
   return (
     <div style={{ flex: 1 }}>
+      <h3
+        style={{
+          color: "#000000",
+          display: "inline-block",
+          fontSize: "24px",
+          fontWeight: "bold",
+          padding: "0 50px",
+          margin: "0 auto",
+        }}
+      >
+        Shoes
+      </h3>
       <div
         className="container"
         style={{
           margin: "0 auto",
+          marginBottom: "10px",
           padding: "0 50px",
           overflowX: "auto",
           scrollbarWidth: "none",
@@ -15,25 +28,26 @@ export const Men = () => {
           WebkitOverflowScrolling: "touch",
         }}
       >
-        <Link to="/men/shoes">
-          <h3
-            style={{
-              color: "#000000",
-              display: "inline-block",
-              fontSize: "24px",
-              fontWeight: "bold",
-              marginTop: "30px",
-            }}
-          >
-            Shoes
-          </h3>
-        </Link>
+        <Link to="/men/shoes"></Link>
         <ProductCard />
       </div>
+      <h3
+        style={{
+          color: "#000000",
+          display: "inline-block",
+          fontSize: "24px",
+          fontWeight: "bold",
+          margin: "0 auto",
+          padding: "0 50px",
+        }}
+      >
+        T-shirt
+      </h3>
       <div
         className="container"
         style={{
           margin: "0 auto",
+          marginBottom: "10px",
           padding: "0 50px",
           overflowX: "auto",
           scrollbarWidth: "none",
@@ -41,21 +55,21 @@ export const Men = () => {
           WebkitOverflowScrolling: "touch",
         }}
       >
-        <Link to="men/t-shirt">
-          <h3
-            style={{
-              color: "#000000",
-              display: "inline-block",
-              fontSize: "24px",
-              fontWeight: "bold",
-              marginTop: "30px",
-            }}
-          >
-            T-shirt
-          </h3>
-        </Link>
+        <Link to="men/t-shirt"></Link>
         <ProductCard />
       </div>
+      <h3
+        style={{
+          color: "#000000",
+          display: "inline-block",
+          fontSize: "24px",
+          fontWeight: "bold",
+          margin: "0 auto",
+          padding: "0 50px",
+        }}
+      >
+        Kattu
+      </h3>
       <div
         className="container"
         style={{
@@ -67,19 +81,7 @@ export const Men = () => {
           WebkitOverflowScrolling: "touch",
         }}
       >
-        <Link to="men/kattu">
-          <h3
-            style={{
-              color: "#000000",
-              display: "inline-block",
-              fontSize: "24px",
-              fontWeight: "bold",
-              marginTop: "30px",
-            }}
-          >
-            Kattu
-          </h3>
-        </Link>
+        <Link to="men/kattu"></Link>
         <ProductCard />
       </div>
     </div>

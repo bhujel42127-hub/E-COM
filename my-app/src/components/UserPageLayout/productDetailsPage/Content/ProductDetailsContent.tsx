@@ -10,7 +10,6 @@ export const ProductContent = () => {
   const { slug } = useParams();
   const { data } = useGetProductBySlug(slug as string);
   const [selectedSize, setSelectedSize] = useState("");
-  const [selectedColor, setSelectedColor] = useState(0);
   const [isWishlisted, setIsWishlisted] = useState(false);
 
   // console.log("Product slug:", slug);
@@ -29,13 +28,6 @@ export const ProductContent = () => {
     price: data?.price,
     originalPrice: 1000,
     // discount: 30,
-    images: [
-      "https://images.unsplash.com/photo-1551028719-00167b16eac5?w=500",
-      "https://images.unsplash.com/photo-1551028719-00167b16eac5?w=500",
-      "https://images.unsplash.com/photo-1551028719-00167b16eac5?w=500",
-      "https://images.unsplash.com/photo-1551028719-00167b16eac5?w=500",
-      "https://images.unsplash.com/photo-1551028719-00167b16eac5?w=500",
-    ],
     sizes: Array.isArray(data?.size) ? data.size : [],
     colors: ["red", "blue", "green"],
     offers: [
@@ -55,7 +47,14 @@ export const ProductContent = () => {
   };
 
   return (
-    <div style={{ padding: "20px 40px", maxWidth: "1400px", margin: "0 auto" }}>
+    <div
+      style={{
+        padding: "0 40px",
+        maxWidth: "1400px",
+        height: "100%",
+        marginTop: "5px",
+      }}
+    >
       <Row gutter={[40, 20]}>
         {/* Left Side */}
         {/*  */}
@@ -86,7 +85,7 @@ export const ProductContent = () => {
                 fontSize: "15px",
                 marginBottom: "2px",
                 fontWeight: 500,
-                color: "#374151",
+                color: "#000000",
               }}
             >
               {product.brandName}
@@ -94,9 +93,9 @@ export const ProductContent = () => {
 
             <div
               style={{
-                color: "#6b7280",
+                color: "#000000",
                 marginBottom: "14px",
-                fontSize: "14px",
+                fontSize: "12px",
               }}
             >
               Sold By : {product.seller}
@@ -138,13 +137,13 @@ export const ProductContent = () => {
 
             <div
               style={{
-                marginBottom: "24px",
+                marginBottom: "14px",
                 display: "flex",
                 alignItems: "baseline",
               }}
             >
               <span
-                style={{ fontSize: "28px", fontWeight: 700, color: "#111827" }}
+                style={{ fontSize: "20px", fontWeight: 700, color: "#111827" }}
               >
                 Rs. {product.price}
               </span>
@@ -190,16 +189,6 @@ export const ProductContent = () => {
                 >
                   Select Size
                 </h4>
-                <a
-                  href="#"
-                  style={{
-                    color: "#6b7280",
-                    fontSize: "13px",
-                    textDecoration: "none",
-                  }}
-                >
-                  Size Chart &gt;
-                </a>
               </div>
               <div style={{ display: "flex", gap: "10px" }}>
                 {product.sizes.map((size) => (
@@ -231,7 +220,7 @@ export const ProductContent = () => {
             {/* Color Selection */}
             {/*  */}
             {/*  */}
-            <div style={{ marginBottom: "24px" }}>
+            <div style={{ marginBottom: "10px" }}>
               <h4
                 style={{
                   fontSize: "15px",
@@ -243,34 +232,17 @@ export const ProductContent = () => {
                 Select Color
               </h4>
               <div style={{ display: "flex", gap: "10px" }}>
-                {product.colors.map((color, index) => (
+                {
                   <div
-                    key={index}
-                    onClick={() => setSelectedColor(index)}
                     style={{
                       width: "48px",
                       height: "48px",
                       borderRadius: "6px",
                       overflow: "hidden",
                       cursor: "pointer",
-                      border:
-                        selectedColor === index
-                          ? "2px solid #111827"
-                          : "1px solid #e5e7eb",
-                      transition: "all 0.2s",
                     }}
-                  >
-                    <img
-                      src={color}
-                      alt={`Color ${index + 1}`}
-                      style={{
-                        width: "100%",
-                        height: "100%",
-                        objectFit: "cover",
-                      }}
-                    />
-                  </div>
-                ))}
+                  ></div>
+                }
               </div>
             </div>
 

@@ -1,16 +1,28 @@
-import { Form, Input, Button, Select, Row, Col, message } from "antd";
+import {
+  Form,
+  Input,
+  Button,
+  Select,
+  Row,
+  Col,
+  message,
+  ColorPicker,
+  Modal,
+} from "antd";
 import type { Product } from "../../Props";
 import { useCreateProduct, useUpdateProduct } from "../../hooks/productHooks";
 import { useNavigate, useParams } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useGetProduct } from "../../hooks/useGet";
 import { UploadImage } from "../../components/upload";
 
 export default function AddProduct() {
   const [form] = Form.useForm();
+  const [imageUrl, setImageUrl] = useState<string>("");
+  const [modal, openModal] = useState(false);
   const createProduct = useCreateProduct();
   const updateProduct = useUpdateProduct();
-  
+
   const navigate = useNavigate();
   const { id } = useParams();
   const isEdit = Boolean(id);
@@ -24,6 +36,10 @@ export default function AddProduct() {
     }
   }, [productData, form, id]);
 
+  const handleUploadSuccess = (imageUrl: string) => {
+    setImageUrl(imageUrl);
+  };
+
   const handleSubmit = async (values: Product) => {
     if (isEdit && id) {
       console.log("in edit mode");
@@ -31,9 +47,19 @@ export default function AddProduct() {
       message.success("Product edited successfully!");
       navigate("/admin/products");
     }
-    await createProduct.mutateAsync(values);
+    const productData = {
+      ...values,
+      image: imageUrl,
+    };
+    console.log("Product data:", productData);
+    await createProduct.mutateAsync(productData);
     message.success("Product submitted successfully!");
-    navigate("/admin/products");
+    navigate("/admin/products/add");
+  };
+
+  const handleCancel = () => {
+    form.resetFields();
+    openModal(false);
   };
 
   return (
@@ -66,7 +92,19 @@ export default function AddProduct() {
                     fontWeight: 500,
                   }}
                 >
-                  Product Image 1
+                  {imageUrl ? (
+                    <img
+                      src={imageUrl}
+                      alt="Product Image"
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "cover",
+                      }}
+                    />
+                  ) : (
+                    <span>Product Image 1</span>
+                  )}
                 </div>
               </Col>
             </Row>
@@ -95,7 +133,7 @@ export default function AddProduct() {
                         fontWeight: 500,
                       }}
                     >
-                      <UploadImage />
+                      <UploadImage onUploadSuccess={handleUploadSuccess} />
                     </div>
                   </Col>
                 </Row>
@@ -182,17 +220,38 @@ export default function AddProduct() {
                       { required: true, message: "Please select a color" },
                     ]}
                   >
+                    <Button
+                      onClick={() => {
+                        form.resetFields(), openModal(true);
+                      }}
+                    >
+                      Add Color
+                    </Button>
+                    <Modal open={modal} onCancel={handleCancel}>
+                      <Form.Item>
+
+                      <ColorPicker size="large"></ColorPicker>
+                      </Form.Item>
+                    </Modal>
+                  </Form.Item>
+                  {/* <Form.Item
+                    label="Color"
+                    name="color"
+                    rules={[
+                      { required: true, message: "Please select a color" },
+                    ]}
+                  >
                     <Select
                       mode="multiple"
                       size="large"
                       placeholder="Select color"
                       options={[
                         { label: "Blue", value: "blue" },
-                        { label: "Red", value: "red" },
-                        { label: "Green", value: "green" },
+                        { label: "Red", value: "red"},
+                        { label: "Green", value: "green"},
                       ]}
                     />
-                  </Form.Item>
+                  </Form.Item> */}
                 </Col>
 
                 <Col span={12}>

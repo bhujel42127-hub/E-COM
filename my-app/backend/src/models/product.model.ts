@@ -7,7 +7,10 @@ const productSchema = new mongoose.Schema(
     size: [String],
     seller: String,
     brand: String,
-    color: [String],
+    color: [{
+      name: String,
+      hex: String
+    }],
     imageUrl: String,
     description: String,
     slug: {type: String, unique: true},

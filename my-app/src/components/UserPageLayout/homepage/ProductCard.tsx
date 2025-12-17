@@ -21,15 +21,19 @@ export const ProductCard = () => {
           <Card
             hoverable
             loading={isLoading}
+            styles={{body: {padding: 10}}}
             onClick={() => navigate(`/productDetails/${product.slug}`)}
             cover={
               <img
                 alt={product.name as string}
-                // src={product.image}
-                style={{ minHeight: "100px", objectFit: "cover" }}
+                src={product.imageUrl}
+                style={{minHeight:"150px", maxHeight: "150px",objectFit: "cover" }}
               />
             }
           >
+            <div>
+              
+            </div>
             <h3
               style={{
                 fontWeight: "600",

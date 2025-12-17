@@ -7,7 +7,7 @@ import { Deals } from "./homepage/Deals";
 import { Trending } from "./homepage/Trending";
 import { AutoPlaySlider } from "../Swiper/AutoPlaySlider";
 
-export const UserDashboardLayout = () => {
+export const HomeLayout = () => {
   return (
     <Layout
       className="min-h-screen bg-white"
