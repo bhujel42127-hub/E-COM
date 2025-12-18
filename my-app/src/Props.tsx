@@ -47,4 +47,5 @@ export type Product = {
   description: string;
   slug: string;
   imageUrl: string;
+  quantity: number;
 };

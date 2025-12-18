@@ -11,7 +11,7 @@ export function requireUser(req: Request, res: Response, next: NextFunction) {
   try {
     const JWT_SECRET = process.env.JWT_SECRET as string;
     const authHeader = req.headers.authorization;
-
+    
     const token = authHeader?.split(" ")[1];
 
     console.log("Token: ", token);

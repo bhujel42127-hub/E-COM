@@ -11,8 +11,8 @@ import { Shop } from "../pages/Shop";
 import { ContactUs } from "../pages/ContactUs";
 import { ProductDetails } from "../components/UserPageLayout/productDetailsPage/ProductDetailsLayout";
 import AddProduct from "../pages/SuperAdmin/AddProducts";
-import { Cart } from "../components/UserPageLayout/addToCart/Cart";
 import { UserDashboard } from "../components/UserDashboard";
+import { ViewCart } from "../components/UserPageLayout/addToCart/ViewCart";
 
 export const router = createBrowserRouter([
   {
@@ -85,7 +85,7 @@ export const router = createBrowserRouter([
           },
           {
             path: "/myCart",
-            element: <Cart />
+            element: <ViewCart />
           },
 
           {

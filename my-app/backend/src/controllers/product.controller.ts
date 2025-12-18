@@ -65,7 +65,7 @@ export async function getProductsBySlug(req: Request, res: Response) {
   }
 }
 export async function updateProduct(req: Request, res: Response) {
-  const { id } = req.params;
+  const id  = req.params.id;
   try {
     await productService.updateProduct(id as string, req.body);
     res.json({ message: "Product updated" });

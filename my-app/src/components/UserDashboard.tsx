@@ -101,9 +101,11 @@ export const UserDashboard = () => {
             />
             <HeartOutlined style={{ fontSize: "20px", cursor: "pointer" }} />
             <Badge count={0} showZero>
-              <ShoppingCartOutlined
-                style={{ fontSize: "20px", cursor: "pointer" }}
-              />
+              <Link to="/myCart">
+                <ShoppingCartOutlined
+                  style={{ fontSize: "20px", cursor: "pointer" }}
+                />
+              </Link>
             </Badge>
             <div
               style={{

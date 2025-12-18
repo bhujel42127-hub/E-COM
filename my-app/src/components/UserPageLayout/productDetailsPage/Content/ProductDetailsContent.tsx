@@ -1,26 +1,22 @@
 import { Col, Row, Button, Rate, Tag, message } from "antd";
 import { useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { HeartOutlined, HeartFilled } from "@ant-design/icons";
 import { useGetProductBySlug } from "../../../../hooks/useGet";
 import { LeftColumn } from "./LeftColumn";
 import { getAccessToken } from "../../../../utlis/handleToken";
-import { addToCart } from "../../addToCart/addToCart";
+import { useAddToCart } from "../../../../hooks/cartHook";
 
 export const ProductContent = () => {
-  const navigate = useNavigate();
   const { slug } = useParams();
   const { data } = useGetProductBySlug(slug as string);
   const [selectedSize, setSelectedSize] = useState("");
   const [isWishlisted, setIsWishlisted] = useState(false);
+  const useCart = useAddToCart();
   const token = getAccessToken();
 
   // console.log("Product slug:", slug);
   console.log("Product slug data:", data);
-
-  // const handleAddToCart = () => {
-  //   navigate()
-  // }
 
   const product = {
     name: data?.name || "Paloma",
@@ -47,6 +43,15 @@ export const ProductContent = () => {
       },
       { label: "Special offer", text: "get 25% off", link: "T&C" },
     ],
+  };
+
+  const handleAddToCart = async (id: string) => {
+    try {
+      await useCart.mutateAsync(id);
+      message.success("Product added to cart")
+    } catch (error) {
+      console.log("Error adding product to cart: ", error);
+    }
   };
 
   return (
@@ -235,28 +240,28 @@ export const ProductContent = () => {
                 Select Color
               </h4>
               <div style={{ display: "flex", gap: "10px" }}>
-                    {product?.colors.map((c) => (
-                      <Tag
-                        key={c.hex}
-                        style={{
-                          padding: 0,
-                          display: "inline-flex",
-                          alignItems: "center",
-                          backgroundColor: "#ffffff",
-                          gap: "4px",
-                        }}
-                        // onClick={}
-                      >
-                        <span
-                          style={{
-                            width: 42,
-                            height: 42,
-                            backgroundColor: c.hex || "",
-                            borderRadius: "8px",
-                          }}
-                        />
-                      </Tag>
-                    ))}
+                {product?.colors.map((c) => (
+                  <Tag
+                    key={c.hex}
+                    style={{
+                      padding: 0,
+                      display: "inline-flex",
+                      alignItems: "center",
+                      backgroundColor: "#ffffff",
+                      gap: "4px",
+                    }}
+                    // onClick={}
+                  >
+                    <span
+                      style={{
+                        width: 42,
+                        height: 42,
+                        backgroundColor: c.hex || "",
+                        borderRadius: "8px",
+                      }}
+                    />
+                  </Tag>
+                ))}
               </div>
             </div>
 
@@ -321,7 +326,11 @@ export const ProductContent = () => {
                   borderRadius: "10px",
                 }}
                 onClick={() => {
-                  !!token ? addToCart(product) : message.error("User should be logged in") 
+                  if (token) handleAddToCart(data?._id);
+                  else message.error("User should be logged in!!");
+                  // token
+                  //   ? handleAddToCart(data._id)
+                  //   : message.error("User should be logged in");
                 }}
               >
                 Add to Cart
