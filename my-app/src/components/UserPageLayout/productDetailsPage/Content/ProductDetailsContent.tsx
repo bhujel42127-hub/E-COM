@@ -1,9 +1,11 @@
-import { Col, Row, Button, Rate, Tag } from "antd";
+import { Col, Row, Button, Rate, Tag, message } from "antd";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { HeartOutlined, HeartFilled } from "@ant-design/icons";
 import { useGetProductBySlug } from "../../../../hooks/useGet";
 import { LeftColumn } from "./LeftColumn";
+import { getAccessToken } from "../../../../utlis/handleToken";
+import { addToCart } from "../../addToCart/addToCart";
 
 export const ProductContent = () => {
   const navigate = useNavigate();
@@ -11,6 +13,7 @@ export const ProductContent = () => {
   const { data } = useGetProductBySlug(slug as string);
   const [selectedSize, setSelectedSize] = useState("");
   const [isWishlisted, setIsWishlisted] = useState(false);
+  const token = getAccessToken();
 
   // console.log("Product slug:", slug);
   console.log("Product slug data:", data);
@@ -242,6 +245,7 @@ export const ProductContent = () => {
                           backgroundColor: "#ffffff",
                           gap: "4px",
                         }}
+                        // onClick={}
                       >
                         <span
                           style={{
@@ -316,7 +320,9 @@ export const ProductContent = () => {
                   borderColor: "#1e3a8a",
                   borderRadius: "10px",
                 }}
-                onClick={() => navigate("/myCart")}
+                onClick={() => {
+                  !!token ? addToCart(product) : message.error("User should be logged in") 
+                }}
               >
                 Add to Cart
               </Button>
