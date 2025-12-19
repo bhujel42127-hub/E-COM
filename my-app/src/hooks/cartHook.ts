@@ -12,6 +12,15 @@ export function useAddToCart() {
     },
   });
 }
+export function useDeleteCartItem() {
+  return useMutation({
+    mutationFn: (productId: string) => mutator("DELETE", `/cart/${productId}`),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [queryKey?.admin.product] });
+      console.log("AFTER DELETE CART ITEM MUTATION FUNCTION SUCCESS!!");
+    },
+  });
+}
 export function useGetCartItems() {
   return useQuery({
     queryKey: [queryKey?.admin.product],

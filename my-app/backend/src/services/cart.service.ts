@@ -27,7 +27,7 @@ class CartService {
   }
   async deleteCartItem(userId: string, itemId: string) {
     try {
-      return await Cart.deleteOne({ productId: itemId, userId: userId });
+      return await Cart.deleteOne({ _id: itemId, userId: userId });
     } catch (error) {
       throw new Error("Error deleting cart item");
     }

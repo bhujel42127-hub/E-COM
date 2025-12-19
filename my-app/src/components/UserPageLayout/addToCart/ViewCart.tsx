@@ -1,14 +1,15 @@
 import { Button, Divider, Space, Table } from "antd";
 import type { TableColumnsType, TableProps } from "antd";
 import type { Product } from "../../../Props";
-import { useGetCartItems } from "../../../hooks/cartHook";
+import { useDeleteCartItem, useGetCartItems } from "../../../hooks/cartHook";
 
 export const ViewCart = () => {
   const { data, isLoading } = useGetCartItems();
+  const useDelete = useDeleteCartItem();
 
-  const handleDelete = (productId: string) => {
+  const handleDelete = async(productId: string) => {
     console.log("Delete product with id:", productId);
-    // Implement delete functionality here
+    await useDelete.mutateAsync(productId);
   };
 
   const columns: TableColumnsType<Product> = [
@@ -70,8 +71,8 @@ export const ViewCart = () => {
 
   const cartItems = data?.cartItems.map((item) => ({
     _id: item._id,
-    name: item.productId.name,
-    price: item.productId.price,
+    name: item.productId?.name,
+    price: item.productId?.price,
     quantity: item.quantity,
     image: item.productId.imageUrl,
   }));

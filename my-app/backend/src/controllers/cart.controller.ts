@@ -21,6 +21,7 @@ export async function getCartItems(req: Request, res: Response) {
 export async function deleteCartItem(req: Request, res: Response) {
   const userId = req.userId;
   const itemId = req.params.id;
-  const cartItems = await cartService.deleteCartItem(userId, itemId);
+  console.log("Product Id:", itemId)
+  await cartService.deleteCartItem(userId, itemId);
   res.json({ message: "Cart items deleted successfully", success: true });
 }
