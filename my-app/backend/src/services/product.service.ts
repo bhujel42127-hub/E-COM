@@ -1,4 +1,5 @@
 import { Product } from "../models/product.model";
+import { slugify } from "../slugify";
 
 class ProductService {
   async getProducts(
@@ -39,7 +40,8 @@ class ProductService {
       slug,
       image,
     } = data;
-    console.log("color data in service:", color);
+    const formattedSlug = slugify(slug);
+    console.log("Product slug:", formattedSlug)
     const product = await Product.create({
       name,
       price,
@@ -48,14 +50,16 @@ class ProductService {
       brand,
       color: color.map((c: any) => ({ name: c.label, hex: c.value })),
       description,
-      slug,
+      slug: formattedSlug,
       imageUrl: image,
     });
     console.log("Created product: ", product);
     return { product };
   }
   async updateProduct(id: string, data: any) {
-    return await Product.findByIdAndUpdate({ _id: id }, data, {
+    const formattedSlug = slugify(data.slug);
+
+    return await Product.findByIdAndUpdate({ _id: id }, {...data, slug: formattedSlug}, {
       new: true,
     });
   }

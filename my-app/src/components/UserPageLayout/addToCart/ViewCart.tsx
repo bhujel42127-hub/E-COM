@@ -1,44 +1,50 @@
-import { Button, Divider, Space, Table } from "antd";
-import type { TableColumnsType, TableProps } from "antd";
+import { Button, Divider, Image, Space, Table, Typography } from "antd";
+import type { TableProps } from "antd";
 import type { Product } from "../../../Props";
 import { useDeleteCartItem, useGetCartItems } from "../../../hooks/cartHook";
 
 export const ViewCart = () => {
   const { data, isLoading } = useGetCartItems();
   const useDelete = useDeleteCartItem();
+  const {Text} = Typography;
 
-  const handleDelete = async(productId: string) => {
+  console.log("Product data:", data)
+
+  const handleDelete = async (productId: string) => {
     console.log("Delete product with id:", productId);
     await useDelete.mutateAsync(productId);
   };
 
-  const columns: TableColumnsType<Product> = [
+  const columns = [
     {
-      title: "Image",
-      dataIndex: "image",
-      key: "image",
-      render: (imageUrl: string) => (
-        <img
-          src={imageUrl}
-          alt="Product"
-          style={{ width: "50px", height: "50px", objectFit: "cover" }}
-        />
+      title: "Product",
+      dataIndex: "product",
+      key: "product",
+      render: (_: unknown, record) => (
+        <Space>
+          <Image
+            src={record.product.image}
+            alt="Product"
+            style={{ width: "50px", height: "50px", objectFit: "cover" }}
+          />
+          <Text strong>{record.product.name}</Text>
+        </Space>
       ),
-    },
-    {
-      title: "Name",
-      dataIndex: "name",
-      key: "name",
-    },
-    {
-      title: "Price",
-      dataIndex: "price",
-      key: "price",
     },
     {
       title: "Quantity",
       dataIndex: "quantity",
       key: "quantity",
+    },
+    {
+      title: "Price ($)",
+      dataIndex: "price",
+      key: "price",
+    },
+    {
+      title: "Total",
+      dataIndex: "total",
+      key: "total",
     },
     {
       title: "Action",
@@ -71,14 +77,17 @@ export const ViewCart = () => {
 
   const cartItems = data?.cartItems.map((item) => ({
     _id: item._id,
-    name: item.productId?.name,
-    price: item.productId?.price,
+    product: {
+      name: item.productId?.name,
+      image: item.productId.imageUrl,
+    },
     quantity: item.quantity,
-    image: item.productId.imageUrl,
+    price: "$" + item.productId?.price,
+    total: "$" + item.productId?.price * item.quantity,
   }));
 
   return (
-    <div>
+    <div className="m-4">
       <Divider />
       <Table<Product>
         rowKey={"_id"}

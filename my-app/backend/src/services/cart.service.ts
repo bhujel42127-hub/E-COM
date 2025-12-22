@@ -20,6 +20,7 @@ class CartService {
       const cartItems = await Cart.find()
         .populate("productId")
         .where({ userId: userId });
+      console.log("Cart Items in getCartItems:", cartItems)
       return cartItems;
     } catch (error) {
       throw new Error("Error fetching cart items");
