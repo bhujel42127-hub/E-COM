@@ -1,4 +1,4 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 
 import {
   HeartOutlined,
@@ -11,6 +11,7 @@ import { Header } from "antd/es/layout/layout";
 import { Link } from "react-router-dom";
 
 export const UserDashboard = () => {
+  const navigate = useNavigate();
   const headerItems = [
     {
       key: "1",
@@ -97,11 +98,12 @@ export const UserDashboard = () => {
             />
             <HeartOutlined style={{ fontSize: "20px", cursor: "pointer" }} />
             <Badge count={5}>
-              <Link to="/myCart">
                 <ShoppingCartOutlined
                   style={{ fontSize: "20px", cursor: "pointer" }}
+                  onClick={() => {
+                    navigate("/myCart")
+                  }}
                 />
-              </Link>
             </Badge>
             <div
               style={{

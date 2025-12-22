@@ -16,14 +16,14 @@ export function useDeleteCartItem() {
   return useMutation({
     mutationFn: (productId: string) => mutator("DELETE", `/cart/${productId}`),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [queryKey?.admin.product] });
+      queryClient.invalidateQueries({ queryKey: [queryKey?.auth.cart] });
       console.log("AFTER DELETE CART ITEM MUTATION FUNCTION SUCCESS!!");
     },
   });
 }
 export function useGetCartItems() {
   return useQuery({
-    queryKey: [queryKey?.admin.product],
+    queryKey: [queryKey?.auth.cart],
     queryFn: () => mutator("GET", "/cart"),
   })
 }

@@ -4,11 +4,11 @@ import type { Product } from "../../../Props";
 import { useDeleteCartItem, useGetCartItems } from "../../../hooks/cartHook";
 
 export const ViewCart = () => {
-  const { data, isLoading } = useGetCartItems();
+  const { data, isLoading, isFetching } = useGetCartItems();
   const useDelete = useDeleteCartItem();
   const {Text} = Typography;
 
-  console.log("Product data:", data)
+  console.log("Product data:", data, isLoading, isFetching);
 
   const handleDelete = async (productId: string) => {
     console.log("Delete product with id:", productId);
@@ -23,7 +23,7 @@ export const ViewCart = () => {
       render: (_: unknown, record) => (
         <Space>
           <Image
-            src={record.product.image}
+            src={record.product.image || "image"}
             alt="Product"
             style={{ width: "50px", height: "50px", objectFit: "cover" }}
           />
@@ -75,7 +75,9 @@ export const ViewCart = () => {
     },
   };
 
-  const cartItems = data?.cartItems.map((item) => ({
+  const cartItems = data?.cartItems || [];
+
+  const tableData = cartItems?.map((item) => ({
     _id: item._id,
     product: {
       name: item.productId?.name,
@@ -93,8 +95,8 @@ export const ViewCart = () => {
         rowKey={"_id"}
         rowSelection={{ type: "checkbox", ...rowSelection }}
         columns={columns}
-        dataSource={cartItems}
-        loading={isLoading}
+        dataSource={tableData}
+        loading={isLoading || isFetching}
       />
     </div>
   );
