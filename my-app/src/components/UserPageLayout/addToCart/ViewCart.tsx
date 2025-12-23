@@ -2,10 +2,14 @@ import { Button, Divider, Image, Space, Table, Typography } from "antd";
 import type { TableProps } from "antd";
 import type { Product } from "../../../Props";
 import { useDeleteCartItem, useGetCartItems } from "../../../hooks/cartHook";
+import { useState } from "react";
 
 export const ViewCart = () => {
-  const { data, isLoading, isFetching } = useGetCartItems();
   const useDelete = useDeleteCartItem();
+  const setVariant = useState({
+    setColor: "",
+  })
+  const { data, isLoading, isFetching } = useGetCartItems();
   const {Text} = Typography;
 
   console.log("Product data:", data, isLoading, isFetching);

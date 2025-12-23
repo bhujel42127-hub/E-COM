@@ -7,11 +7,26 @@ import { LeftColumn } from "./LeftColumn";
 import { getAccessToken } from "../../../../utlis/handleToken";
 import { useAddToCart } from "../../../../hooks/cartHook";
 
+interface Variant {
+  color: {
+    name: String,
+    hex: String
+  },
+  size: String
+}
+
 export const ProductContent = () => {
   const { slug } = useParams();
   const { data } = useGetProductBySlug(slug as string);
   const [selectedSize, setSelectedSize] = useState("");
   const [isWishlisted, setIsWishlisted] = useState(false);
+  const [variant, setVariant] = useState<Variant>({
+    color: {
+      name: "Blue",
+      hex: "#0000FF",
+    },
+    size: "M",
+  });
   const useCart = useAddToCart();
   const token = getAccessToken();
 
@@ -178,6 +193,8 @@ export const ProductContent = () => {
             </div>
 
             {/* Size Selection */}
+            {/*  */}
+            {/*  */}
             <div style={{ marginBottom: "24px" }}>
               <div
                 style={{
@@ -202,18 +219,23 @@ export const ProductContent = () => {
                 {product.sizes.map((size) => (
                   <button
                     key={size}
-                    onClick={() => setSelectedSize(size)}
+                    onClick={() => {
+                      setVariant(prev => ({
+                        ...prev,
+                        size: size
+                      }))
+                    }}
                     style={{
                       width: "50px",
                       height: "50px",
                       fontSize: "14px",
                       fontWeight: 500,
-                      border:
-                        selectedSize === size
-                          ? "2px solid #111827"
-                          : "1px solid #d1d5db",
+                      // border:
+                      //   selectedSize === size
+                      //     ? "2px solid #111827"
+                      //     : "1px solid #d1d5db",
                       backgroundColor: "#ffffff",
-                      color: selectedSize === size ? "#111827" : "#6b7280",
+                      // color: selectedSize === size ? "#111827" : "#6b7280",
                       borderRadius: "50%",
                       cursor: "pointer",
                       transition: "all 0.2s",
@@ -240,15 +262,24 @@ export const ProductContent = () => {
                 Select Color
               </h4>
               <div style={{ display: "flex", gap: "10px" }}>
-                {product?.colors.map((c) => (
+                {product?.colors.map((color) => (
                   <Tag
-                    key={c.hex}
-                    style={{
+                    key={color.hex}
+                    onClick={() => setVariant({
+                      ...variant,
+                      color: {
+                        name: color.name,
+                        hex: color.hex
+                      }
+                    })}
+                      style={{
                       padding: 0,
                       display: "inline-flex",
                       alignItems: "center",
                       backgroundColor: "#ffffff",
+                      cursor: "pointer",
                       gap: "4px",
+                      
                     }}
                     // onClick={}
                   >
