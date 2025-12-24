@@ -5,9 +5,9 @@ import { queryKey } from "../lib/queryKey";
 
 export function useAddToCart() {
   return useMutation({
-    mutationFn: (productId: string) => mutator("POST", "/cart", {id: productId}),
+    mutationFn: (cartData: any) => mutator("POST", "/cart", {cartData: cartData}),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [queryKey?.admin.product] });
+      queryClient.invalidateQueries({ queryKey: [queryKey?.auth.cart] });
       console.log("AFTER ADD TO CART MUTATION FUNCTION SUCCESS!!");
     },
   });

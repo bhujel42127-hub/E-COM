@@ -6,11 +6,9 @@ import { useState } from "react";
 
 export const ViewCart = () => {
   const useDelete = useDeleteCartItem();
-  const setVariant = useState({
-    setColor: "",
-  })
+  
   const { data, isLoading, isFetching } = useGetCartItems();
-  const {Text} = Typography;
+  const { Text } = Typography;
 
   console.log("Product data:", data, isLoading, isFetching);
 
@@ -31,7 +29,7 @@ export const ViewCart = () => {
             alt="Product"
             style={{ width: "50px", height: "50px", objectFit: "cover" }}
           />
-          <Text strong>{record.product.name}</Text>
+          <Text strong>{record.product.name} ({}) </Text>
         </Space>
       ),
     },
@@ -85,7 +83,7 @@ export const ViewCart = () => {
     _id: item._id,
     product: {
       name: item.productId?.name,
-      image: item.productId.imageUrl,
+      image: item.productId?.imageUrl,  
     },
     quantity: item.quantity,
     price: "$" + item.productId?.price,

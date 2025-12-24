@@ -7,31 +7,33 @@ import { LeftColumn } from "./LeftColumn";
 import { getAccessToken } from "../../../../utlis/handleToken";
 import { useAddToCart } from "../../../../hooks/cartHook";
 
-interface Variant {
+export interface Variant {
   color: {
-    name: String,
-    hex: String
-  },
-  size: String
+    name: String;
+    hex: String;
+  };
+  size: String;
+  selected: Boolean;
 }
 
 export const ProductContent = () => {
   const { slug } = useParams();
   const { data } = useGetProductBySlug(slug as string);
   const [selectedSize, setSelectedSize] = useState("");
+  const [selectedColor, setSelectedColor] = useState("");
   const [isWishlisted, setIsWishlisted] = useState(false);
-  const [variant, setVariant] = useState<Variant>({
+  const [variants, setVariant] = useState<Variant>({
     color: {
       name: "Blue",
       hex: "#0000FF",
     },
     size: "M",
+    selected: false,
   });
   const useCart = useAddToCart();
   const token = getAccessToken();
 
-  // console.log("Product slug:", slug);
-  console.log("Product slug data:", data);
+  // console.log("Product slug data:", data);
 
   const product = {
     name: data?.name || "Paloma",
@@ -61,9 +63,14 @@ export const ProductContent = () => {
   };
 
   const handleAddToCart = async (id: string) => {
+    console.log("Variant: ", variants);
+    const cartData = {
+      id: id,
+      variants,
+    };
     try {
-      await useCart.mutateAsync(id);
-      message.success("Product added to cart")
+      await useCart.mutateAsync(cartData);
+      message.success("Product added to cart");
     } catch (error) {
       console.log("Error adding product to cart: ", error);
     }
@@ -220,22 +227,25 @@ export const ProductContent = () => {
                   <button
                     key={size}
                     onClick={() => {
-                      setVariant(prev => ({
+                      setVariant((prev) => ({
                         ...prev,
-                        size: size
-                      }))
+                        size: size,
+                      })),
+                        !selectedSize
+                          ? setSelectedSize(size)
+                          : setSelectedSize("");
                     }}
                     style={{
                       width: "50px",
                       height: "50px",
                       fontSize: "14px",
                       fontWeight: 500,
-                      // border:
-                      //   selectedSize === size
-                      //     ? "2px solid #111827"
-                      //     : "1px solid #d1d5db",
+                      border:
+                        selectedSize === size
+                          ? "2px solid #111827"
+                          : "1px solid #d1d5db",
                       backgroundColor: "#ffffff",
-                      // color: selectedSize === size ? "#111827" : "#6b7280",
+                      color: selectedSize === size ? "#111827" : "#6b7280",
                       borderRadius: "50%",
                       cursor: "pointer",
                       transition: "all 0.2s",
@@ -265,21 +275,26 @@ export const ProductContent = () => {
                 {product?.colors.map((color) => (
                   <Tag
                     key={color.hex}
-                    onClick={() => setVariant({
-                      ...variant,
-                      color: {
-                        name: color.name,
-                        hex: color.hex
-                      }
-                    })}
-                      style={{
+                    onClick={() => {
+                      setVariant((prev) => ({
+                        ...prev,
+                        color: { name: color.name, hex: color.hex },
+                      })),
+                        !selectedColor
+                          ? setSelectedColor(color)
+                          : setSelectedColor("");
+                    }}
+                    style={{
                       padding: 0,
                       display: "inline-flex",
                       alignItems: "center",
                       backgroundColor: "#ffffff",
                       cursor: "pointer",
+                      border:
+                        selectedColor === color
+                          ? "1px solid #111827"
+                          : "1px solid #d1d5db",
                       gap: "4px",
-                      
                     }}
                     // onClick={}
                   >
@@ -287,7 +302,7 @@ export const ProductContent = () => {
                       style={{
                         width: 42,
                         height: 42,
-                        backgroundColor: c.hex || "",
+                        backgroundColor: color.hex || "",
                         borderRadius: "8px",
                       }}
                     />

@@ -6,14 +6,15 @@ const cartSchema = new mongoose.Schema({
   quantity: { type: Number, default: 1, min: 1, required: true },
   variants: {
     color: {
-      name: String,
-      hex: String,
+      name: {type: String, required: true},
+      hex: {type: String, required: true},
     },
     size: {
       type: String,
       required: true,
     },
   },
+  isSelected: Boolean
 });
-cartSchema.index({ userId: 1, productId: 1 }, { unique: true });
+cartSchema.index({ userId: 1, productId: 1, variants: 1 }, { unique: true });
 export const Cart = mongoose.model("Cart", cartSchema);
