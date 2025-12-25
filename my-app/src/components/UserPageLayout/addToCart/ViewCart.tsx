@@ -88,6 +88,7 @@ export const ViewCart = () => {
     quantity: item.quantity,
     price: "$" + item.productId?.price,
     total: "$" + item.productId?.price * item.quantity,
+    
   }));
 
   return (
