@@ -43,23 +43,22 @@ export const ProductContent = () => {
     reviewCount: 36,
     price: data?.price,
     originalPrice: 1000,
-    // discount: 30,
     sizes: Array.isArray(data?.size) ? data.size : [],
     colors: Array.isArray(data?.color) ? data.color : [],
-    offers: [
-      { label: "Special offer", text: "get 25% off", link: "T&C" },
-      {
-        label: "Bank offer",
-        text: "get 30% off on Axis Bank Credit card",
-        link: "T&C",
-      },
-      {
-        label: "Wallet offer",
-        text: "get 40% cashback via Paytm wallet on first transaction",
-        link: "T&C",
-      },
-      { label: "Special offer", text: "get 25% off", link: "T&C" },
-    ],
+    // offers: [
+    //   { label: "Special offer", text: "get 25% off", link: "T&C" },
+    //   {
+    //     label: "Bank offer",
+    //     text: "get 30% off on Axis Bank Credit card",
+    //     link: "T&C",
+    //   },
+      // {
+      //   label: "Wallet offer",
+      //   text: "get 40% cashback via Paytm wallet on first transaction",
+      //   link: "T&C",
+      // },
+      // { label: "Special offer", text: "get 25% off", link: "T&C" },
+    // ],
   };
 
   const handleAddToCart = async (id: string) => {
@@ -187,16 +186,6 @@ export const ProductContent = () => {
               >
                 Rs. {product.originalPrice}
               </span>
-              <span
-                style={{
-                  marginLeft: "10px",
-                  fontSize: "16px",
-                  color: "#10b981",
-                  fontWeight: 600,
-                }}
-              >
-                ({product.discount}% off)
-              </span>
             </div>
 
             {/* Size Selection */}
@@ -222,7 +211,7 @@ export const ProductContent = () => {
                   Select Size
                 </h4>
               </div>
-              <div style={{ display: "flex", gap: "10px" }}>
+              <div style={{ display: "flex", gap: "2px" }}>
                 {product.sizes.map((size) => (
                   <button
                     key={size}
@@ -271,7 +260,7 @@ export const ProductContent = () => {
               >
                 Select Color
               </h4>
-              <div style={{ display: "flex", gap: "10px" }}>
+              <div style={{ display: "flex", gap: "2px" }}>
                 {product?.colors.map((color) => (
                   <Tag
                     key={color.hex}
@@ -292,9 +281,9 @@ export const ProductContent = () => {
                       cursor: "pointer",
                       border:
                         selectedColor === color
-                          ? "1px solid #111827"
-                          : "1px solid #d1d5db",
-                      gap: "4px",
+                          ? "2px solid #111827"
+                          : "2px solid #d1d5db",
+                      borderRadius: "8px"
                     }}
                     // onClick={}
                   >
@@ -303,7 +292,7 @@ export const ProductContent = () => {
                         width: 42,
                         height: 42,
                         backgroundColor: color.hex || "",
-                        borderRadius: "8px",
+                        borderRadius: "6px",
                       }}
                     />
                   </Tag>
@@ -314,12 +303,12 @@ export const ProductContent = () => {
             {/* Best Offers */}
             {/*  */}
             {/*  */}
-            <div style={{ marginBottom: "28px" }}>
+            {/* <div>
               <h4
                 style={{
                   fontSize: "15px",
                   fontWeight: 600,
-                  marginBottom: "14px",
+                  marginBottom: "10px",
                   color: "#111827",
                 }}
               >
@@ -329,7 +318,7 @@ export const ProductContent = () => {
                 style={{
                   display: "flex",
                   flexDirection: "column",
-                  gap: "10px",
+                  gap: "5px",
                   fontSize: "14px",
                 }}
               >
@@ -351,9 +340,9 @@ export const ProductContent = () => {
                       {offer.link}
                     </a>
                   </div>
-                ))}
+                ))} 
               </div>
-            </div>
+            </div> */}
 
             {/* Action Buttons */}
             {/*  */}
