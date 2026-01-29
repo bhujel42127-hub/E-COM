@@ -40,12 +40,14 @@ export default function AddProduct() {
   const handleSubmit = async (values: Product) => {
     if (isEdit && id) {
       console.log("in edit mode");
-      await updateProduct.mutateAsync({ data: values, id });
+      await updateProduct.mutateAsync({ data: {...values, slug: values.slug ? values.slug : values.name}, id });
       message.success("Product edited successfully!");
       navigate("/admin/products");
+      return
     }
     const productData = {
       ...values,
+      slug: values.slug? values.slug : values.name,  
       image: imageUrl,
     };
     console.log("Product data:", productData);
@@ -280,7 +282,10 @@ export default function AddProduct() {
                   <Form.Item
                     label="Slug"
                     name="slug"
-                    rules={[{ required: true, message: "Please enter slug" }]}
+                    // rules={[{
+                    //   required: true,
+                    //   message: "Please enter slug!"
+                    // }]}
                   >
                     <Input size="large" placeholder="Enter slug" />
                   </Form.Item>

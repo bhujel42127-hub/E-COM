@@ -1,4 +1,5 @@
 import { Product } from "../models/product.model";
+import { slugify } from "../slugify";
 
 class ProductService {
   async getProducts(
@@ -24,22 +25,13 @@ class ProductService {
     const product = await Product.findOne({ slug: slug });
     return product;
   }
-
+  
   async createProducts(data: any) {
     const slugExists = await Product.findOne({ slug: data.slug });
     if (slugExists) throw new Error("Slug already exists");
-    const {
-      name,
-      price,
-      size,
-      seller,
-      brand,
-      color,
-      description,
-      slug,
-      image,
-    } = data;
-    console.log("color data in service:", color);
+    const { name, price, size, seller, brand, color, description, slug, image } = data;
+    const formattedSlug = slugify(slug);
+    console.log("Product slug:", formattedSlug)
     const product = await Product.create({
       name,
       price,
@@ -48,14 +40,16 @@ class ProductService {
       brand,
       color: color.map((c: any) => ({ name: c.label, hex: c.value })),
       description,
-      slug,
+      slug: formattedSlug,
       imageUrl: image,
     });
     console.log("Created product: ", product);
     return { product };
   }
   async updateProduct(id: string, data: any) {
-    return await Product.findByIdAndUpdate({ _id: id }, data, {
+    const formattedSlug = slugify(data.slug);
+
+    return await Product.findByIdAndUpdate({ _id: id }, {...data, slug: formattedSlug}, {
       new: true,
     });
   }

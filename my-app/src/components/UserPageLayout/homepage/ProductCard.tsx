@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 export const ProductCard = () => {
   const { data, isLoading } = useGetAllProduct();
+  console.log("Product data:", data)
   const navigate = useNavigate();
   return (
     <Row gutter={[20, 20]} wrap={false}>
@@ -22,7 +23,7 @@ export const ProductCard = () => {
             hoverable
             loading={isLoading}
             styles={{body: {padding: 10}}}
-            onClick={() => navigate(`/productDetails/${product.slug}`)}
+            onClick={() => navigate(`/products/${product.slug}`)}
             cover={
               <img
                 alt={product.name as string}

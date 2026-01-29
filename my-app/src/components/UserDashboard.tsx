@@ -1,4 +1,4 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 
 import {
   HeartOutlined,
@@ -9,10 +9,9 @@ import {
 import { Badge, Col, Input, Layout, Menu, Row } from "antd";
 import { Header } from "antd/es/layout/layout";
 import { Link } from "react-router-dom";
-import { useGetUser } from "../hooks/useGet";
-import { getAccessToken } from "../utlis/handleToken";
 
 export const UserDashboard = () => {
+  const navigate = useNavigate();
   const headerItems = [
     {
       key: "1",
@@ -35,8 +34,6 @@ export const UserDashboard = () => {
       label: <Link to="/contactUs">Contact Us</Link>,
     },
   ];
-  const token = getAccessToken();
-  const { data } = useGetUser(token);
   const userName = "Guest";
 
   return (
@@ -100,12 +97,13 @@ export const UserDashboard = () => {
               style={{ width: "300px", borderRadius: "20px" }}
             />
             <HeartOutlined style={{ fontSize: "20px", cursor: "pointer" }} />
-            <Badge count={0} showZero>
-              <Link to="/myCart">
+            <Badge count={5}>
                 <ShoppingCartOutlined
                   style={{ fontSize: "20px", cursor: "pointer" }}
+                  onClick={() => {
+                    navigate("/myCart")
+                  }}
                 />
-              </Link>
             </Badge>
             <div
               style={{

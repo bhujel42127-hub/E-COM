@@ -176,7 +176,7 @@ export const ViewAdmins = () => {
         Add Admin
       </Button>
       <Modal
-        title="Basic Modal"
+        title= {value.isEdit ? "Edit Admin" : "Add Admin"}
         closable={{ "aria-label": "Custom Close Button" }}
         open={value.isModalOpen}
         onCancel={handleCancel}

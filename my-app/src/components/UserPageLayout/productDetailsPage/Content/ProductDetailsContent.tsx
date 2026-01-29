@@ -7,16 +7,33 @@ import { LeftColumn } from "./LeftColumn";
 import { getAccessToken } from "../../../../utlis/handleToken";
 import { useAddToCart } from "../../../../hooks/cartHook";
 
+export interface Variant {
+  color: {
+    name: String;
+    hex: String;
+  };
+  size: String;
+  selected: Boolean;
+}
+
 export const ProductContent = () => {
   const { slug } = useParams();
   const { data } = useGetProductBySlug(slug as string);
   const [selectedSize, setSelectedSize] = useState("");
+  const [selectedColor, setSelectedColor] = useState("");
   const [isWishlisted, setIsWishlisted] = useState(false);
+  const [variants, setVariant] = useState<Variant>({
+    color: {
+      name: "Blue",
+      hex: "#0000FF",
+    },
+    size: "M",
+    selected: false,
+  });
   const useCart = useAddToCart();
   const token = getAccessToken();
 
-  // console.log("Product slug:", slug);
-  console.log("Product slug data:", data);
+  // console.log("Product slug data:", data);
 
   const product = {
     name: data?.name || "Paloma",
@@ -26,29 +43,33 @@ export const ProductContent = () => {
     reviewCount: 36,
     price: data?.price,
     originalPrice: 1000,
-    // discount: 30,
     sizes: Array.isArray(data?.size) ? data.size : [],
     colors: Array.isArray(data?.color) ? data.color : [],
-    offers: [
-      { label: "Special offer", text: "get 25% off", link: "T&C" },
-      {
-        label: "Bank offer",
-        text: "get 30% off on Axis Bank Credit card",
-        link: "T&C",
-      },
-      {
-        label: "Wallet offer",
-        text: "get 40% cashback via Paytm wallet on first transaction",
-        link: "T&C",
-      },
-      { label: "Special offer", text: "get 25% off", link: "T&C" },
-    ],
+    // offers: [
+    //   { label: "Special offer", text: "get 25% off", link: "T&C" },
+    //   {
+    //     label: "Bank offer",
+    //     text: "get 30% off on Axis Bank Credit card",
+    //     link: "T&C",
+    //   },
+      // {
+      //   label: "Wallet offer",
+      //   text: "get 40% cashback via Paytm wallet on first transaction",
+      //   link: "T&C",
+      // },
+      // { label: "Special offer", text: "get 25% off", link: "T&C" },
+    // ],
   };
 
   const handleAddToCart = async (id: string) => {
+    console.log("Variant: ", variants);
+    const cartData = {
+      id: id,
+      variants,
+    };
     try {
-      await useCart.mutateAsync(id);
-      message.success("Product added to cart")
+      await useCart.mutateAsync(cartData);
+      message.success("Product added to cart");
     } catch (error) {
       console.log("Error adding product to cart: ", error);
     }
@@ -165,19 +186,11 @@ export const ProductContent = () => {
               >
                 Rs. {product.originalPrice}
               </span>
-              <span
-                style={{
-                  marginLeft: "10px",
-                  fontSize: "16px",
-                  color: "#10b981",
-                  fontWeight: 600,
-                }}
-              >
-                ({product.discount}% off)
-              </span>
             </div>
 
             {/* Size Selection */}
+            {/*  */}
+            {/*  */}
             <div style={{ marginBottom: "24px" }}>
               <div
                 style={{
@@ -198,11 +211,19 @@ export const ProductContent = () => {
                   Select Size
                 </h4>
               </div>
-              <div style={{ display: "flex", gap: "10px" }}>
+              <div style={{ display: "flex", gap: "2px" }}>
                 {product.sizes.map((size) => (
                   <button
                     key={size}
-                    onClick={() => setSelectedSize(size)}
+                    onClick={() => {
+                      setVariant((prev) => ({
+                        ...prev,
+                        size: size,
+                      })),
+                        !selectedSize
+                          ? setSelectedSize(size)
+                          : setSelectedSize("");
+                    }}
                     style={{
                       width: "50px",
                       height: "50px",
@@ -239,16 +260,30 @@ export const ProductContent = () => {
               >
                 Select Color
               </h4>
-              <div style={{ display: "flex", gap: "10px" }}>
-                {product?.colors.map((c) => (
+              <div style={{ display: "flex", gap: "2px" }}>
+                {product?.colors.map((color) => (
                   <Tag
-                    key={c.hex}
+                    key={color.hex}
+                    onClick={() => {
+                      setVariant((prev) => ({
+                        ...prev,
+                        color: { name: color.name, hex: color.hex },
+                      })),
+                        !selectedColor
+                          ? setSelectedColor(color)
+                          : setSelectedColor("");
+                    }}
                     style={{
                       padding: 0,
                       display: "inline-flex",
                       alignItems: "center",
                       backgroundColor: "#ffffff",
-                      gap: "4px",
+                      cursor: "pointer",
+                      border:
+                        selectedColor === color
+                          ? "2px solid #111827"
+                          : "2px solid #d1d5db",
+                      borderRadius: "8px"
                     }}
                     // onClick={}
                   >
@@ -256,8 +291,8 @@ export const ProductContent = () => {
                       style={{
                         width: 42,
                         height: 42,
-                        backgroundColor: c.hex || "",
-                        borderRadius: "8px",
+                        backgroundColor: color.hex || "",
+                        borderRadius: "6px",
                       }}
                     />
                   </Tag>
@@ -268,12 +303,12 @@ export const ProductContent = () => {
             {/* Best Offers */}
             {/*  */}
             {/*  */}
-            <div style={{ marginBottom: "28px" }}>
+            {/* <div>
               <h4
                 style={{
                   fontSize: "15px",
                   fontWeight: 600,
-                  marginBottom: "14px",
+                  marginBottom: "10px",
                   color: "#111827",
                 }}
               >
@@ -283,7 +318,7 @@ export const ProductContent = () => {
                 style={{
                   display: "flex",
                   flexDirection: "column",
-                  gap: "10px",
+                  gap: "5px",
                   fontSize: "14px",
                 }}
               >
@@ -305,9 +340,9 @@ export const ProductContent = () => {
                       {offer.link}
                     </a>
                   </div>
-                ))}
+                ))} 
               </div>
-            </div>
+            </div> */}
 
             {/* Action Buttons */}
             {/*  */}
