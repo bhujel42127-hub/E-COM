@@ -18,7 +18,7 @@ export function useGetAdmin() {
   });
 }
 
-export function useGetAllProduct() {
+export function     useGetAllProduct() {
   return useQuery({
     queryKey: [queryKey?.admin.product],
     queryFn: () => fetcher("/products"),

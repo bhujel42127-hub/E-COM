@@ -2,7 +2,6 @@ import { Button, Divider, Image, Space, Table, Typography } from "antd";
 import type { TableProps } from "antd";
 import type { Product } from "../../../Props";
 import { useDeleteCartItem, useGetCartItems } from "../../../hooks/cartHook";
-import { useState } from "react";
 
 export const ViewCart = () => {
   const useDelete = useDeleteCartItem();
@@ -29,7 +28,7 @@ export const ViewCart = () => {
             alt="Product"
             style={{ width: "50px", height: "50px", objectFit: "cover" }}
           />
-          <Text strong>{record.product.name} ({}) </Text>
+          <Text strong>{record.product.name} </Text>
         </Space>
       ),
     },

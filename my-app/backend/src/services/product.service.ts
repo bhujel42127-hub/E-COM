@@ -25,21 +25,11 @@ class ProductService {
     const product = await Product.findOne({ slug: slug });
     return product;
   }
-
+  
   async createProducts(data: any) {
     const slugExists = await Product.findOne({ slug: data.slug });
     if (slugExists) throw new Error("Slug already exists");
-    const {
-      name,
-      price,
-      size,
-      seller,
-      brand,
-      color,
-      description,
-      slug,
-      image,
-    } = data;
+    const { name, price, size, seller, brand, color, description, slug, image } = data;
     const formattedSlug = slugify(slug);
     console.log("Product slug:", formattedSlug)
     const product = await Product.create({
