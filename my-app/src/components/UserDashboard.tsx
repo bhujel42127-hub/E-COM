@@ -1,11 +1,13 @@
 import { Outlet, useNavigate } from "react-router-dom";
+import { useState } from "react";
 import {
   HeartOutlined,
   SearchOutlined,
   ShoppingCartOutlined,
   DashboardOutlined,
+  MenuOutlined,
 } from "@ant-design/icons";
-import { Badge, Col, Dropdown, Input, Layout, Row } from "antd";
+import { Badge, Col, Dropdown, Input, Layout, Row, Drawer, Menu } from "antd";
 import type { MenuProps } from "antd";
 import { LogoutOutlined, UserOutlined, SettingOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
@@ -31,6 +33,11 @@ export const UserDashboard = () => {
   const navigate = useNavigate();
   const { user, role, logout } = useAuth();
   const userName = user?.name || "Guest";
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  const toggleMobileMenu = () => {
+    setMobileMenuOpen(!mobileMenuOpen);
+  };
 
   const userMenuItems: MenuProps["items"] = [
     {
@@ -74,6 +81,11 @@ export const UserDashboard = () => {
       {/* ── Main Navbar ── */}
       <header className="sticky top-0 z-50 bg-white border-b border-gray-100 shadow-sm">
         <div className="max-w-[1400px] mx-auto px-6 lg:px-12 flex items-center justify-between h-16">
+
+          {/* Mobile Menu Icon (Hamburger) */}
+          <div className="md:hidden flex items-center mr-4">
+            <MenuOutlined className="text-xl cursor-pointer" onClick={toggleMobileMenu} />
+          </div>
 
           {/* Logo */}
           <Link to="/home" replace className="flex-shrink-0">
@@ -136,7 +148,7 @@ export const UserDashboard = () => {
               menu={{ items: userMenuItems }}
               trigger={["click"]}
               placement="bottomRight"
-              overlayClassName="w-52"
+              classNames={{ root: "w-52" }}
             >
               <div className="flex items-center gap-2 cursor-pointer group select-none">
                 <div className="w-8 h-8 rounded-full bg-[#0a0e27] flex items-center justify-center text-white text-xs font-bold ring-2 ring-transparent group-hover:ring-[#e11d48] transition-all">
@@ -150,6 +162,31 @@ export const UserDashboard = () => {
           </div>
         </div>
       </header>
+
+      {/* Mobile Sidebar/Drawer Menu */}
+      <Drawer
+        title="Menu"
+        placement="left"
+        onClose={toggleMobileMenu}
+        open={mobileMenuOpen}
+      >
+        <div className="mb-4">
+          <Input
+            placeholder="Search products…"
+            prefix={<SearchOutlined className="text-gray-400" />}
+            className="w-full rounded-full mb-4"
+          />
+        </div>
+        <Menu
+          mode="vertical"
+          items={navLinks.map((item) => ({
+            key: item.key,
+            label: <Link to={item.to}>{item.label}</Link>
+          }))}
+          className="border-none w-full text-lg"
+          onClick={toggleMobileMenu}
+        />
+      </Drawer>
 
       {/* ── Page Content ── */}
       <div className="flex-1">
