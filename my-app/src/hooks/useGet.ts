@@ -2,10 +2,11 @@ import { useQuery } from "@tanstack/react-query";
 import { fetcher } from "../services/fetcher";
 import { queryKey } from "../lib/queryKey";
 
-export function useGetUser(token: string) {
+export function useGetUser() {
   return useQuery({
     queryKey: [queryKey?.auth.user],
-    queryFn: () => fetcher(`/auth/${token}`),
+    queryFn: () => fetcher("/auth/me"),
+    retry: false,
   });
 }
 

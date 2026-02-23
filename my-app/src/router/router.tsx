@@ -1,23 +1,37 @@
 import { createBrowserRouter } from "react-router-dom";
-import { SuperAdminLayout } from "../components/SuperAdminLayout";
-import { ViewAdmins } from "../pages/SuperAdmin/ViewAdmins";
-import { HomeLayout } from "../components/UserPageLayout/HomeLayout";
-import { Login, Root, SignUp } from "./imports";
-import { AdminViewProduct } from "../pages/SuperAdmin/SuperAdminViewProduct";
-import { Men } from "../pages/Men";
-import { Women } from "../pages/Women";
-import { Kids } from "../pages/Kids";
-import { Shop } from "../pages/Shop";
-import { ContactUs } from "../pages/ContactUs";
-import { ProductDetails } from "../components/UserPageLayout/productDetailsPage/ProductDetailsLayout";
-import AddProduct from "../pages/SuperAdmin/AddProducts";
-import { UserDashboard } from "../components/UserDashboard";
-import { ViewCart } from "../components/UserPageLayout/addToCart/ViewCart";
+import { Suspense } from "react";
+import {
+  AddProduct,
+  AdminViewProduct,
+  ContactUs,
+  HomeLayout,
+  Kids,
+  Login,
+  Men,
+  ProductDetails,
+  Root,
+  Shop,
+  SignUp,
+  SuperAdminLayout,
+  UserDashboard,
+  ViewAdmins,
+  ViewCart,
+  Women,
+} from "./imports";
+import { RequireAuth } from "../components/auth/RequireAuth";
+import { RequireRole } from "../components/auth/RequireRole";
+import SuspenseLoading from "../components/SuspenseLoading";
+
+const Loading = () => <SuspenseLoading />;
 
 export const router = createBrowserRouter([
   {
     path: "",
-    element: <Root />,
+    element: (
+      <Suspense fallback={<Loading />}>
+        <Root />
+      </Suspense>
+    ),
     children: [
       {
         path: "/login",
@@ -29,33 +43,51 @@ export const router = createBrowserRouter([
       },
       {
         path: "/admin",
-        element: <SuperAdminLayout />,
+        element: (
+          <RequireAuth>
+            <RequireRole allowedRoles={["SUPER_ADMIN", "ADMIN"]}>
+              <SuperAdminLayout />
+            </RequireRole>
+          </RequireAuth>
+        ),
         children: [
           {
             path: "admins",
-            element: <ViewAdmins />,
+            element: (
+              <RequireRole allowedRoles={["SUPER_ADMIN"]}>
+                <ViewAdmins />
+              </RequireRole>
+            ),
           },
           {
             path: "products",
             element: <AdminViewProduct />,
           },
-          // {
-          //   path: "products/add/:id?",
-          //   element: <AddProduct />,
-          // },
           {
             path: "products/add",
-            element: <AddProduct />,
+            element: (
+              <RequireRole allowedRoles={["SUPER_ADMIN", "ADMIN"]}>
+                <AddProduct />
+              </RequireRole>
+            ),
           },
           {
             path: "products/add/:id",
-            element: <AddProduct />,
+            element: (
+              <RequireRole allowedRoles={["SUPER_ADMIN", "ADMIN"]}>
+                <AddProduct />
+              </RequireRole>
+            ),
           },
         ],
       },
       {
         path: "",
-        element: <UserDashboard />,
+        element: (
+          <RequireAuth>
+             <UserDashboard />
+          </RequireAuth>
+        ),
         children: [
           {
             path: "/home",
@@ -85,7 +117,7 @@ export const router = createBrowserRouter([
           },
           {
             path: "/myCart",
-            element: <ViewCart />
+            element: <ViewCart />,
           },
 
           {

@@ -1,7 +1,7 @@
 import { Col, Row, Button, Rate, Tag, message } from "antd";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
-import { HeartOutlined, HeartFilled } from "@ant-design/icons";
+import { HeartOutlined, HeartFilled, ShoppingCartOutlined } from "@ant-design/icons";
 import { useGetProductBySlug } from "../../../../hooks/useGet";
 import { LeftColumn } from "./LeftColumn";
 import { getAccessToken } from "../../../../utlis/handleToken";
@@ -23,17 +23,12 @@ export const ProductContent = () => {
   const [selectedColor, setSelectedColor] = useState("");
   const [isWishlisted, setIsWishlisted] = useState(false);
   const [variants, setVariant] = useState<Variant>({
-    color: {
-      name: "Blue",
-      hex: "#0000FF",
-    },
+    color: { name: "Blue", hex: "#0000FF" },
     size: "M",
     selected: false,
   });
   const useCart = useAddToCart();
   const token = getAccessToken();
-
-  // console.log("Product slug data:", data);
 
   const product = {
     name: data?.name || "Paloma",
@@ -45,28 +40,10 @@ export const ProductContent = () => {
     originalPrice: 1000,
     sizes: Array.isArray(data?.size) ? data.size : [],
     colors: Array.isArray(data?.color) ? data.color : [],
-    // offers: [
-    //   { label: "Special offer", text: "get 25% off", link: "T&C" },
-    //   {
-    //     label: "Bank offer",
-    //     text: "get 30% off on Axis Bank Credit card",
-    //     link: "T&C",
-    //   },
-      // {
-      //   label: "Wallet offer",
-      //   text: "get 40% cashback via Paytm wallet on first transaction",
-      //   link: "T&C",
-      // },
-      // { label: "Special offer", text: "get 25% off", link: "T&C" },
-    // ],
   };
 
   const handleAddToCart = async (id: string) => {
-    console.log("Variant: ", variants);
-    const cartData = {
-      id: id,
-      variants,
-    };
+    const cartData = { id, variants };
     try {
       await useCart.mutateAsync(cartData);
       message.success("Product added to cart");
@@ -75,170 +52,87 @@ export const ProductContent = () => {
     }
   };
 
-  return (
-    <div
-      style={{
-        padding: "0 40px",
-        maxWidth: "1400px",
-        height: "100%",
-        marginTop: "5px",
-      }}
-    >
-      <Row gutter={[40, 20]}>
-        {/* Left Side */}
-        {/*  */}
-        {/*  */}
+  const discount = product.price
+    ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)
+    : 0;
 
+  return (
+    <div className="max-w-[1400px] px-6 lg:px-10 py-6">
+      <Row gutter={[48, 32]}>
+        {/* Left — image gallery */}
         <>
           <LeftColumn />
         </>
-        {/* Right Column */}
-        {/*  */}
-        {/*  */}
+
+        {/* Right — product info */}
         <Col xs={24} lg={12}>
-          <div>
-            <h1
-              style={{
-                fontSize: "32px",
-                marginBottom: "6px",
-                fontWeight: 600,
-                lineHeight: "1.2",
-                color: "#111827",
-              }}
-            >
+          <div className="sticky top-20">
+
+            {/* Brand */}
+            <p className="text-xs font-bold uppercase tracking-widest text-[#e11d48] mb-1">
+              {product.brandName}
+            </p>
+
+            {/* Name */}
+            <h1 className="text-3xl font-black text-[#0a0e27] leading-tight mb-1">
               {data?.name}
             </h1>
 
-            <div
-              style={{
-                fontSize: "15px",
-                marginBottom: "2px",
-                fontWeight: 500,
-                color: "#000000",
-              }}
-            >
-              {product.brandName}
-            </div>
+            {/* Seller */}
+            <p className="text-xs text-gray-400 mb-4">
+              Sold by&nbsp;<span className="font-semibold text-gray-600">{product.seller}</span>
+            </p>
 
-            <div
-              style={{
-                color: "#000000",
-                marginBottom: "14px",
-                fontSize: "12px",
-              }}
-            >
-              Sold By : {product.seller}
-            </div>
-
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                marginBottom: "18px",
-              }}
-            >
+            {/* Rating */}
+            <div className="flex items-center gap-3 mb-5 pb-5 border-b border-gray-100">
               <Rate
                 disabled
                 defaultValue={product.rating}
                 allowHalf
-                style={{ fontSize: "18px", color: "#fbbf24" }}
+                className="text-base text-amber-400"
               />
-              <span
-                style={{
-                  marginLeft: "8px",
-                  fontSize: "15px",
-                  fontWeight: 500,
-                  color: "#111827",
-                }}
-              >
-                {product.rating}
-              </span>
-              <span
-                style={{
-                  marginLeft: "12px",
-                  color: "#6b7280",
-                  fontSize: "14px",
-                }}
-              >
-                {product.reviewCount} Reviews
-              </span>
+              <span className="text-sm font-semibold text-[#0a0e27]">{product.rating}</span>
+              <span className="text-sm text-gray-400">({product.reviewCount} reviews)</span>
             </div>
 
-            <div
-              style={{
-                marginBottom: "14px",
-                display: "flex",
-                alignItems: "baseline",
-              }}
-            >
-              <span
-                style={{ fontSize: "20px", fontWeight: 700, color: "#111827" }}
-              >
-                Rs. {product.price}
+            {/* Price */}
+            <div className="flex items-baseline gap-3 mb-6">
+              <span className="text-3xl font-black text-[#0a0e27]">
+                ₹{product.price}
               </span>
-              <span
-                style={{
-                  fontSize: "16px",
-                  color: "#9ca3af",
-                  textDecoration: "line-through",
-                  marginLeft: "10px",
-                }}
-              >
-                Rs. {product.originalPrice}
+              <span className="text-lg text-gray-400 line-through">
+                ₹{product.originalPrice}
               </span>
+              {discount > 0 && (
+                <span className="text-sm font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full">
+                  {discount}% OFF
+                </span>
+              )}
             </div>
 
             {/* Size Selection */}
-            {/*  */}
-            {/*  */}
-            <div style={{ marginBottom: "24px" }}>
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  marginBottom: "14px",
-                }}
-              >
-                <h4
-                  style={{
-                    fontSize: "15px",
-                    fontWeight: 600,
-                    margin: 0,
-                    color: "#111827",
-                  }}
-                >
+            <div className="mb-6">
+              <div className="flex justify-between items-center mb-3">
+                <h4 className="text-sm font-bold text-[#0a0e27] uppercase tracking-wide m-0">
                   Select Size
                 </h4>
+                <a href="#" className="text-xs text-[#e11d48] font-semibold hover:underline">
+                  Size Guide
+                </a>
               </div>
-              <div style={{ display: "flex", gap: "2px" }}>
-                {product.sizes.map((size) => (
+              <div className="flex flex-wrap gap-2">
+                {product.sizes.map((size: string) => (
                   <button
                     key={size}
                     onClick={() => {
-                      setVariant((prev) => ({
-                        ...prev,
-                        size: size,
-                      })),
-                        !selectedSize
-                          ? setSelectedSize(size)
-                          : setSelectedSize("");
+                      setVariant((prev) => ({ ...prev, size }));
+                      !selectedSize ? setSelectedSize(size) : setSelectedSize("");
                     }}
-                    style={{
-                      width: "50px",
-                      height: "50px",
-                      fontSize: "14px",
-                      fontWeight: 500,
-                      border:
-                        selectedSize === size
-                          ? "2px solid #111827"
-                          : "1px solid #d1d5db",
-                      backgroundColor: "#ffffff",
-                      color: selectedSize === size ? "#111827" : "#6b7280",
-                      borderRadius: "50%",
-                      cursor: "pointer",
-                      transition: "all 0.2s",
-                    }}
+                    className={`w-12 h-12 rounded-full text-sm font-semibold border-2 transition-all duration-200 cursor-pointer
+                      ${selectedSize === size
+                        ? "border-[#0a0e27] bg-[#0a0e27] text-white"
+                        : "border-gray-200 bg-white text-gray-600 hover:border-gray-400"
+                      }`}
                   >
                     {size}
                   </button>
@@ -247,145 +141,60 @@ export const ProductContent = () => {
             </div>
 
             {/* Color Selection */}
-            {/*  */}
-            {/*  */}
-            <div style={{ marginBottom: "10px" }}>
-              <h4
-                style={{
-                  fontSize: "15px",
-                  fontWeight: 600,
-                  marginBottom: "14px",
-                  color: "#111827",
-                }}
-              >
+            <div className="mb-8">
+              <h4 className="text-sm font-bold text-[#0a0e27] uppercase tracking-wide mb-3 m-0">
                 Select Color
               </h4>
-              <div style={{ display: "flex", gap: "2px" }}>
-                {product?.colors.map((color) => (
+              <div className="flex flex-wrap gap-3">
+                {product.colors.map((color: { name: string; hex: string }) => (
                   <Tag
                     key={color.hex}
                     onClick={() => {
                       setVariant((prev) => ({
                         ...prev,
                         color: { name: color.name, hex: color.hex },
-                      })),
-                        !selectedColor
-                          ? setSelectedColor(color)
-                          : setSelectedColor("");
+                      }));
+                      setSelectedColor(selectedColor === color.hex ? "" : color.hex);
                     }}
-                    style={{
-                      padding: 0,
-                      display: "inline-flex",
-                      alignItems: "center",
-                      backgroundColor: "#ffffff",
-                      cursor: "pointer",
-                      border:
-                        selectedColor === color
-                          ? "2px solid #111827"
-                          : "2px solid #d1d5db",
-                      borderRadius: "8px"
-                    }}
-                    // onClick={}
+                    className={`cursor-pointer p-0 rounded-lg border-2 transition-all duration-200
+                      ${selectedColor === color.hex ? "border-[#0a0e27]" : "border-gray-200 hover:border-gray-400"}`}
                   >
                     <span
-                      style={{
-                        width: 42,
-                        height: 42,
-                        backgroundColor: color.hex || "",
-                        borderRadius: "6px",
-                      }}
+                      className="block w-10 h-10 rounded-md"
+                      style={{ backgroundColor: color.hex || "" }}
                     />
                   </Tag>
                 ))}
               </div>
             </div>
 
-            {/* Best Offers */}
-            {/*  */}
-            {/*  */}
-            {/* <div>
-              <h4
-                style={{
-                  fontSize: "15px",
-                  fontWeight: 600,
-                  marginBottom: "10px",
-                  color: "#111827",
-                }}
-              >
-                Best Offers
-              </h4>
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: "5px",
-                  fontSize: "14px",
-                }}
-              >
-                {product.offers.map((offer, index) => (
-                  <div
-                    key={index}
-                    style={{ lineHeight: "1.5", color: "#374151" }}
-                  >
-                    <span style={{ fontWeight: 600 }}>{offer.label}</span>{" "}
-                    <span>{offer.text}</span>{" "}
-                    <a
-                      href="#"
-                      style={{
-                        color: "#1a56db",
-                        textDecoration: "none",
-                        marginLeft: "4px",
-                      }}
-                    >
-                      {offer.link}
-                    </a>
-                  </div>
-                ))} 
-              </div>
-            </div> */}
-
             {/* Action Buttons */}
-            {/*  */}
-            {/*  */}
-            <div style={{ display: "flex", gap: "12px", marginTop: "32px" }}>
+            <div className="flex gap-3">
               <Button
                 type="primary"
                 size="large"
-                style={{
-                  height: "50px",
-                  width: "150px",
-                  fontSize: "15px",
-                  fontWeight: 600,
-                  backgroundColor: "#1e3a8a",
-                  borderColor: "#1e3a8a",
-                  borderRadius: "10px",
-                }}
+                icon={<ShoppingCartOutlined />}
+                className="!flex-1 !h-12 !text-sm !font-bold !bg-[#0a0e27] !border-[#0a0e27] !rounded-xl hover:!bg-[#1a2040] transition-colors"
                 onClick={() => {
                   if (token) handleAddToCart(data?._id);
-                  else message.error("User should be logged in!!");
-                  // token
-                  //   ? handleAddToCart(data._id)
-                  //   : message.error("User should be logged in");
+                  else message.error("Please log in to add to cart.");
                 }}
               >
                 Add to Cart
               </Button>
               <Button
                 size="large"
-                icon={isWishlisted ? <HeartFilled /> : <HeartOutlined />}
+                icon={isWishlisted ? <HeartFilled className="text-[#e11d48]" /> : <HeartOutlined />}
                 onClick={() => setIsWishlisted(!isWishlisted)}
-                style={{
-                  height: "50px",
-                  width: "50px",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  color: isWishlisted ? "#ef4444" : "#6b7280",
-                  borderRadius: "6px",
-                  border: "1px solid #d1d5db",
-                  backgroundColor: "#ffffff",
-                }}
+                className={`!h-12 !w-12 !flex !items-center !justify-center !rounded-xl !border-2 transition-all duration-200
+                  ${isWishlisted ? "!border-[#e11d48] !text-[#e11d48]" : "!border-gray-200 !text-gray-500 hover:!border-[#e11d48] hover:!text-[#e11d48]"}`}
               />
+            </div>
+
+            {/* Trust badges */}
+            <div className="mt-6 flex gap-6 text-xs text-gray-500">
+              <span>🚚 Free delivery above ₹999</span>
+              <span>↩ Easy 30-day returns</span>
             </div>
           </div>
         </Col>

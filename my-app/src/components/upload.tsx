@@ -5,7 +5,7 @@ import { message, Upload } from "antd";
 const { Dragger } = Upload;
 
 interface UploadImageProps {
-  onUploadSuccess: (file: File) => void;
+  onUploadSuccess: (imageUrl: string) => void;
 }
 export const UploadImage = ({ onUploadSuccess }: UploadImageProps) => {
   const props: UploadProps = {

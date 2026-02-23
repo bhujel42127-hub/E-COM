@@ -26,6 +26,16 @@ export function requireUser(req: Request, res: Response, next: NextFunction) {
   }
 }
 
+export function requireRole(allowedRoles: string[]) {
+  return (req: Request, res: Response, next: NextFunction) => {
+    const userRole = (req as any).role;
+    if (!userRole || !allowedRoles.includes(userRole)) {
+      return res.status(403).json({ message: "Access denied. Insufficient permissions." });
+    }
+    next();
+  };
+}
+
 // export function requireAdmin(req: Request, res: Response, next: NextFunction){
 //   const token =
 // }

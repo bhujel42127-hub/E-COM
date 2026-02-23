@@ -6,7 +6,7 @@ import {
   getProductsBySlug,
   updateProduct,
 } from "../controllers/product.controller";
-import { requireUser } from "../middlewares/auth.middleware";
+import { requireRole, requireUser } from "../middlewares/auth.middleware";
 
 const router = Router();
 
@@ -18,8 +18,8 @@ const router = Router();
 router.get("/", getProducts);
 router.get("/:id", getProducts);
 router.get("/slug/:slug", getProductsBySlug);
-router.post("/", createProducts);
-router.put("/:id", updateProduct);
-router.delete("/:id", deleteProduct);
+router.post("/", requireUser, requireRole(["SUPER_ADMIN", "ADMIN"]), createProducts);
+router.put("/:id", requireUser, requireRole(["SUPER_ADMIN", "ADMIN"]), updateProduct);
+router.delete("/:id", requireUser, requireRole(["SUPER_ADMIN", "ADMIN"]), deleteProduct);
 
 export default router;

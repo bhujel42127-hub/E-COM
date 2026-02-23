@@ -4,7 +4,6 @@ import { Table } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import type { Product, Value } from "../../Props";
 import { useGetAllProduct } from "../../hooks/useGet";
-
 import { useDeleteProduct } from "../../hooks/productHooks";
 import { useNavigate } from "react-router-dom";
 
@@ -16,12 +15,10 @@ export const AdminViewProduct = () => {
     total: 0,
   });
 
-  const [page, setPage] = useState(1);
+  const [page] = useState(1);
   const navigate = useNavigate();
   const deleteProduct = useDeleteProduct();
   const { data, isLoading } = useGetAllProduct();
-
-  console.log("Fetched product: ", data);
 
   const columns: ColumnsType<Product> = [
     {
@@ -43,7 +40,6 @@ export const AdminViewProduct = () => {
       key: "size",
       width: 200,
       ellipsis: true,
-      // render: (size: string[]) => size?.join(", "),
       render: (sizes: string[]) => (
         <>
           {sizes?.map((size) => (
@@ -52,7 +48,6 @@ export const AdminViewProduct = () => {
         </>
       ),
     },
-    //
     {
       title: "Color",
       dataIndex: "color",
@@ -63,16 +58,9 @@ export const AdminViewProduct = () => {
           {color?.map((c) => (
             <Tag
               key={c.hex}
-              style={{ padding: 0, display: "inline-flex", alignItems: "center", backgroundColor:"#ffffff", gap: "4px" }}
+              className="p-0 inline-flex items-center bg-white gap-1"
             >
-              <span
-                style={{
-                  width: 22,
-                  height: 22,
-                  // backgroundColor: c.hex,
-                  borderRadius: "2px",
-                }}
-              />
+              <span className="w-[22px] h-[22px] rounded-sm" />
               {c.name}
             </Tag>
           ))}
@@ -118,14 +106,12 @@ export const AdminViewProduct = () => {
   };
 
   const handleEdit = async (data: Product) => {
-    console.log("data to be edited: ", data);
     navigate(`add/${data._id}`);
   };
+
   const handleDelete = async (id: string) => {
-    console.log("handle delete reached");
     try {
       await deleteProduct.mutateAsync(id);
-      console.log("after deleteProduct delete");
       resetValue();
     } catch (error) {
       console.log("Product deletion error: ", error);
@@ -144,28 +130,18 @@ export const AdminViewProduct = () => {
         current: page,
         pageSize: 5,
         total: value.total,
-        onChange: (page) => {
-          // fetchProduct(page);
+        onChange: (_page) => {
+          // fetchProduct(_page);
         },
       }}
     ></Table>
   );
 
   return (
-    <div
-      style={{
-        margin: "24px 16px",
-        padding: 24,
-        minHeight: 280,
-        background: "#ffffff",
-        borderRadius: "8px",
-        overflow: "auto",
-      }}
-    >
-      {/* <SearchBar /> */}
+    <div className="m-6 p-6 min-h-[280px] bg-white rounded-lg overflow-auto">
       <ProductTable />
       <Button
-        style={{ marginTop: "10px" }}
+        className="mt-2.5"
         type="primary"
         onClick={() => navigate("/admin/products/add")}
       >

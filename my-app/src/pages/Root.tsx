@@ -1,5 +1,4 @@
-import { Navigate, Outlet, useNavigate } from "react-router-dom";
-import { getAccessToken } from "../utlis/handleToken";
+import { Outlet } from "react-router-dom";
 
 const Root = () => {
   // const accessToken = getAccessToken();

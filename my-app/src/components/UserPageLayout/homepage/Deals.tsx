@@ -4,26 +4,12 @@ import { DealsData } from "./DealsData";
 export const Deals = () => {
   return (
     <>
-      <div
-        className="container"
-        style={{ margin: "0 auto", padding: "0 50px" }}
-      >
-        <h2
-          style={{
-            fontSize: "32px",
-            fontWeight: "bold",
-            marginBottom: "30px",
-          }}
-        >
+      <div className="container mx-auto px-12">
+        <h2 className="text-[32px] font-bold mb-[30px]">
           Deals of the Day
         </h2>
-        <div
-          style={{
-            overflowX: "auto",
-            scrollbarWidth: "none",
-          }}
-        >
-          <Row gutter={[20, 20]} wrap={false} style={{ paddingBottom: "10px" }}>
+        <div className="overflow-x-auto no-scrollbar">
+          <Row gutter={[20, 20]} wrap={false} className="pb-2.5">
             <DealsData />
           </Row>
         </div>

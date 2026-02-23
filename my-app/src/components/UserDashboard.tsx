@@ -1,219 +1,185 @@
 import { Outlet, useNavigate } from "react-router-dom";
-
 import {
   HeartOutlined,
   SearchOutlined,
   ShoppingCartOutlined,
-  UserOutlined,
+  DashboardOutlined,
 } from "@ant-design/icons";
-import { Badge, Col, Input, Layout, Menu, Row } from "antd";
-import { Header } from "antd/es/layout/layout";
+import { Badge, Col, Dropdown, Input, Layout, Row } from "antd";
+import type { MenuProps } from "antd";
+import { LogoutOutlined, UserOutlined, SettingOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
+import { useAuth } from "../hooks/useAuth";
+
+const navLinks = [
+  { key: "1", label: "Men", to: "/men" },
+  { key: "2", label: "Women", to: "/women" },
+  { key: "3", label: "Kids", to: "/kids" },
+  { key: "4", label: "Shop", to: "/shop" },
+  { key: "5", label: "Contact Us", to: "/contactUs" },
+];
+
+const footerColumns = [
+  { title: "Women", links: ["All Women", "Skirts", "T-Shirts", "Tops", "Jackets"] },
+  { title: "Men", links: ["All Men", "Shirts", "T-Shirts", "Shorts", "Jackets"] },
+  { title: "Kids", links: ["All Kids", "Shirts", "T-Shirts", "Shorts", "Jackets"] },
+  { title: "Shopping", links: ["Your Cart", "Your Orders", "Compared Items", "Wishlist", "Shipping Details"] },
+  { title: "More Links", links: ["Blogs", "Gift Center", "Buying Guides", "New Arrivals", "Clearance"] },
+];
 
 export const UserDashboard = () => {
   const navigate = useNavigate();
-  const headerItems = [
+  const { user, role, logout } = useAuth();
+  const userName = user?.name || "Guest";
+
+  const userMenuItems: MenuProps["items"] = [
     {
-      key: "1",
-      label: <Link to="/men">Men</Link>,
+      key: "name",
+      label: (
+        <div className="px-1 py-0.5">
+          <p className="font-bold text-[#0a0e27] m-0">{userName}</p>
+          <p className="text-xs text-gray-400 m-0">{user?.email}</p>
+        </div>
+      ),
+      disabled: true,
+    },
+    { type: "divider" },
+    {
+      key: "profile",
+      icon: <UserOutlined />,
+      label: "My Profile",
     },
     {
-      key: "2",
-      label: <Link to="/women">Women</Link>,
+      key: "settings",
+      icon: <SettingOutlined />,
+      label: "Settings",
     },
+    { type: "divider" },
     {
-      key: "3",
-      label: <Link to="/kids">Kids</Link>,
-    },
-    {
-      key: "4",
-      label: <Link to="/shop">Shop</Link>,
-    },
-    {
-      key: "5",
-      label: <Link to="/contactUs">Contact Us</Link>,
+      key: "logout",
+      icon: <LogoutOutlined />,
+      label: <span className="text-[#e11d48] font-semibold">Logout</span>,
+      onClick: logout,
     },
   ];
-  const userName = "Guest";
 
   return (
-    <Layout
-      style={{
-        display: "flex",
-        minHeight: "100vh",
-        fontFamily: "Libre Baskerville",
-        // minWidth: "100vw",
-        width: "100%",
-      }}
-    >
-      {/* Header */}
-      <Header
-        style={{
-          backgroundColor: "#ffffff",
-          borderBottom: "1px solid #e0e0e0",
-          width: "100%",
-          padding: 0,
-          height: "70px",
-          lineHeight: "70px",
-          marginBottom: "10px",
-        }}
-      >
-        <div
-          className="container"
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            height: "100%",
-            margin: "0 auto",
-            padding: "0 50px",
-          }}
-        >
-          {/* Logo and Menu */}
-          <div style={{ display: "flex", gap: "40px" }}>
-            <Link to="/home" replace>
-              <img
-                alt="logo"
-                style={{
-                  fontSize: "24px",
-                  fontWeight: "bold",
-                  color: "#1890ff",
-                  height: "40px",
-                }}
-              />
-            </Link>
-            <Menu
-              mode="horizontal"
-              items={headerItems}
-              style={{ border: "none", lineHeight: "70px" }}
-            />
-          </div>
+    <Layout className="min-h-screen bg-white w-full">
+      {/* ── Top announcement bar ── */}
+      <div className="bg-[#0a0e27] text-white text-xs text-center py-2 tracking-wide">
+        Free shipping on orders above ₹999 &nbsp;·&nbsp;
+        <span className="underline cursor-pointer">Shop Now</span>
+      </div>
 
-          {/* Search and Icons */}
-          <div style={{ display: "flex", alignItems: "center", gap: "20px" }}>
-            <Input
-              placeholder="Search here"
-              prefix={<SearchOutlined />}
-              style={{ width: "300px", borderRadius: "20px" }}
-            />
-            <HeartOutlined style={{ fontSize: "20px", cursor: "pointer" }} />
-            <Badge count={5}>
-                <ShoppingCartOutlined
-                  style={{ fontSize: "20px", cursor: "pointer" }}
-                  onClick={() => {
-                    navigate("/myCart")
-                  }}
-                />
-            </Badge>
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "8px",
-                cursor: "pointer",
-              }}
-            >
-              <div
-                style={{
-                  width: "35px",
-                  height: "35px",
-                  borderRadius: "50%",
-                  backgroundColor: "#ccc",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
+      {/* ── Main Navbar ── */}
+      <header className="sticky top-0 z-50 bg-white border-b border-gray-100 shadow-sm">
+        <div className="max-w-[1400px] mx-auto px-6 lg:px-12 flex items-center justify-between h-16">
+
+          {/* Logo */}
+          <Link to="/home" replace className="flex-shrink-0">
+            <span className="text-2xl font-black tracking-tight text-[#0a0e27] uppercase">
+              LUXE<span className="text-[#e11d48]">.</span>
+            </span>
+          </Link>
+
+          {/* Nav Links */}
+          <nav className="hidden md:flex items-center gap-8">
+            {navLinks.map((item) => (
+              <Link
+                key={item.key}
+                to={item.to}
+                className="text-sm font-semibold text-gray-700 uppercase tracking-wider hover:text-[#e11d48] transition-colors duration-200 relative group"
               >
-                <UserOutlined />
+                {item.label}
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#e11d48] group-hover:w-full transition-all duration-300" />
+              </Link>
+            ))}
+          </nav>
+
+          {/* Right icons */}
+          <div className="flex items-center gap-4">
+            {/* Search */}
+            <Input
+              placeholder="Search products…"
+              prefix={<SearchOutlined className="text-gray-400" />}
+              className="hidden lg:flex w-56 rounded-full border-gray-200 bg-gray-50 text-sm"
+            />
+
+            {/* Admin shortcut */}
+            {(role === "SUPER_ADMIN" || role === "ADMIN") && (
+              <button
+                onClick={() => navigate("/admin")}
+                title="Admin Dashboard"
+                className="text-gray-500 hover:text-[#0a0e27] transition-colors"
+              >
+                <DashboardOutlined className="text-xl" />
+              </button>
+            )}
+
+            {/* Wishlist */}
+            <button className="text-gray-500 hover:text-[#e11d48] transition-colors">
+              <HeartOutlined className="text-xl" />
+            </button>
+
+            {/* Cart */}
+            <button
+              onClick={() => navigate("/myCart")}
+              className="text-gray-500 hover:text-[#0a0e27] transition-colors"
+            >
+              <Badge count={5} size="small">
+                <ShoppingCartOutlined className="text-xl" />
+              </Badge>
+            </button>
+
+            {/* User avatar with dropdown */}
+            <Dropdown
+              menu={{ items: userMenuItems }}
+              trigger={["click"]}
+              placement="bottomRight"
+              overlayClassName="w-52"
+            >
+              <div className="flex items-center gap-2 cursor-pointer group select-none">
+                <div className="w-8 h-8 rounded-full bg-[#0a0e27] flex items-center justify-center text-white text-xs font-bold ring-2 ring-transparent group-hover:ring-[#e11d48] transition-all">
+                  {userName.charAt(0).toUpperCase()}
+                </div>
+                <span className="hidden lg:block text-sm font-medium text-gray-700 group-hover:text-[#0a0e27]">
+                  {userName}
+                </span>
               </div>
-              <span>{userName}</span>
-            </div>
+            </Dropdown>
           </div>
         </div>
-      </Header>
-      <div style={{ flex: 1 }}>
+      </header>
+
+      {/* ── Page Content ── */}
+      <div className="flex-1">
         <Outlet />
       </div>
-      {/* Footer */}
-      <footer
-        style={{
-          marginTop: "45px",
-          backgroundColor: "#0a0e27",
-          color: "#ffffff",
-          padding: "60px 0 30px",
-        }}
-      >
-        <div style={{ margin: "0 auto", padding: "0 50px" }}>
-          {/* Logo */}
-          <div style={{ marginBottom: "50px" }}>
-            <h2 style={{ fontSize: "36px", fontWeight: "bold", margin: 0 }}>
-              LOGO
+
+      {/* ── Footer ── */}
+      <footer className="bg-[#0a0e27] text-white pt-16 pb-8">
+        <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
+
+          {/* Logo + tagline */}
+          <div className="mb-12">
+            <h2 className="text-3xl font-black tracking-tight mb-1">
+              LUXE<span className="text-[#e11d48]">.</span>
             </h2>
+            <p className="text-gray-400 text-sm">Fashion that speaks for itself.</p>
           </div>
 
-          {/* Footer Links */}
-          <Row gutter={[0, 0]}>
-            {[
-              {
-                title: "Women",
-                links: ["All Women", "Skirts", "T- Shirts", "Tops", "Jackets"],
-              },
-              {
-                title: "Men",
-                links: ["All Men", "Shirts", "T- Shirts", "Shorts", "Jackets"],
-              },
-              {
-                title: "Kids",
-                links: ["All Kids", "Shirts", "T- Shirts", "Shorts", "Jackets"],
-              },
-              {
-                title: "Shopping",
-                links: [
-                  "Your cart",
-                  "your orders",
-                  "Compared items",
-                  "Wishlist",
-                  "Shipping Details",
-                ],
-              },
-              {
-                title: "More links",
-                links: [
-                  "Blogs",
-                  "Gift center",
-                  "Buying guides",
-                  "New arrivals",
-                  "Clearance",
-                ],
-              },
-            ].map((column, index) => (
-              <Col
-                key={index}
-                xs={12}
-                sm={8}
-                md={4}
-                lg={4}
-                style={{ paddingRight: 0, paddingLeft: 0 }}
-              >
-                <h3
-                  style={{
-                    fontSize: "18px",
-                    fontWeight: "600",
-                    marginBottom: "10px",
-                  }}
-                >
-                  {column.title}
-                </h3>
-                <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
-                  {column.links.map((link, i) => (
-                    <li key={i} style={{ marginBottom: "8px" }}>
+          <Row gutter={[32, 40]}>
+            {footerColumns.map((col, i) => (
+              <Col key={i} xs={12} sm={8} md={4}>
+                <h4 className="text-xs font-bold uppercase tracking-widest text-gray-400 mb-4">
+                  {col.title}
+                </h4>
+                <ul className="space-y-2 list-none p-0 m-0">
+                  {col.links.map((link, j) => (
+                    <li key={j}>
                       <a
                         href="#"
-                        style={{
-                          color: "#ffffff",
-                          textDecoration: "none",
-                          opacity: 0.8,
-                        }}
+                        className="text-sm text-gray-300 hover:text-white transition-colors duration-200 no-underline"
                       >
                         {link}
                       </a>
@@ -223,70 +189,35 @@ export const UserDashboard = () => {
               </Col>
             ))}
 
-            {/* Stay In Touch */}
-            <Col
-              xs={24}
-              sm={16}
-              md={8}
-              lg={4}
-              style={{ paddingRight: 0, paddingLeft: 0 }}
-            >
-              <h3
-                style={{
-                  fontSize: "18px",
-                  fontWeight: "600",
-                  marginBottom: "20px",
-                }}
-              >
+            {/* Newsletter */}
+            <Col xs={24} sm={16} md={8}>
+              <h4 className="text-xs font-bold uppercase tracking-widest text-gray-400 mb-4">
                 Stay In Touch
-              </h3>
-              <p
-                style={{
-                  opacity: 0.8,
-                  marginBottom: "20px",
-                  lineHeight: "1.6",
-                }}
-              >
-                Stay in touch to get special offers, free giveaways and once in
-                a lifetime deals
+              </h4>
+              <p className="text-sm text-gray-300 mb-5 leading-relaxed">
+                Get exclusive deals, style tips, and new arrivals straight to your inbox.
               </p>
-              <Input
-                placeholder="Enter your email"
-                prefix={<span>✉</span>}
-                style={{
-                  backgroundColor: "transparent",
-                  border: "1px solid rgba(255, 255, 255, 0.3)",
-                  color: "#ffffff",
-                  padding: "10px 15px",
-                  borderRadius: "4px",
-                }}
-              />
+              <div className="flex gap-2">
+                <Input
+                  placeholder="your@email.com"
+                  prefix={<span className="text-gray-400">✉</span>}
+                  className="flex-1 bg-white/10 border-white/20 text-white placeholder:text-gray-400 rounded-lg"
+                />
+                <button className="px-4 py-2 bg-[#e11d48] text-white text-sm font-semibold rounded-lg hover:bg-[#be123c] transition-colors whitespace-nowrap">
+                  Subscribe
+                </button>
+              </div>
             </Col>
           </Row>
 
-          {/* Bottom Footer */}
-          <div
-            style={{
-              borderTop: "1px solid rgba(255, 255, 255, 0.1)",
-              marginTop: "50px",
-              paddingTop: "30px",
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              flexWrap: "wrap",
-              gap: "20px",
-            }}
-          >
-            <div style={{ display: "flex", gap: "30px" }}>
+          {/* Bottom bar */}
+          <div className="border-t border-white/10 mt-12 pt-6 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <p className="text-xs text-gray-500">
+              © {new Date().getFullYear()} LUXE. All rights reserved.
+            </p>
+            <div className="flex gap-6">
               {["Terms & Conditions", "Privacy Policy"].map((text, i) => (
-                <a
-                  key={i}
-                  href="#"
-                  style={{
-                    color: "#ffffff",
-                    opacity: 0.8,
-                  }}
-                >
+                <a key={i} href="#" className="text-xs text-gray-500 hover:text-white transition-colors no-underline">
                   {text}
                 </a>
               ))}

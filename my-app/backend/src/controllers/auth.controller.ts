@@ -62,13 +62,13 @@ export async function resetPassword(req: Request, res: Response) {
   }
 }
 export async function getUser(req: Request, res: Response) {
-  
   try {
-    const {token} = req.params;
-    const user = await authService.getUser(token as string);
+    const userId = (req as any).userId;
+    const user = await authService.getUserById(userId);
     res.json(user);
   } catch (err: any) {
-    console.log("Error while fetching user: ", err)
+    console.log("Error while fetching user: ", err);
+    res.status(500).json({ message: "Error fetching user" });
   }
 }
 

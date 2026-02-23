@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from "uuid";
 import { RefreshToken } from "../models/refreshToken.model.ts";
 
 export class AuthService {
-  private generateAccessToken(userId: String, email: String, role: String) {
+  private generateAccessToken(userId: string, email: string, role: string) {
     const JWT_SECRET = process.env.JWT_SECRET as string;
 
     return jwt.sign(
@@ -18,7 +18,7 @@ export class AuthService {
       { expiresIn: "15m" }
     );
   }
-  // private generateNewAccessToken(userId: String, email: String, role: String) {
+  // private generateNewAccessToken(userId: string, email: string, role: string) {
   //   const JWT_SECRET = process.env.JWT_SECRET as string;
 
   //   return jwt.sign(
@@ -31,7 +31,7 @@ export class AuthService {
   //     { expiresIn: "20s" }
   //   );
   // }
-  private async generateRefreshToken(userId: String) {
+  private async generateRefreshToken(userId: string) {
     const token = uuidv4();
     const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
 
@@ -106,6 +106,17 @@ export class AuthService {
     } catch (error) {
       console.log("Error while getting user");
     }
+  }
+
+  async getUserById(userId: string) {
+    const user = await User.findById(userId).select("-password");
+    if (!user) throw new Error("User not found");
+    return {
+      id: user._id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+    };
   }
   async refresh(token: string) {
     const storedToken = await RefreshToken.findOne({

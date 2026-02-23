@@ -3,7 +3,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/pagination";
 
-import "./styles.css";
+// import "./styles.css";
 
 import { Pagination } from "swiper/modules";
 
@@ -31,17 +31,16 @@ export function AutoPlaySlider() {
         //   },
         // }}
         modules={[Pagination]}
-        className="mySwiper"
+        className="mySwiper h-[300px] md:h-[500px] lg:h-[700px] w-full"
       >
-        <SwiperSlide>Slide 1</SwiperSlide>
-        <SwiperSlide>Slide 2</SwiperSlide>
-        <SwiperSlide>Slide 3</SwiperSlide>
-        <SwiperSlide>Slide 4</SwiperSlide>
-        <SwiperSlide>Slide 5</SwiperSlide>
-        <SwiperSlide>Slide 6</SwiperSlide>
-        <SwiperSlide>Slide 7</SwiperSlide>
-        <SwiperSlide>Slide 8</SwiperSlide>
-        <SwiperSlide>Slide 9</SwiperSlide>
+        {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((i) => (
+          <SwiperSlide
+            key={i}
+            className="flex justify-center items-center text-center text-lg bg-[#444]"
+          >
+            Slide {i}
+          </SwiperSlide>
+        ))}
       </Swiper>
     </>
   );

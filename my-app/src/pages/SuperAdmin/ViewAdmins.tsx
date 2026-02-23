@@ -18,12 +18,13 @@ export const ViewAdmins = () => {
     isEdit: false,
     total: 0,
   });
-  const [page, setPage] = useState(1);
+  const [page] = useState(1);
   const [form] = Form.useForm();
   const { data, isLoading } = useGetAdmin();
   const updateAdmin = useUpdateAdmin();
   const deleteAdmin = useDeleteAdmin();
   const createAdmin = useCreateAdmin();
+
   const columns: ColumnsType<Admin> = [
     {
       title: "Name",
@@ -46,7 +47,6 @@ export const ViewAdmins = () => {
         <Space size="middle">
           <Button
             onClick={() => {
-              console.log("Record: ", record);
               form.setFieldsValue(record);
               setValue({
                 ...value,
@@ -79,18 +79,6 @@ export const ViewAdmins = () => {
     }));
   };
 
-  // const fetchAdmin = async () => {
-  //   const res = await fetcher("/admins");
-  //   console.log("fetching admin!", res);
-
-  //   setAdmin(res.admins);
-  //   // console.log("Admins: ", res.admins);
-  // };
-
-  // useEffect(() => {
-  //   fetchAdmin();
-  // }, []);
-
   const handleCancel = () => {
     form.resetFields();
     resetValue();
@@ -98,29 +86,22 @@ export const ViewAdmins = () => {
 
   const onFinish: FormProps<Admin>["onFinish"] = async (values) => {
     if (value.isEdit) {
-      console.log("Admin edit reached");
       try {
-        console.log("Admin edit try catch");
         await updateAdmin.mutateAsync(values);
         resetValue();
-        console.log("After Admin edit try catch");
         openNotification("success", "Admin Edited", "");
       } catch (error) {
         console.log("Error while editing admin: ", error);
       }
     } else {
-      console.log("Adding admin...");
       await createAdmin.mutateAsync(values);
       form.resetFields();
       resetValue();
       openNotification("success", "Admin Added", `Admin added`);
     }
-
-    console.log("Admin added: ", values);
   };
 
   const handleDelete = async (id: string) => {
-    console.log("handle delete reached");
     try {
       await deleteAdmin.mutateAsync(id);
       resetValue();
@@ -141,25 +122,15 @@ export const ViewAdmins = () => {
         current: page,
         pageSize: 5,
         total: value.total,
-        onChange: (page) => {
-          // fetchAdmin(page);
+        onChange: (_page) => {
+          // fetchAdmin(_page);
         },
       }}
     ></Table>
   );
 
   return (
-    <div
-      className="flex flex-col gap-4"
-      style={{
-        margin: "24px 16px",
-        padding: 24,
-        minHeight: 280,
-        background: "#ffffff",
-        borderRadius: "8px",
-        overflow: "auto",
-      }}
-    >
+    <div className="flex flex-col gap-4 m-6 p-6 min-h-[280px] bg-white rounded-lg overflow-auto">
       <AdminTable />
       <Button
         type="primary"
@@ -171,12 +142,12 @@ export const ViewAdmins = () => {
             isModalOpen: true,
           });
         }}
-        style={{ alignSelf: "flex-start" }}
+        className="self-start"
       >
         Add Admin
       </Button>
       <Modal
-        title= {value.isEdit ? "Edit Admin" : "Add Admin"}
+        title={value.isEdit ? "Edit Admin" : "Add Admin"}
         closable={{ "aria-label": "Custom Close Button" }}
         open={value.isModalOpen}
         onCancel={handleCancel}
@@ -187,12 +158,9 @@ export const ViewAdmins = () => {
           name="basic"
           labelCol={{ span: 8 }}
           wrapperCol={{ span: 16 }}
-          style={{ maxWidth: 600 }}
+          className="max-w-[600px]"
           onFinish={onFinish}
         >
-          {/* <Form.Item<Admin> label="Admin ID" name="_id" hidden>
-            <Input />
-          </Form.Item> */}
           <Form.Item<Admin>
             label="Name"
             name="name"
@@ -208,6 +176,7 @@ export const ViewAdmins = () => {
           >
             <Input />
           </Form.Item>
+
           <Form.Item<Admin>
             label="Password"
             name="password"
@@ -216,6 +185,7 @@ export const ViewAdmins = () => {
           >
             <Input.Password />
           </Form.Item>
+
           <Form.Item label={null}>
             <Button type="primary" htmlType="submit">
               Submit
