@@ -7,6 +7,38 @@ import "./styles.css";
 
 import { Pagination } from "swiper/modules";
 
+import sliderimg1 from "../../assets/5691814.jpg"
+
+const slides = [
+    {
+        img: sliderimg1,
+    },
+    {
+        img: sliderimg1,
+    },
+    {
+        img: sliderimg1,
+    },
+    {
+        img: sliderimg1,
+    },
+    {
+        img: sliderimg1,
+    },
+    {
+        img: sliderimg1,
+    },
+    {
+        img: sliderimg1,
+    },
+    {
+        img: sliderimg1,
+    },
+    {
+        img: sliderimg1,
+    },
+];
+
 export function AutoPlaySlider() {
   return (
     <>
@@ -33,15 +65,11 @@ export function AutoPlaySlider() {
         modules={[Pagination]}
         className="mySwiper"
       >
-        <SwiperSlide>Slide 1</SwiperSlide>
-        <SwiperSlide>Slide 2</SwiperSlide>
-        <SwiperSlide>Slide 3</SwiperSlide>
-        <SwiperSlide>Slide 4</SwiperSlide>
-        <SwiperSlide>Slide 5</SwiperSlide>
-        <SwiperSlide>Slide 6</SwiperSlide>
-        <SwiperSlide>Slide 7</SwiperSlide>
-        <SwiperSlide>Slide 8</SwiperSlide>
-        <SwiperSlide>Slide 9</SwiperSlide>
+        {slides.map((slide, i) => (
+        <SwiperSlide key={i}>
+          <img src={slide.img} alt={`Slide ${i + 1}`} className="w-full h-full object-cover" />
+        </SwiperSlide>
+      ))}
       </Swiper>
     </>
   );

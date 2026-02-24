@@ -1,15 +1,13 @@
 import { useState } from "react";
-import { Outlet, useNavigate } from "react-router-dom";
-
+import { Outlet, useNavigate, useLocation } from "react-router-dom";
 import {
-  CloseOutlined,
   HeartOutlined,
   MenuOutlined,
   SearchOutlined,
   ShoppingCartOutlined,
   UserOutlined,
 } from "@ant-design/icons";
-import { Badge, Drawer, Input, Menu } from "antd";
+import { Badge, Drawer, Input } from "antd";
 import { Link } from "react-router-dom";
 import { axiosInstance } from "../api/axiosInstance";
 import { queryClient } from "../lib/queryClient";
@@ -18,6 +16,7 @@ import { useGetCartItems } from "../hooks/cartHook";
 
 export const UserDashboard = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { user } = useAuth();
   const { data: cartData } = useGetCartItems();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -31,11 +30,6 @@ export const UserDashboard = () => {
     { key: "5", label: "Contact Us", to: "/contactUs" },
   ];
 
-  const headerItems = navLinks.map((item) => ({
-    key: item.key,
-    label: <Link to={item.to}>{item.label}</Link>,
-  }));
-
   const userName = user ? user.name || "User" : "Guest";
 
   const handleLogout = async () => {
@@ -48,37 +42,56 @@ export const UserDashboard = () => {
       navigate("/login");
     } catch (error) {
       console.log("Logout error: ", error);
-      // Clear tokens and redirect even if API call fails
       localStorage.removeItem("accessToken");
       localStorage.removeItem("refreshToken");
       navigate("/login");
     }
   };
 
+  const footerColumns = [
+    { title: "Women", links: ["All Women", "Skirts", "T-Shirts", "Tops", "Jackets"] },
+    { title: "Men", links: ["All Men", "Shirts", "T-Shirts", "Shorts", "Jackets"] },
+    { title: "Kids", links: ["All Kids", "Shirts", "T-Shirts", "Shorts", "Jackets"] },
+    { title: "Shopping", links: ["Your cart", "Your orders", "Compared items", "Wishlist", "Shipping Details"] },
+    { title: "More links", links: ["Blogs", "Gift center", "Buying guides", "New arrivals", "Clearance"] },
+  ];
+
   return (
     <div className="flex flex-col min-h-screen w-full font-['Libre_Baskerville']">
-      {/* ── Header ── */}
+      {/* Header */}
       <header className="sticky top-0 z-50 bg-white border-b border-gray-200 h-[70px] w-full">
         <div className="flex items-center justify-between h-full px-4 sm:px-12">
-          {/* Left: Logo + Desktop Nav */}
           <div className="flex items-center gap-8">
             <Link to="/home" replace>
-              <span className="text-xl font-bold text-primary">LOGO</span>
+              <span className="text-xl font-bold text-gray-900 font-['Libre_Baskerville']">LOGO</span>
             </Link>
 
-            {/* Desktop Menu */}
-            <nav className="hidden md:block">
-              <Menu
-                mode="horizontal"
-                items={headerItems}
-                className="!border-none !leading-[70px]"
-              />
+            {/* Plain nav — no Ant Design Menu so font inherits correctly */}
+            <nav className="hidden md:flex items-center gap-1 h-[70px]">
+              {navLinks.map((item) => {
+                const isActive = location.pathname === item.to;
+                return (
+                  <Link
+                    key={item.key}
+                    to={item.to}
+                    className={`
+                      px-4 h-full flex items-center text-sm font-medium
+                      font-['Libre_Baskerville'] transition-colors no-underline
+                      border-b-2 hover:text-gray-900
+                      ${isActive
+                        ? "border-gray-900 text-gray-900"
+                        : "border-transparent text-gray-500 hover:border-gray-300"
+                      }
+                    `}
+                  >
+                    {item.label}
+                  </Link>
+                );
+              })}
             </nav>
           </div>
 
-          {/* Right: Search + Icons */}
           <div className="flex items-center gap-4">
-            {/* Search — full on desktop, icon-toggle on mobile */}
             <div className="hidden md:block">
               <Input
                 placeholder="Search here"
@@ -89,48 +102,42 @@ export const UserDashboard = () => {
             <button
               className="md:hidden text-gray-600 text-xl"
               onClick={() => setSearchOpen((v) => !v)}
-              aria-label="Toggle search"
             >
               <SearchOutlined />
             </button>
 
-            <HeartOutlined className="text-xl cursor-pointer" />
+            <HeartOutlined className="text-xl cursor-pointer text-gray-600" />
 
             <Badge count={cartData?.cartItems?.length || 0} size="small" offset={[-2, 2]}>
               <ShoppingCartOutlined
-                className="text-xl -mt-1 cursor-pointer"
+                className="text-xl -mt-1 cursor-pointer text-gray-600"
                 onClick={() => navigate("/myCart")}
               />
             </Badge>
 
-            {/* User info */}
             <div className="hidden sm:flex items-center gap-2 cursor-pointer">
-              <div className="w-9 h-9 rounded-full bg-primaryLight flex items-center justify-center">
-                <UserOutlined className="text-primary" />
+              <div className="w-9 h-9 rounded-full bg-gray-100 flex items-center justify-center">
+                <UserOutlined className="text-gray-600" />
               </div>
-              <span className="text-sm">{userName}</span>
+              <span className="text-sm text-gray-700 font-['Libre_Baskerville']">{userName}</span>
             </div>
 
-            {/* Logout button */}
             <button
               onClick={handleLogout}
-              className="hidden sm:inline-flex items-center gap-1 px-3 py-1.5 text-sm font-medium text-red-600 border border-red-300 rounded-lg hover:bg-red-50 transition-colors"
+              className="hidden sm:inline-flex items-center gap-1 px-3 py-1.5 text-sm font-medium font-['Libre_Baskerville'] text-red-600 border border-red-300 rounded-lg hover:bg-red-50 transition-colors"
             >
               Logout
             </button>
 
-            {/* Mobile hamburger */}
             <button
               className="md:hidden text-gray-600 text-xl ml-1"
               onClick={() => setMobileMenuOpen(true)}
-              aria-label="Open menu"
             >
               <MenuOutlined />
             </button>
           </div>
         </div>
 
-        {/* Mobile Search Bar */}
         {searchOpen && (
           <div className="md:hidden px-4 pb-3 bg-white border-b border-gray-100">
             <Input
@@ -143,9 +150,9 @@ export const UserDashboard = () => {
         )}
       </header>
 
-      {/* Mobile Nav Drawer */}
+      {/* Mobile Drawer */}
       <Drawer
-        title="Menu"
+        title={<span className="font-['Libre_Baskerville']">Menu</span>}
         placement="left"
         onClose={() => setMobileMenuOpen(false)}
         open={mobileMenuOpen}
@@ -156,7 +163,7 @@ export const UserDashboard = () => {
             <Link
               key={item.key}
               to={item.to}
-              className="text-base font-medium text-gray-700 hover:text-accent py-2 border-b border-gray-100"
+              className="text-base font-medium font-['Libre_Baskerville'] text-gray-700 hover:text-gray-900 py-2 border-b border-gray-100 no-underline"
               onClick={() => setMobileMenuOpen(false)}
             >
               {item.label}
@@ -164,71 +171,35 @@ export const UserDashboard = () => {
           ))}
           <button
             onClick={handleLogout}
-            className="mt-4 flex items-center gap-2 text-red-600 font-medium py-2"
+            className="mt-4 flex items-center gap-2 text-red-600 font-medium font-['Libre_Baskerville'] py-2"
           >
             Logout
           </button>
         </nav>
       </Drawer>
 
-      {/* Main Content */}
+      {/* Main */}
       <main className="flex-1">
         <Outlet />
       </main>
 
-      {/* ── Footer ── */}
-      <footer className="mt-12 bg-primary text-white pt-16 pb-8">
+      {/* Footer */}
+      <footer className="mt-12 pt-16 pb-8 bg-gray-900">
         <div className="px-4 sm:px-12">
-          {/* Logo */}
           <div className="mb-12">
-            <h2 className="text-4xl font-bold m-0">LOGO</h2>
+            <h2 className="text-4xl font-bold m-0 text-white font-['Libre_Baskerville']">LOGO</h2>
           </div>
 
-          {/* Footer Links Grid */}
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-8">
-            {[
-              {
-                title: "Women",
-                links: ["All Women", "Skirts", "T-Shirts", "Tops", "Jackets"],
-              },
-              {
-                title: "Men",
-                links: ["All Men", "Shirts", "T-Shirts", "Shorts", "Jackets"],
-              },
-              {
-                title: "Kids",
-                links: ["All Kids", "Shirts", "T-Shirts", "Shorts", "Jackets"],
-              },
-              {
-                title: "Shopping",
-                links: [
-                  "Your cart",
-                  "Your orders",
-                  "Compared items",
-                  "Wishlist",
-                  "Shipping Details",
-                ],
-              },
-              {
-                title: "More links",
-                links: [
-                  "Blogs",
-                  "Gift center",
-                  "Buying guides",
-                  "New arrivals",
-                  "Clearance",
-                ],
-              },
-            ].map((column, index) => (
+            {footerColumns.map((column, index) => (
               <div key={index}>
-                <h3 className="text-lg font-semibold mb-3">{column.title}</h3>
-                <ul className="list-none p-0 m-0 space-y-2">
+                <h3 className="text-base font-semibold mb-4 text-white font-['Libre_Baskerville']">
+                  {column.title}
+                </h3>
+                <ul className="list-none p-0 m-0 space-y-2 mb-5 leading-relaxed text-sm text-gray-400 font-['Libre_Baskerville']">
                   {column.links.map((link, i) => (
                     <li key={i}>
-                      <a
-                        href="#"
-                        className="text-white opacity-80 hover:opacity-100 no-underline text-sm transition-opacity"
-                      >
+                      <a href="#" className="text-sm text-gray-400 hover:text-white transition-colors no-underline font-['Libre_Baskerville']">
                         {link}
                       </a>
                     </li>
@@ -239,28 +210,25 @@ export const UserDashboard = () => {
 
             {/* Stay In Touch */}
             <div className="col-span-2 sm:col-span-3 md:col-span-1">
-              <h3 className="text-lg font-semibold mb-5">Stay In Touch</h3>
-              <p className="opacity-80 mb-5 leading-relaxed text-sm">
-                Stay in touch to get special offers, free giveaways and once in
-                a lifetime deals
+              <h3 className="text-base font-semibold mb-4 text-white font-['Libre_Baskerville']">Stay In Touch</h3>
+              <p className="mb-5 leading-relaxed text-sm text-gray-400 font-['Libre_Baskerville']">
+                Stay in touch to get special offers, free giveaways and once in a lifetime deals
               </p>
-              <Input
-                placeholder="Enter your email"
-                prefix={<span>✉</span>}
-                className="!bg-transparent !border-white/30 !text-white !placeholder-white/50 rounded"
-              />
+              <div className="flex items-center gap-2 border border-gray-600 rounded px-3 py-2">
+                <span className="text-gray-400">✉</span>
+                <input
+                  type="email"
+                  placeholder="Enter your email"
+                  className="bg-transparent border-none outline-none text-white text-sm w-full placeholder-gray-500 font-['Libre_Baskerville']"
+                />
+              </div>
             </div>
           </div>
 
-          {/* Bottom Footer */}
-          <div className="border-t border-white/10 mt-12 pt-8 flex flex-wrap justify-between items-center gap-5">
+          <div className="border-t border-gray-700 mt-12 pt-8 flex flex-wrap justify-between items-center gap-5">
             <div className="flex gap-8">
               {["Terms & Conditions", "Privacy Policy"].map((text, i) => (
-                <a
-                  key={i}
-                  href="#"
-                  className="text-white opacity-80 hover:opacity-100 no-underline text-sm transition-opacity"
-                >
+                <a key={i} href="#" className="text-sm text-gray-400 hover:text-white transition-colors no-underline font-['Libre_Baskerville']">
                   {text}
                 </a>
               ))}

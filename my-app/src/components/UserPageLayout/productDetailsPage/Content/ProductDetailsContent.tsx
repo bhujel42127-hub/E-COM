@@ -1,395 +1,245 @@
-import { Col, Row, Button, Rate, Tag, message } from "antd";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
-import { HeartOutlined, HeartFilled } from "@ant-design/icons";
+import { Button, Rate, Tag, message, Divider } from "antd";
+import { HeartOutlined, HeartFilled, ShoppingCartOutlined } from "@ant-design/icons";
 import { useGetProductBySlug } from "../../../../hooks/useGet";
-import { LeftColumn } from "./LeftColumn";
 import { getAccessToken } from "../../../../utlis/handleToken";
 import { useAddToCart } from "../../../../hooks/cartHook";
 
-export interface Variant {
-  color: {
-    name: String;
-    hex: String;
-  };
-  size: String;
-  selected: Boolean;
-}
-
 export const ProductContent = () => {
   const { slug } = useParams();
-  const { data } = useGetProductBySlug(slug as string);
+  const { data, isLoading } = useGetProductBySlug(slug as string);
   const [selectedSize, setSelectedSize] = useState("");
-  const [selectedColor, setSelectedColor] = useState("");
+  const [selectedColor, setSelectedColor] = useState<any>(null);
+  const [selectedImage, setSelectedImage] = useState(0);
   const [isWishlisted, setIsWishlisted] = useState(false);
-  const [variants, setVariant] = useState<Variant>({
-    color: {
-      name: "Blue",
-      hex: "#0000FF",
-    },
-    size: "M",
-    selected: false,
-  });
+  const [sizeError, setSizeError] = useState(false);
+  const [colorError, setColorError] = useState(false);
   const useCart = useAddToCart();
   const token = getAccessToken();
 
-  // console.log("Product slug data:", data);
-
   const product = {
-    name: data?.name || "Paloma",
-    brandName: data?.brand,
-    seller: data?.seller,
-    rating: 4.4,
-    reviewCount: 36,
-    price: data?.price,
-    originalPrice: 1000,
+    name: data?.name || "",
+    brand: data?.brand || "",
+    seller: data?.seller || "",
+    price: data?.price || 0,
+    originalPrice: data?.price ? Math.round(data.price * 1.25) : 0,
+    images: data?.imageUrl ? [data.imageUrl] : [],
     sizes: Array.isArray(data?.size) ? data.size : [],
     colors: Array.isArray(data?.color) ? data.color : [],
-    // offers: [
-    //   { label: "Special offer", text: "get 25% off", link: "T&C" },
-    //   {
-    //     label: "Bank offer",
-    //     text: "get 30% off on Axis Bank Credit card",
-    //     link: "T&C",
-    //   },
-      // {
-      //   label: "Wallet offer",
-      //   text: "get 40% cashback via Paytm wallet on first transaction",
-      //   link: "T&C",
-      // },
-      // { label: "Special offer", text: "get 25% off", link: "T&C" },
-    // ],
+    description: data?.description || "",
   };
 
-  const handleAddToCart = async (id: string) => {
-    console.log("Variant: ", variants);
-    const cartData = {
-      id: id,
-      variants,
-    };
+
+  const handleAddToCart = async () => {
+    if (!token) {
+      message.error("Please log in to add items to cart");
+      return;
+    }
+
+    // Hard stop — do NOT fall back silently
+    const needsSize = product.sizes.length > 0 && !selectedSize;
+    const needsColor = product.colors.length > 0 && !selectedColor;
+
+    setSizeError(needsSize);
+    setColorError(needsColor);
+
+    if (needsSize || needsColor) {
+      message.warning("Please select all required options before adding to cart");
+      return; // <-- actually stops here, no mutateAsync called
+    }
+
     try {
-      await useCart.mutateAsync(cartData);
-      message.success("Product added to cart");
-    } catch (error) {
-      console.log("Error adding product to cart: ", error);
+      await useCart.mutateAsync({
+        id: data?._id,
+        variants: {
+          color: selectedColor,
+          size: selectedSize,
+          selected: true,
+        },
+      });
+      message.success("Added to cart!");
+    } catch {
+      message.error("Failed to add to cart");
     }
   };
 
+  if (isLoading) {
+    return (
+      <div className="max-w-6xl mx-auto px-4 sm:px-12 py-16 animate-pulse">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+          <div className="bg-gray-100 rounded-2xl aspect-square" />
+          <div className="space-y-4">
+            <div className="h-8 bg-gray-100 rounded w-3/4" />
+            <div className="h-5 bg-gray-100 rounded w-1/3" />
+            <div className="h-10 bg-gray-100 rounded w-1/2" />
+            <div className="h-24 bg-gray-100 rounded" />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div
-      style={{
-        padding: "0 40px",
-        maxWidth: "1400px",
-        height: "100%",
-        marginTop: "5px",
-      }}
-    >
-      <Row gutter={[40, 20]}>
-        {/* Left Side */}
-        {/*  */}
-        {/*  */}
+    <div className="min-h-screen bg-white py-10">
+      <div className="max-w-6xl mx-auto px-4 sm:px-12">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
 
-        <>
-          <LeftColumn />
-        </>
-        {/* Right Column */}
-        {/*  */}
-        {/*  */}
-        <Col xs={24} lg={12}>
-          <div>
-            <h1
-              style={{
-                fontSize: "32px",
-                marginBottom: "6px",
-                fontWeight: 600,
-                lineHeight: "1.2",
-                color: "#111827",
-              }}
-            >
-              {data?.name}
-            </h1>
-
-            <div
-              style={{
-                fontSize: "15px",
-                marginBottom: "2px",
-                fontWeight: 500,
-                color: "#000000",
-              }}
-            >
-              {product.brandName}
-            </div>
-
-            <div
-              style={{
-                color: "#000000",
-                marginBottom: "14px",
-                fontSize: "12px",
-              }}
-            >
-              Sold By : {product.seller}
-            </div>
-
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                marginBottom: "18px",
-              }}
-            >
-              <Rate
-                disabled
-                defaultValue={product.rating}
-                allowHalf
-                style={{ fontSize: "18px", color: "#fbbf24" }}
-              />
-              <span
-                style={{
-                  marginLeft: "8px",
-                  fontSize: "15px",
-                  fontWeight: 500,
-                  color: "#111827",
-                }}
-              >
-                {product.rating}
-              </span>
-              <span
-                style={{
-                  marginLeft: "12px",
-                  color: "#6b7280",
-                  fontSize: "14px",
-                }}
-              >
-                {product.reviewCount} Reviews
-              </span>
-            </div>
-
-            <div
-              style={{
-                marginBottom: "14px",
-                display: "flex",
-                alignItems: "baseline",
-              }}
-            >
-              <span
-                style={{ fontSize: "20px", fontWeight: 700, color: "#111827" }}
-              >
-                $ {product.price}
-              </span>
-              <span
-                style={{
-                  fontSize: "16px",
-                  color: "#9ca3af",
-                  textDecoration: "line-through",
-                  marginLeft: "10px",
-                }}
-              >
-                $ {product.originalPrice}
-              </span>
-            </div>
-
-            {/* Size Selection */}
-            {/*  */}
-            {/*  */}
-            <div style={{ marginBottom: "24px" }}>
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  marginBottom: "14px",
-                }}
-              >
-                <h4
-                  style={{
-                    fontSize: "15px",
-                    fontWeight: 600,
-                    margin: 0,
-                    color: "#111827",
-                  }}
-                >
-                  Select Size
-                </h4>
-              </div>
-              <div style={{ display: "flex", gap: "2px" }}>
-                {product.sizes.map((size) => (
+          {/* Left: Images */}
+          <div className="flex gap-4">
+            {product.images.length > 1 && (
+              <div className="flex flex-col gap-3">
+                {product.images.map((img, i) => (
                   <button
-                    key={size}
-                    onClick={() => {
-                      setVariant((prev) => ({
-                        ...prev,
-                        size: size,
-                      })),
-                        !selectedSize
-                          ? setSelectedSize(size)
-                          : setSelectedSize("");
-                    }}
-                    style={{
-                      width: "50px",
-                      height: "50px",
-                      fontSize: "14px",
-                      fontWeight: 500,
-                      border:
-                        selectedSize === size
-                          ? "2px solid #111827"
-                          : "1px solid #d1d5db",
-                      backgroundColor: "#ffffff",
-                      color: selectedSize === size ? "#111827" : "#6b7280",
-                      borderRadius: "50%",
-                      cursor: "pointer",
-                      transition: "all 0.2s",
-                    }}
+                    key={i}
+                    onClick={() => setSelectedImage(i)}
+                    className={`w-16 h-16 rounded-xl overflow-hidden border-2 transition-all ${
+                      selectedImage === i ? "border-gray-900" : "border-gray-200"
+                    }`}
                   >
-                    {size}
+                    <img src={img} alt="" className="w-full h-full object-cover" />
                   </button>
                 ))}
               </div>
+            )}
+
+            <div className="flex-1 bg-gray-50 rounded-2xl overflow-hidden aspect-square flex items-center justify-center">
+              {product.images[selectedImage] ? (
+                <img
+                  src={product.images[selectedImage]}
+                  alt={product.name}
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <div className="text-gray-300 text-sm">No image</div>
+              )}
             </div>
+          </div>
+
+          {/* Right: Details */}
+          <div className="flex flex-col gap-5">
+
+            {/* Brand & Name */}
+            <div>
+              <p className="text-sm font-semibold text-gray-400 uppercase tracking-widest mb-1">
+                {product.brand}
+              </p>
+              <h1 className="text-3xl font-bold text-gray-900 font-['Libre_Baskerville'] leading-tight">
+                {product.name}
+              </h1>
+              <p className="text-sm text-gray-400 mt-1">Sold by {product.seller}</p>
+            </div>
+
+            {/* Rating */}
+            <div className="flex items-center gap-2">
+              <Rate disabled defaultValue={4.5} allowHalf className="text-sm" />
+              <span className="text-sm text-gray-500">4.5 · 36 reviews</span>
+            </div>
+
+            {/* Price */}
+            <div className="flex items-baseline gap-3">
+              <span className="text-3xl font-extrabold text-gray-900">
+                ${product.price}
+              </span>
+            </div>
+
+            <Divider className="my-0" />
+
+            {/* Size Selection */}
+            {product.sizes.length > 0 && (
+              <div>
+                <p className={`text-sm font-semibold mb-3 ${sizeError ? "text-red-500" : "text-gray-700"}`}>
+                  Size
+                  {selectedSize
+                    ? <span className="ml-2 font-normal text-gray-400">— {selectedSize}</span>
+                    : sizeError && <span className="ml-2 font-normal">— please select a size</span>
+                  }
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {product.sizes.map((size: string) => (
+                    <button
+                      key={size}
+                      onClick={() => {
+                        setSelectedSize(size === selectedSize ? "" : size);
+                        setSizeError(false);
+                      }}
+                      className={`w-11 h-11 rounded-lg text-sm font-semibold border-2 transition-all ${
+                        selectedSize === size
+                          ? "border-gray-900 bg-gray-900 text-white"
+                          : sizeError
+                          ? "border-red-300 text-gray-600 hover:border-red-400"
+                          : "border-gray-200 text-gray-600 hover:border-gray-400"
+                      }`}
+                    >
+                      {size}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
 
             {/* Color Selection */}
-            {/*  */}
-            {/*  */}
-            <div style={{ marginBottom: "10px" }}>
-              <h4
-                style={{
-                  fontSize: "15px",
-                  fontWeight: 600,
-                  marginBottom: "14px",
-                  color: "#111827",
-                }}
-              >
-                Select Color
-              </h4>
-              <div style={{ display: "flex", gap: "2px" }}>
-                {product?.colors.map((color) => (
-                  <Tag
-                    key={color.hex}
-                    onClick={() => {
-                      setVariant((prev) => ({
-                        ...prev,
-                        color: { name: color.name, hex: color.hex },
-                      })),
-                        !selectedColor
-                          ? setSelectedColor(color)
-                          : setSelectedColor("");
-                    }}
-                    style={{
-                      padding: 0,
-                      display: "inline-flex",
-                      alignItems: "center",
-                      backgroundColor: "#ffffff",
-                      cursor: "pointer",
-                      border:
-                        selectedColor === color
-                          ? "2px solid #111827"
-                          : "2px solid #d1d5db",
-                      borderRadius: "8px"
-                    }}
-                    // onClick={}
-                  >
-                    <span
-                      style={{
-                        width: 42,
-                        height: 42,
-                        backgroundColor: color.hex || "",
-                        borderRadius: "6px",
+            {product.colors.length > 0 && (
+              <div>
+                <p className={`text-sm font-semibold mb-3 ${colorError ? "text-red-500" : "text-gray-700"}`}>
+                  Color
+                  {selectedColor
+                    ? <span className="ml-2 font-normal text-gray-400">— {selectedColor.name}</span>
+                    : colorError && <span className="ml-2 font-normal">— please select a color</span>
+                  }
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {product.colors.map((color: any) => (
+                    <button
+                      key={color.hex}
+                      onClick={() => {
+                        setSelectedColor(selectedColor?.hex === color.hex ? null : color);
+                        setColorError(false);
                       }}
+                      title={color.name}
+                      className={`w-9 h-9 rounded-full transition-all ${
+                        selectedColor?.hex === color.hex
+                          ? "border-4 border-gray-900 scale-110"
+                          : colorError
+                          ? "border-4 border-red-300 hover:scale-105"
+                          : "border-4 border-white shadow-md hover:scale-105"
+                      }`}
+                      style={{ backgroundColor: color.hex }}
                     />
-                  </Tag>
-                ))}
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
 
-            {/* Best Offers */}
-            {/*  */}
-            {/*  */}
-            {/* <div>
-              <h4
-                style={{
-                  fontSize: "15px",
-                  fontWeight: 600,
-                  marginBottom: "10px",
-                  color: "#111827",
-                }}
-              >
-                Best Offers
-              </h4>
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: "5px",
-                  fontSize: "14px",
-                }}
-              >
-                {product.offers.map((offer, index) => (
-                  <div
-                    key={index}
-                    style={{ lineHeight: "1.5", color: "#374151" }}
-                  >
-                    <span style={{ fontWeight: 600 }}>{offer.label}</span>{" "}
-                    <span>{offer.text}</span>{" "}
-                    <a
-                      href="#"
-                      style={{
-                        color: "#1a56db",
-                        textDecoration: "none",
-                        marginLeft: "4px",
-                      }}
-                    >
-                      {offer.link}
-                    </a>
-                  </div>
-                ))} 
-              </div>
-            </div> */}
+            {/* Description */}
+            {product.description && (
+              <p className="text-sm text-gray-500 leading-relaxed">
+                {product.description}
+              </p>
+            )}
 
             {/* Action Buttons */}
-            {/*  */}
-            {/*  */}
-            <div style={{ display: "flex", gap: "12px", marginTop: "32px" }}>
+            <div className="flex gap-3 pt-2">
               <Button
                 type="primary"
                 size="large"
-                style={{
-                  height: "50px",
-                  width: "150px",
-                  fontSize: "15px",
-                  fontWeight: 600,
-                  backgroundColor: "#1e3a8a",
-                  borderColor: "#1e3a8a",
-                  borderRadius: "10px",
-                }}
-                onClick={() => {
-                  if (token) handleAddToCart(data?._id);
-                  else message.error("User should be logged in!!");
-                  // token
-                  //   ? handleAddToCart(data._id)
-                  //   : message.error("User should be logged in");
-                }}
+                icon={<ShoppingCartOutlined />}
+                loading={useCart.isPending}
+                onClick={handleAddToCart}
+                className="!h-12 !flex-1 !rounded-xl !bg-gray-900 !border-gray-900 !font-semibold !text-base hover:!bg-gray-700"
               >
                 Add to Cart
               </Button>
               <Button
                 size="large"
-                icon={isWishlisted ? <HeartFilled /> : <HeartOutlined />}
                 onClick={() => setIsWishlisted(!isWishlisted)}
-                style={{
-                  height: "50px",
-                  width: "50px",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  color: isWishlisted ? "#ef4444" : "#6b7280",
-                  borderRadius: "6px",
-                  border: "1px solid #d1d5db",
-                  backgroundColor: "#ffffff",
-                }}
+                icon={isWishlisted ? <HeartFilled className="!text-red-500" /> : <HeartOutlined />}
+                className="!h-12 !w-12 !rounded-xl !border-gray-200 flex items-center justify-center"
               />
             </div>
           </div>
-        </Col>
-      </Row>
+        </div>
+      </div>
     </div>
   );
 };

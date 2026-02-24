@@ -19,8 +19,9 @@ export const ViewAdmins = () => {
     total: 0,
   });
   const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(5);
   const [form] = Form.useForm();
-  const { data, isLoading } = useGetAdmin();
+  const { data, isLoading } = useGetAdmin(page, limit);
   const updateAdmin = useUpdateAdmin();
   const deleteAdmin = useDeleteAdmin();
   const createAdmin = useCreateAdmin();
@@ -139,10 +140,13 @@ export const ViewAdmins = () => {
       scroll={{ x: 800 }}
       pagination={{
         current: page,
-        pageSize: 5,
-        total: value.total,
-        onChange: (page) => {
-          // fetchAdmin(page);
+        pageSize: limit,
+        total: data?.total || 0,
+        onChange: (newPage, newPageSize) => {
+          setPage(newPage);
+          if (newPageSize !== limit) {
+             setLimit(newPageSize);
+          }
         },
       }}
     ></Table>

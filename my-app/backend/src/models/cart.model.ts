@@ -6,15 +6,27 @@ const cartSchema = new mongoose.Schema({
   quantity: { type: Number, default: 1, min: 1, required: true },
   variants: {
     color: {
-      name: {type: String, required: true},
-      hex: {type: String, required: true},
+      name: { type: String, required: true },
+      hex: { type: String, required: true },
     },
     size: {
       type: String,
       required: true,
     },
   },
-  isSelected: Boolean
+  isSelected: Boolean,
 });
-cartSchema.index({ userId: 1, productId: 1, variants: 1 }, { unique: true });
+
+// Use flat dotted paths so MongoDB can actually enforce uniqueness
+// The old `variants: 1` index on a nested object does NOT work reliably
+cartSchema.index(
+  {
+    userId: 1,
+    productId: 1,
+    "variants.size": 1,
+    "variants.color.hex": 1,
+  },
+  { unique: true }
+);
+
 export const Cart = mongoose.model("Cart", cartSchema);

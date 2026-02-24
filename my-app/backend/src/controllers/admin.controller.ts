@@ -5,8 +5,18 @@ import { User } from "../models/user.model";
 export async function getAdmins(req: Request, res: Response) {
   console.log("in get admin controller");
   try {
-    const admins = await adminService.getAdmins();
-    res.json({ message: "Admins fetched", admins });
+    const { page = 1, limit = 5 } = req.query;
+    const skip = (Number(page) - 1) * Number(limit);
+    
+    const { admins, total } = await adminService.getAdmins(Number(limit), skip);
+    
+    res.json({ 
+      message: "Admins fetched", 
+      admins,
+      page: Number(page),
+      limit: Number(limit),
+      total
+    });
   } catch (error) {
     console.log("Error while getting admins:", error);
   }

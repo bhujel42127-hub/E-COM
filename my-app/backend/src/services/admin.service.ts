@@ -2,8 +2,12 @@ import bcrypt from "bcryptjs";
 import { User } from "../models/user.model";
 
 class AdminService {
-  async getAdmins() {
-    return await User.find({ role: "ADMIN" });
+  async getAdmins(limit?: number, skip?: number) {
+    const [admins, total] = await Promise.all([
+      User.find({ role: "ADMIN" }).skip(skip || 0).limit(limit || 10),
+      User.countDocuments({ role: "ADMIN" }),
+    ]);
+    return { admins, total };
   }
   async updateAdmin(id: string, data: any) {
     // console.log("Update Admin service reached");

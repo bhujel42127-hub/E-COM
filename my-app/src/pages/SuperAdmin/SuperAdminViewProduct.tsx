@@ -2,24 +2,18 @@ import { Button, message, Space, Tag } from "antd";
 import { useState } from "react";
 import { Table } from "antd";
 import type { ColumnsType } from "antd/es/table";
-import type { Product, Value } from "../../Props";
+import type { Product } from "../../Props";
 import { useGetAllProduct } from "../../hooks/useGet";
 
 import { useDeleteProduct } from "../../hooks/productHooks";
 import { useNavigate } from "react-router-dom";
 
 export const AdminViewProduct = () => {
-  const [value, setValue] = useState<Value>({
-    isModalOpen: false,
-    isLoading: false,
-    isEdit: false,
-    total: 0,
-  });
-
   const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(5);
   const navigate = useNavigate();
   const deleteProduct = useDeleteProduct();
-  const { data, isLoading } = useGetAllProduct();
+  const { data, isLoading } = useGetAllProduct(page, limit);
 
   console.log("Fetched product: ", data);
 
@@ -109,12 +103,7 @@ export const AdminViewProduct = () => {
   ];
 
   const resetValue = () => {
-    setValue((prev) => ({
-      ...prev,
-      isModalOpen: false,
-      isLoading: false,
-      isEdit: false,
-    }));
+    // No-op since modals are not dynamically handled via state here right now
   };
 
   const handleEdit = async (data: Product) => {
@@ -142,10 +131,13 @@ export const AdminViewProduct = () => {
       scroll={{ x: 800 }}
       pagination={{
         current: page,
-        pageSize: 5,
-        total: value.total,
-        onChange: (page) => {
-          // fetchProduct(page);
+        pageSize: limit,
+        total: data?.total || 0,
+        onChange: (newPage, newPageSize) => {
+          setPage(newPage);
+          if (newPageSize !== limit) {
+            setLimit(newPageSize);
+          }
         },
       }}
     ></Table>

@@ -9,7 +9,7 @@ export function useUser() {
     queryKey: [queryKey.auth.user, token],
     queryFn: () => fetcher(`/auth/${token}`),
     enabled: !!token,
-    staleTime: 5 * 60 * 1000, 
+    staleTime: 5 * 60 * 1000,
     retry: false,
   });
 }
@@ -38,18 +38,20 @@ export function useGetAllProduct() {
     refetchOnMount: "always",
   });
 }
+
 export function useGetProduct(id: string) {
   return useQuery({
-    queryKey: [queryKey?.admin.product],
+    queryKey: [queryKey?.admin.product, id],
     queryFn: () => fetcher(`products/${id}`),
     enabled: !!id,
     staleTime: 0,
     refetchOnMount: "always",
   });
 }
+
 export function useGetProductBySlug(slug: string) {
   return useQuery({
-    queryKey: [queryKey?.admin.product],
+    queryKey: ["product-by-slug", slug], 
     queryFn: () => fetcher(`products/slug/${slug}`),
     enabled: !!slug,
     staleTime: 0,
