@@ -1,6 +1,18 @@
 import { useQuery } from "@tanstack/react-query";
 import { fetcher } from "../services/fetcher";
 import { queryKey } from "../lib/queryKey";
+import { getAccessToken } from "../utlis/handleToken";
+
+export function useUser() {
+  const token = getAccessToken();
+  return useQuery({
+    queryKey: [queryKey.auth.user, token],
+    queryFn: () => fetcher(`/auth/${token}`),
+    enabled: !!token,
+    staleTime: 5 * 60 * 1000, 
+    retry: false,
+  });
+}
 
 export function useGetUser(token: string) {
   return useQuery({
@@ -18,7 +30,7 @@ export function useGetAdmin() {
   });
 }
 
-export function     useGetAllProduct() {
+export function useGetAllProduct() {
   return useQuery({
     queryKey: [queryKey?.admin.product],
     queryFn: () => fetcher("/products"),

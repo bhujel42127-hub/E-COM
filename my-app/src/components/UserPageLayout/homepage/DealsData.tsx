@@ -35,6 +35,7 @@ export const DealsData = () => {
       subtitle: "Under Rs.799",
     },
   ];
+
   return data.map((deal) => (
     <Col key={deal.id} flex="0 0 300px">
       <Card
@@ -43,25 +44,17 @@ export const DealsData = () => {
           <img
             alt={deal.title}
             src={deal.image}
-            style={{ height: "250px", objectFit: "cover" }}
+            className="h-[250px] object-cover"
           />
         }
       >
         <img
           src={deal.logo}
           alt="Brand"
-          style={{ height: "40px", marginBottom: "15px" }}
+          className="h-10 mb-4"
         />
-        <h3
-          style={{
-            fontWeight: "bold",
-            fontSize: "20px",
-            marginBottom: "8px",
-          }}
-        >
-          {deal.title}
-        </h3>
-        <p style={{ color: "#666", fontSize: "16px" }}>{deal.subtitle}</p>
+        <h3 className="font-bold text-xl mb-2">{deal.title}</h3>
+        <p className="text-gray-500 text-base">{deal.subtitle}</p>
       </Card>
     </Col>
   ));

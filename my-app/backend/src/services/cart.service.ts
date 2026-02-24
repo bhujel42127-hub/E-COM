@@ -37,9 +37,24 @@ class CartService {
   }
   async deleteCartItem(userId: string, itemId: string) {
     try {
-      return await Cart.deleteOne({ _id: itemId, userId: userId });
+      return await Cart.findByIdAndDelete({ _id: itemId, userId: userId });
     } catch (error) {
       throw new Error("Error deleting cart item");
+    }
+  }
+
+  async updateCartItem(userId: string, itemId: string, quantity: number) {
+    try {
+      if (quantity < 1) throw new Error("Quantity must be at least 1");
+      const updatedItem = await Cart.findOneAndUpdate(
+        { _id: itemId, userId: userId },
+        { $set: { quantity } },
+        { new: true }
+      );
+      if (!updatedItem) throw new Error("Cart item not found");
+      return updatedItem;
+    } catch (error) {
+      throw new Error("Error updating cart item");
     }
   }
 }

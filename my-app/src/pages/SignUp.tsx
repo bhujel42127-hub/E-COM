@@ -8,6 +8,7 @@ import { useCreateUser } from "../hooks/usePosts";
 const SignUp = () => {
   const navigate = useNavigate();
   const createUser = useCreateUser();
+
   const onFinish: FormProps<FieldType>["onFinish"] = async (values) => {
     try {
       const newUser = {
@@ -25,23 +26,6 @@ const SignUp = () => {
         console.log(err);
       }
     }
-    // console.log("clicked");
-    // const res = await api.get<User[]>("/users");
-    // const userExists = res.data.some((e) => e.email === values.email);
-    // console.log("User exists: ", userExists);
-    // if (userExists) {
-    //   dupEmailNotification();
-    //   return;
-    // }
-    // if (!userExists) {
-    //   const timeStamp = new Date().toISOString();
-    //   const newUser = {
-    //     ...values,
-    //     createdAt: timeStamp,
-    //   };
-    //   await api.post("/users", newUser);
-    //   navigate("/login");
-    //   console.log("User added", newUser);
   };
 
   const onFinishFailed: FormProps<FieldType>["onFinishFailed"] = (
@@ -52,13 +36,13 @@ const SignUp = () => {
 
   return (
     <div className="flex flex-row min-h-screen">
-      <div className="flex-1 flex items-center justify-center bg-gray-50">
-        <div className="flex items-center justify-center">
-          <h1 className="text-5xl font-bold">My Brand</h1>
-        </div>
+      <div className="flex-1 hidden md:flex flex-col items-center justify-center bg-primary text-center px-10">
+        <div className="flex flex-col items-center justify-center">
+            <span className="text-4xl font-extrabold text-primary font-['Libre_Baskerville']">LOGO</span>
+          </div>
       </div>
 
-      <div className="flex-1 flex items-center justify-center">
+      <div className="flex-1 flex items-center ml-20">
         <div className="w-full max-w-md px-8">
           <Form
             name="signup"
@@ -110,14 +94,14 @@ const SignUp = () => {
                 htmlType="submit"
                 size="large"
                 block
-                style={{ background: "#001529" }}
+                className="!bg-primary hover:!bg-primaryHover"
               >
                 Submit
               </Button>
             </Form.Item>
 
             <div className="text-center">
-              <a href="/login" className="text-blue-1000 hover:text-blue-700">
+              <a href="/login" className="text-blue-500 hover:text-blue-700">
                 Already got an account? Login
               </a>
             </div>

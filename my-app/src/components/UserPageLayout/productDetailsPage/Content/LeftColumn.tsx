@@ -15,11 +15,10 @@ export const LeftColumn = () => {
     rating: 4.4,
     reviewCount: 36,
     price: data?.price,
-    originalPrice: 1000,
-    // discount: 30,
-    images: [data?.imageUrl || ""],
-    sizes: ["XS", "S", "M", "L", "XL"],
-    colors: ["red", "blue", "green"],
+    originalPrice: data?.price ? data.price * 1.2 : 1000,
+    images: data?.imageUrl ? [data.imageUrl] : ["/placeholder-image.jpg"],
+    sizes: Array.isArray(data?.size) ? data.size : ["XS", "S", "M", "L", "XL"],
+    colors: Array.isArray(data?.color) ? data.color : ["red", "blue", "green"],
     offers: [
       { label: "Special offer", text: "get 25% off", link: "T&C" },
       {
@@ -92,15 +91,19 @@ export const LeftColumn = () => {
                 justifyContent: "center",
               }}
             >
-              <img
-                alt={product.name}
-                src={product.images[selectedImage]}
-                style={{
-                  width: "100%",
-                  height: "100%",
-                  objectFit: "cover",
-                }}
-              />
+              {product.images[selectedImage] ? (
+                <img
+                  alt={product.name}
+                  src={product.images[selectedImage]}
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
+                  }}
+                />
+              ) : (
+                <div style={{ padding: "40px", color: "#9ca3af" }}>No Image Available</div>
+              )}
             </div>
           </Col>
         </Row>

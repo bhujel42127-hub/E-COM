@@ -48,4 +48,6 @@ export type Product = {
   slug: string;
   imageUrl: string;
   quantity: number;
+  category?: string;
+  gender?: string;
 };

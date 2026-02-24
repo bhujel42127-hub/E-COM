@@ -1,15 +1,43 @@
-import { Card, Col, Row } from "antd";
-import { useGetAllProduct } from "../../../hooks/useGet";
+import { Card, Col, Row, Skeleton } from "antd";
 import type { Product } from "../../../Props";
 import { useNavigate } from "react-router-dom";
+import { ShoppingOutlined } from "@ant-design/icons";
 
-export const ProductCard = () => {
-  const { data, isLoading } = useGetAllProduct();
-  console.log("Product data:", data)
+interface ProductCardProps {
+  products?: Product[];
+  loading?: boolean;
+}
+
+export const ProductCard = ({ products, loading }: ProductCardProps) => {
   const navigate = useNavigate();
+
+  if (loading) {
+    return (
+      <Row gutter={[24, 24]}>
+        {[1, 2, 3, 4, 5].map((i) => (
+          <Col xs={24} sm={12} md={8} lg={6} xl={4.8} key={i}>
+            <Card className="rounded-2xl border-none shadow-sm h-full">
+              <Skeleton.Image className="w-full !min-h-[220px] !mb-4 rounded-xl" active />
+              <Skeleton active paragraph={{ rows: 2 }} />
+            </Card>
+          </Col>
+        ))}
+      </Row>
+    );
+  }
+
+  if (!products || products.length === 0) {
+    return (
+      <div className="w-full py-16 text-center text-gray-500 bg-gray-50 rounded-2xl border border-gray-100 mt-4">
+        <ShoppingOutlined className="text-4xl mb-3 text-gray-300" />
+        <p className="text-lg">No products found in this category.</p>
+      </div>
+    );
+  }
+
   return (
-    <Row gutter={[20, 20]} wrap={false}>
-      {data?.products?.map((product: Product) => (
+    <Row gutter={[24, 24]}>
+      {products.map((product: Product) => (
         <Col
           key={product._id as string}
           xs={24}
@@ -17,73 +45,44 @@ export const ProductCard = () => {
           md={8}
           lg={6}
           xl={4.8}
-          flex="0 0 280px"
+          className="flex"
         >
           <Card
             hoverable
-            loading={isLoading}
-            styles={{body: {padding: 10}}}
-            onClick={() => navigate(`/products/${product.slug}`)}
+            className="w-full rounded-2xl border-none shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden flex flex-col group cursor-pointer"
+            styles={{ body: { padding: '20px', display: 'flex', flexDirection: 'column', flexGrow: 1 } }}
+            onClick={() => navigate(`/products/${product.slug || product._id}`)}
             cover={
-              <img
-                alt={product.name as string}
-                src={product.imageUrl}
-                style={{minHeight:"150px", maxHeight: "150px",objectFit: "cover" }}
-              />
+              <div className="relative pt-[120%] bg-gray-50 overflow-hidden">
+                <img
+                  alt={product.name as string}
+                  src={product.imageUrl}
+                  className="absolute inset-0 w-full h-full object-cover mix-blend-multiply transition-transform duration-500 group-hover:scale-105"
+                />
+                {/* Optional Badge */}
+                {Math.random() > 0.7 && (
+                  <div className="absolute top-3 left-3 bg-black text-white text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full z-10">
+                    New
+                  </div>
+                )}
+              </div>
             }
           >
-            <div>
+            <div className="flex-1 flex flex-col">
+              <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1 block">
+                {product.brand || "Brand"}
+              </span>
+              <h3 className="text-base font-bold text-gray-900 leading-tight mb-2 line-clamp-2 title-font">
+                {product.name}
+              </h3>
               
-            </div>
-            <h3
-              style={{
-                fontWeight: "600",
-                marginBottom: "5px",
-                fontSize: "16px",
-              }}
-            >
-              {product.name}
-            </h3>
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "5px",
-                marginBottom: "8px",
-              }}
-            >
-              <span style={{ color: "#666", fontSize: "14px" }}>
-                {product.brand}
-              </span>
-              <span style={{ color: "#faad14", fontSize: "14px" }}>
-                Product rating here..
-                {/* {product.rating} ⭐ */}
-              </span>
-            </div>
-            <div
-              style={{
-                display: "flex",
-                gap: "8px",
-                alignItems: "center",
-                flexWrap: "wrap",
-              }}
-            >
-              <span style={{ fontWeight: "bold", fontSize: "18px" }}>
-                {product.price as number}
-              </span>
-              <span
-                style={{
-                  color: "#999",
-                  textDecoration: "line-through",
-                  fontSize: "14px",
-                }}
-              >
-                {product.price as number}
-              </span>
-              <span style={{ color: "#52c41a", fontSize: "14px" }}>
-                discount here..
-                {/* ({product.discount}) */}
-              </span>
+              <div className="mt-auto pt-3 flex items-center justify-between">
+                <div className="flex items-baseline gap-2">
+                  <span className="text-lg font-bold text-gray-900">
+                    ${product.price as number}
+                  </span>
+                </div>
+              </div>
             </div>
           </Card>
         </Col>

@@ -5,13 +5,13 @@ import {
   getAdmins,
   updateAdmin,
 } from "../controllers/admin.controller";
-import { requireUser } from "../middlewares/auth.middleware";
+import { requireUser, requireRole } from "../middlewares/auth.middleware";
 
 const router = Router();
 
-router.get("/", requireUser,getAdmins);
-router.put("/:id", updateAdmin);
-router.delete("/:id", deleteAdmin);
-router.post("/", createAdmin);
+router.get("/", requireUser, requireRole(["SUPER_ADMIN"]), getAdmins);
+router.put("/:id", requireUser, requireRole(["SUPER_ADMIN"]), updateAdmin);
+router.delete("/:id", requireUser, requireRole(["SUPER_ADMIN"]), deleteAdmin);
+router.post("/", requireUser, requireRole(["SUPER_ADMIN"]), createAdmin);
 
 export default router;

@@ -4,12 +4,11 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: "#003893",
-        primaryDark: "#001D4D",
-        primaryLight: "#1A71FF",
-        secondary: "#EE0718",
-        secondaryDark: "#A40F2D",
-        secondaryLight: "#EC2D53",
+        primary: "#001529",
+        primaryHover: "#00274d",
+        primaryLight: "#e6f4ff",
+        accent: "#1890ff",
+        accentHover: "#096dd9",
       },
       backgroundImage: {
         'btnGradient': 'linear-gradient(180deg, #9AC23B 0%, #C6AD2E 100%)',

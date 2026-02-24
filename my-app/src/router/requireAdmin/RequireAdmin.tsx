@@ -1,15 +1,21 @@
-import { AdminLayout } from "../../components/SuperAdminLayout";
-import { NotFound } from "../../components/NotFound";
-import SuspenseLoading from "../../components/SuspenseLoading";
-import { ADMIN } from "../../constants/useRoles";
-import { useUser } from "../../hooks/useGet";
+// import { Navigate } from "react-router-dom";
+// import { useUser } from "../../hooks/useGet";
+// import { ADMIN } from "../../constants/useRoles";
+// import { AdminLayout } from "../../components/AdminLayout";
+// import { NotFound } from "../../components/NotFound";
+// import SuspenseLoading from "../../components/SuspenseLoading";
 
-const RequireAdmin = () => {
-  const user = useUser();
-  console.log("User data: ", user);
-  if (user.status === "pending") <SuspenseLoading />;
-  else if (user.data?.role === ADMIN) return <AdminLayout />;
-  else return <NotFound />;
-};
+// /**
+//  * Legacy guard — kept for compatibility.
+//  * For the main routing, AdminGuard is now used instead.
+//  * Renders AdminLayout only for ADMIN role.
+//  */
+// const RequireAdmin = () => {
+//   const { data, isPending } = useUser();
 
-export default RequireAdmin;
+//   if (isPending) return <SuspenseLoading />;
+//   if (data?.role === ADMIN) return <AdminLayout />;
+//   return <NotFound />;
+// };
+
+// export default RequireAdmin;

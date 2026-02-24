@@ -14,7 +14,7 @@ export function useAddToCart() {
 }
 export function useDeleteCartItem() {
   return useMutation({
-    mutationFn: (productId: string) => mutator("DELETE", `/cart/${productId}`),
+    mutationFn: (itemId: string) => mutator("DELETE", `/cart/${itemId}`),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [queryKey?.auth.cart] });
       console.log("AFTER DELETE CART ITEM MUTATION FUNCTION SUCCESS!!");
@@ -26,4 +26,14 @@ export function useGetCartItems() {
     queryKey: [queryKey?.auth.cart],
     queryFn: () => mutator("GET", "/cart"),
   })
+}
+export function useUpdateCartItem() {
+  return useMutation({
+    mutationFn: ({ itemId, quantity }: { itemId: string; quantity: number }) => 
+      mutator("PUT", `/cart/${itemId}`, { quantity }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [queryKey?.auth.cart] });
+      console.log("AFTER UPDATE CART ITEM MUTATION FUNCTION SUCCESS!!");
+    },
+  });
 }

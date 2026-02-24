@@ -17,30 +17,17 @@ const Login = () => {
       console.log("User id:", res);
       setAccessToken(res.accessToken);
       setRefreshToken(res.refreshToken);
-      navigate("/admin");
+      
+      // Navigate based on user role if available in res, otherwise default to home
+      if (res.user?.role === "ADMIN" || res.user?.role === "SUPER_ADMIN") {
+        navigate("/admin");
+      } else {
+        navigate("/home");
+      }
     } catch (err) {
       openNotification("error", "Login Failed", "Invalid credentials");
       console.log("Login error: ", err);
     }
-
-    //   const res = await api.get<User[]>("/users");
-    //   // console.log("Users", res.data);
-
-    //   const userExists = res.data.filter(
-    //     (e) => e.email === values.email && e.password === values.password
-    //   );
-    //   // console.log("User value: ", userExists);
-
-    //   if (userExists.length > 0) {
-    //     localStorage.setItem(
-    //       "user",
-    //       JSON.stringify(userExists)
-    //     );
-
-    //     navigate("/dashboard");
-    //     return;
-    //     // console.log("User logged in!", res.data);
-    //   }
   };
 
   const onFinishFailed: FormProps<FieldType>["onFinishFailed"] = (
@@ -51,13 +38,13 @@ const Login = () => {
 
   return (
     <div className="flex flex-row min-h-screen">
-      <div className="flex-1 flex items-center justify-center bg-gray-50">
-        <div className="flex items-center justify-center">
-          <h1 className="text-5xl font-bold">My Brand</h1>
+      <div className="flex-1 hidden md:flex flex-col items-center justify-center bg-primary text-center px-10">
+        <div className="flex flex-col items-center justify-center">
+            <span className="text-4xl font-extrabold text-primary font-['Libre_Baskerville']">LOGO</span>
         </div>
       </div>
 
-      <div className="flex-1 flex items-center ">
+      <div className="flex-1 flex items-center ml-20">
         <div className="w-full max-w-md px-8">
           <Form
             name="basic"
@@ -90,7 +77,7 @@ const Login = () => {
                 type="primary"
                 htmlType="submit"
                 size="large"
-                style={{ background: "#001529" }}
+                className="!bg-primary hover:!bg-primaryHover"
                 block
               >
                 Submit

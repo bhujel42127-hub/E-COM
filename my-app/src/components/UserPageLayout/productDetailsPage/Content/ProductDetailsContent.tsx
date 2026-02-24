@@ -174,7 +174,7 @@ export const ProductContent = () => {
               <span
                 style={{ fontSize: "20px", fontWeight: 700, color: "#111827" }}
               >
-                Rs. {product.price}
+                $ {product.price}
               </span>
               <span
                 style={{
@@ -184,7 +184,7 @@ export const ProductContent = () => {
                   marginLeft: "10px",
                 }}
               >
-                Rs. {product.originalPrice}
+                $ {product.originalPrice}
               </span>
             </div>
 

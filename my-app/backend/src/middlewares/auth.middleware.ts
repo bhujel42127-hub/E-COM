@@ -26,6 +26,14 @@ export function requireUser(req: Request, res: Response, next: NextFunction) {
   }
 }
 
-// export function requireAdmin(req: Request, res: Response, next: NextFunction){
-//   const token =
-// }
+export const requireRole = (allowedRoles: string[]) => {
+  return (req: Request, res: Response, next: NextFunction) => {
+    const userRole = (req as any).role;
+    
+    if (!userRole || !allowedRoles.includes(userRole)) {
+      return res.status(403).json({ message: "Forbidden: You do not have permission to perform this action." });
+    }
+    
+    next();
+  };
+};

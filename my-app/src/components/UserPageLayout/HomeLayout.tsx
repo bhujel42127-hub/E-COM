@@ -1,7 +1,5 @@
-import { Layout} from "antd";
-import {
-  CloseOutlined,
-} from "@ant-design/icons";
+import { Layout } from "antd";
+import { CloseOutlined } from "@ant-design/icons";
 import { ProductCard } from "./homepage/ProductCard";
 import { Deals } from "./homepage/Deals";
 import { Trending } from "./homepage/Trending";
@@ -9,80 +7,38 @@ import { AutoPlaySlider } from "../Swiper/AutoPlaySlider";
 
 export const HomeLayout = () => {
   return (
-    <Layout
-      className="min-h-screen bg-white"
-      style={{ fontFamily: "Libre Baskerville", width: "100vw" }}
-    >
-      {/* invite friends span */}
-      {/*  */}
-      {/*  */}
-      <div
-        style={{
-          backgroundColor: "#f0f0ff",
-          padding: "10px 0",
-          textAlign: "center",
-        }}
-      >
-        <div
-          className="container"
-          style={{ margin: "0 auto", padding: "0 50px", position: "relative" }}
-        >
+    <Layout className="min-h-screen bg-white w-full font-['Libre_Baskerville']">
+      {/* Invite friends banner */}
+      <div className="bg-primaryLight py-2.5 text-center">
+        <div className="relative mx-auto px-4 sm:px-12">
           <span>Invite Friends and get 50% off on your next purchase </span>
-          <a href="#" style={{ color: "#1890ff", marginLeft: "10px" }}>
+          <a href="#" className="text-accent ml-2.5">
             Invite Now
           </a>
-          <CloseOutlined
-            style={{
-              position: "absolute",
-              right: "50px",
-              top: "50%",
-              transform: "translateY(-50%)",
-              cursor: "pointer",
-            }}
-          />
+          <CloseOutlined className="absolute right-4 sm:right-12 top-1/2 -translate-y-1/2 cursor-pointer" />
         </div>
       </div>
+
+      {/* Slider */}
       <div className="flex w-full">
         <AutoPlaySlider />
       </div>
-      {/* trending now  */}
-      {/*  */}
-      {/*  */}
-      <div className="w-full" style={{ padding: "50px 0" }}>
-        <h2
-          style={{
-            fontSize: "32px",
-            fontWeight: "bold",
-            marginBottom: "30px",
-          }}
-        >
-          Trending Now
-        </h2>
-        <div
-          className="container"
-          style={{
-            margin: "0 auto",
-            padding: "0 50px",
-            overflowX: "auto",
-            scrollbarWidth: "none",
-          }}
-        >
+
+      {/* Trending Now */}
+      <div className="w-full py-12">
+        <h2 className="text-3xl font-bold mb-8 px-4 sm:px-12">Trending Now</h2>
+        <div className="mx-auto px-4 sm:px-12 overflow-x-auto [scrollbar-width:none]">
           <ProductCard />
         </div>
       </div>
-      {/* deals of the day */}
-      {/*  */}
-      {/*  */}
-      <div
-        className="w-full"
-        style={{ padding: "50px 0", backgroundColor: "#f5f5f5" }}
-      >
+
+      {/* Deals of the Day */}
+      <div className="w-full py-12 bg-primaryLight">
         <Deals />
       </div>
-      {/* trending offers */}
-      {/*  */}
-      {/*  */}
-      <div className="w-full" style={{ padding: "50px 0" }}>
+
+      {/* Trending Offers */}
+      <div className="w-full py-12">
         <Trending />
       </div>
     </Layout>
